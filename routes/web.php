@@ -1,10 +1,35 @@
 <?php
-
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\DashboardController;
 
+
+Route::get('/auth/google', function () {
+    return Socialite::driver('google')->redirect();
+})->name('google.login');
+
+Route::get('/auth/google/callback', function () {
+    $googleUser = Socialite::driver('google')->stateless()->user();
+
+    $user = User::updateOrCreate([
+        'email' => $googleUser->getEmail(),
+    ], [
+        'name' => $googleUser->getName(),
+        'google_id' => $googleUser->getId(),
+        'avatar' => $googleUser->getAvatar(),
+        'password' => bcrypt(Str::random(24)), // Optional, bisa random password
+    ]);
+
+    Auth::login($user);
+
+    return redirect('/dashboard');
+
+});
 Route::get('/statistik-transaksi', function () {
     $data = DB::table('transaksi')
         ->select(DB::raw("jenis, SUM(jumlah) as total"))
