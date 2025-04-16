@@ -48,7 +48,7 @@
                 <i data-lucide="users" class="w-10 h-10 text-blue-500 mr-4"></i>
                 <div>
                         <h3 class="text-gray-500">Jumlah Member</h3>
-                        <p class="text-2xl font-bold">{{ \App\Models\User::where('role', 'user')->count() }}</p>
+                        <p class="text-2xl font-bold">{{ $total}}</p>
                     </div>
                     
                     
@@ -59,21 +59,22 @@
                 <i data-lucide="shield-check" class="w-10 h-10 text-green-500 mr-4"></i>
                 <div>
                     <h3 class="text-gray-500">Jumlah Admin</h3>
-                    <p class="text-2xl font-bold">{{ \App\Models\User::where('role', 'admin')->count() }}</p>
+                    <p class="text-2xl font-bold">{{ $admin}}</p>
                 </div>
             </div>
             <div class="bg-white border-4 border-indigo-200 border-l-yellow-500 shadow-md rounded-lg p-6 flex items-center">
                 <i data-lucide="credit-card" class="w-10 h-10 text-yellow-500 mr-4"></i>
                 <div>
                     <h3 class="text-gray-500">Data Transaksi Kredit</h3>
-                    <p class="text-2xl font-bold">Rp. {{ number_format($kredit, 2, ',', '.') }}</p>
+                    <p class="text-2xl font-bold">{{$kredit}}</p>
+                   
                 </div>
             </div>
             <div class="bg-white border-4 border-indigo-200 border-l-red-500 shadow-md rounded-lg p-6 flex items-center">
                 <i data-lucide="banknote" class="w-10 h-10 text-red-500 mr-4"></i>
                 <div>
                     <h3 class="text-gray-500">Data Transaksi Debit</h3>
-                    <p class="text-2xl font-bold">Rp.{{ number_format($debit, 2, ',', '.') }}</p>
+                    <p class="text-2xl font-bold">{{$debit}}</p>
                 </div>
             </div>
             </div>
@@ -85,6 +86,7 @@
                 <table class="w-full border-collapse ">
                     <thead>
                         <tr class="bg-gray-200">
+                            <th class="border px-4 py-2">No</th>
                             <th class="border px-4 py-2">UID</th>
                             <th class="border px-4 py-2">Nama</th>
                             <th class="border px-4 py-2">Saldo</th>
@@ -92,22 +94,25 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @forelse ($member as $item)
+                            
                         <tr>
-                            <td class="border px-4 py-2">783492182007</td>
-                            <td class="border px-4 py-2">Dio Toar</td>
-                            <td class="border px-4 py-2">Rp 39.000</td>
+                            <td class="border px-4 py-2">{{$loop->iteration}}</td>
+                            <td class="border px-4 py-2">{{ $item->UID }}</td>
+                            <td class="border px-4 py-2">{{ $item->nama }}</td>
+                            <td class="border px-4 py-2"> 
+                                Rp {{ number_format($item->saldo, 2, ',', '.') }}</td>
                             <td class="border px-4 py-2 text-center">
                                 <button class="bg-green-500 text-white px-2 py-1 rounded">✔</button>
                             </td>
                         </tr>
+                        @empty
                         <tr>
-                            <td class="border px-4 py-2">1061221907742</td>
-                            <td class="border px-4 py-2">Gladys</td>
-                            <td class="border px-4 py-2">Rp 25.000</td>
-                            <td class="border px-4 py-2 text-center">
-                                <button class="bg-green-500 text-white px-2 py-1 rounded">✔</button>
-                            </td>
+                            <td class="border px-4 py-2" colspan="5">Not found</td>
+                            
                         </tr>
+                            
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -139,7 +144,7 @@ var ctx = document.getElementById('transaksiChart').getContext('2d');
             labels: ['Transaksi Debit', 'Transaksi Kredit'],
             datasets: [{
                 data: [{{ $debit }}, {{ $kredit }}],
-                backgroundColor: ['#007bff', '#dc3545'],
+                backgroundColor: ['#007bff', '#dc3'],
             }]
         },
         options: {

@@ -59,8 +59,8 @@
 
             <!-- Bagian Kanan (Gambar) -->
             <div class="lg:w-1/2 mt-10 lg:mt-0">
-                <img src="admin/logo.png" alt="Smart Parking" class="rounded-lg shadow-xl">
-                
+                <img src="{{ asset('images/logo.png') }}"  alt="Smart Parking" class="rounded-lg shadow-xl">
+            
             </div>
         </div>
     </section>
