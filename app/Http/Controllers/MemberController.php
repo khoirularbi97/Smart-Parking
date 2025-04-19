@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 
 class MemberController extends Controller
 {
-    public function index()
-    {
-        $member = Member::orderBy('id', 'desc')->get();
-        $total = Member::count();
+    public function index() {
+        $member = Member::orderBy('id','desc')->get();
+        return view('admin.member.index', compact('member'));
+    }
 
-        return view('dashboard', compact('member', 'total'));
+   
 }
-}
+
