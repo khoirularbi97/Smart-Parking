@@ -6,12 +6,24 @@ use App\Models\User;
 use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
-{
-    public function index()
-    {
-        $transaksis = Transaksi::with('user')->get();
-        return view('admin.transaksi.index', compact('transaksis'));
+{        public function index(Request $request) {
+    $query = Transaksi::query(); // tanpa with('roles')
+    
+
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('user_id', 'like', "%$search%")
+              ->orWhere('member_id', 'like', "%$search%")
+              ->orWhere('jenis', 'like', "%$search%")
+              ->orWhere('jumlah', 'like', "%$search%");
+        });
     }
+
+    $transaksis = $query->paginate(5)->withQueryString();
+    return view('admin.transaksi.index', compact('transaksis'));
+
+}
 
     public function create()
     {
@@ -23,8 +35,9 @@ class TransaksiController extends Controller
     {
         $request->validate([
             'user_id' => 'required|exists:users,id',
+            'member_id' => 'required|exists:users,id',
             'jenis' => 'required|in:kredit,debit',
-            'jumlah' => 'required|numeric'
+            'jumlah' => 'required|text'
         ]);
 
         $transaksi = Transaksi::create($request->all());
@@ -42,7 +55,7 @@ class TransaksiController extends Controller
     }
 
     public function destroy(Transaksi $transaksi)
-    {
+     {
         $user = User::find($transaksi->user_id);
         if ($transaksi->jenis == 'kredit') {
             $user->saldo -= $transaksi->jumlah;

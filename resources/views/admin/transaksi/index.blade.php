@@ -1,19 +1,20 @@
 @extends('layouts.app')
 
-@section('title', 'Registrasi')
+@section('title', 'Transaksi')
 
 @section('content')
 
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold">Registrasi</h1>
-        <a href="{{ route('admin/member/create') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Tambah Member Baru</a>
+        <h1 class="text-2xl font-bold">Transaksi</h1>
+        <a href="{{ route('admin/transaksi/create') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Tambah Transaksi</a>
+        
     </div>
 
     
     
     <div class="bg-white shadow rounded overflow-x-auto p-6">
 
-        <form action="{{ route('admin.member') }}" method="GET" class="mb-4 flex gap-2">
+        <form action="" method="GET" class="mb-4 flex gap-2">
             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama/email..." class="border p-2 rounded w-1/3">
             <button class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">Cari</button>
         </form>
@@ -21,12 +22,11 @@
         <table class="min-w-full">
             <thead>
                 <tr class="bg-gray-100">
-
                     <th class="px-4 py-2 border">No.</th>
-                    <th class="px-4 py-2 border">Nama</th>
-                    <th class="px-4 py-2 border">Email</th>
-                    <th class="px-4 py-2 border">Uid</th>
-                    <th class="px-4 py-2 border">Saldo</th>
+                    <th class="px-4 py-2 border">UserID</th>
+                    <th class="px-4 py-2 border">MemberID</th>
+                    <th class="px-4 py-2 border">Jenis</th>
+                    <th class="px-4 py-2 border">Jumlah</th>
                     <th class="px-4 py-2 border">CreatedDate</th>
                     <th class="px-4 py-2 border">CreatedBy</th>
                     <th class="px-4 py-2 border">LastUpdateBy</th>
@@ -38,28 +38,28 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($users as $user)
+                @foreach ($transaksis as $transaksi)
                     <tr>
                         <td class="px-4 py-2 border">{{ $loop->iteration }}</td>
-                        <td class="px-4 py-2 border">{{ $user->name }}</td>
-                        <td class="px-4 py-2 border">{{ $user->email }}</td>
-                        <td class="px-4 py-2 border">{{ $user->uid }}</td>
-                        <td class="px-4 py-2 border">{{ $user->saldo }}</td>
-                        <td class="px-4 py-2 border">{{ $user->CreatedDate }}</td>
-                        <td class="px-4 py-2 border">{{ $user->CreatedBy }}</td>
-                        <td class="px-4 py-2 border">{{ $user->LastUpdateBy }}</td>
-                        <td class="px-4 py-2 border">{{ $user->LastUpdateDate }}</td>
-                        <td class="px-4 py-2 border">{{ $user->CompanyCode }}</td>
-                        <td class="px-4 py-2 border">{{ $user->_Status }}</td>
-                        <td class="px-4 py-2 border">{{ $user->IsDeleted }}</td>
+                        <td class="px-4 py-2 border">{{ $transaksi->user_id }}</td>
+                        <td class="px-4 py-2 border">{{ $transaksi->member_id }}</td>
+                        <td class="px-4 py-2 border">{{ $transaksi->jenis }}</td>
+                        <td class="px-4 py-2 border">Rp {{ number_format($transaksi->jumlah, 2, ',', '.') }}</td>
+                        <td class="px-4 py-2 border">{{ $transaksi->CreatedDate }}</td>
+                        <td class="px-4 py-2 border">{{ $transaksi->CreatedBy }}</td>
+                        <td class="px-4 py-2 border">{{ $transaksi->LastUpdateBy }}</td>
+                        <td class="px-4 py-2 border">{{ $transaksi->LastUpdateDate }}</td>
+                        <td class="px-4 py-2 border">{{ $transaksi->CompanyCode }}</td>
+                        <td class="px-4 py-2 border">{{ $transaksi->_Status }}</td>
+                        <td class="px-4 py-2 border">{{ $transaksi->IsDeleted }}</td>
                         <td class="px-4 py-2 border">
                             <div class="flex justify-center-safe gap-4">
                                 <div class="">
 
-                                    <a href="{{ route('admin.member.edit', $user->id) }}" class="bg-cyan-600 px-4 py-2 rounded hover:bg-cyan-300">Edit</a>
+                                    <a href="" class="bg-cyan-600 px-4 py-2 rounded hover:bg-cyan-300">Edit</a>
                                 </div>
                                 <div class="">
-                                    <form action="{{ route('admin.member.destroy', $user->id) }}" method="POST">
+                                    <form action="" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="bg-red-600 px-4 py-2 rounded hover:bg-red-300">Hapus</button>
@@ -75,7 +75,7 @@
             </tbody>
         </table>
         <div class="p-4">
-            {{ $users->links() }}
+            {{ $transaksis->links() }}
         </div>
     
 </div>

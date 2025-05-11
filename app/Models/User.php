@@ -23,12 +23,15 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role'
+        'uid',
+        'saldo'
     ];
+    
     public function kendaraans()
     {
         return $this->hasMany(Kendaraan::class);
     }
+    
 
     /**
      * The attributes that should be hidden for serialization.

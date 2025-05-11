@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\AdminController;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -8,6 +10,10 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\ParkirMasukController;
+use App\Http\Controllers\TransaksiController;
+use App\Models\Member;
+use App\Models\Transaksi;
 
 Route::get('/auth/google', function () {
     return Socialite::driver('google')->redirect();
@@ -53,12 +59,29 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/member', [MemberController::class, 'index'])->name('admin.member');
-    Route::resource('users', MemberController::class);
+    Route::get('admin/notfound', [AdminController::class, 'index'])->name('admin.notfound');
 });
+Route::middleware('auth','admin')->group(function () {
+    Route::get('/admin/member/{user}/edit', [MemberController::class, 'edit'])->name('admin.member.edit');
+    Route::put('/admin/member/{user}', [MemberController::class, 'update'])->name('admin.member.update');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('store', [MemberController::class, 'store'])->name('store');
+    Route::get('/member', [MemberController::class, 'index'])->name('admin.member');
+    Route::get('admin/member/create', [MemberController::class, 'create'])->name('admin/member/create');
+    Route::delete('/admin/member/{id}', [MemberController::class, 'destroy'])->name('admin.member.destroy');
+    Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi');
+    Route::get('admin/transaksi/create', [TransaksiController::class, 'create'])->name('admin/transaksi/create');
+    Route::get('/admin/transaksi/{user}/edit', [TransaksiController::class, 'edit'])->name('admin.transaksi.edit');
+    Route::post('store/transaksi', [TransaksiController::class, 'store'])->name('store.transaksi');
+    Route::put('/admin/transaksi/{user}', [TransaksiController::class, 'update'])->name('admin.transaksi.update');
+    Route::delete('/admin//{id}', [TransaksiController::class, 'destroy'])->name('admin.transaksi.destroy');
+    Route::get('/parkir_masuk', [ParkirMasukController::class, 'index'])->name('parkir.masuk');
+   
+});
+
 
 
 
