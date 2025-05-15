@@ -72,6 +72,9 @@ class ParkirMasukController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $masuk = ParkirMasuk::findOrFail($id);
+        $masuk->delete();
+
+    return redirect()->route('parkir.masuk')->with('success', 'Data berhasil dihapus.');
     }
 }

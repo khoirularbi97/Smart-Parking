@@ -13,6 +13,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ParkirMasukController;
 use App\Http\Controllers\TransaksiController;
 use App\Models\Member;
+use App\Models\ParkirMasuk;
 use App\Models\Transaksi;
 
 Route::get('/auth/google', function () {
@@ -79,6 +80,7 @@ Route::middleware('auth','admin')->group(function () {
     Route::put('/admin/transaksi/{user}', [TransaksiController::class, 'update'])->name('admin.transaksi.update');
     Route::delete('/admin//{id}', [TransaksiController::class, 'destroy'])->name('admin.transaksi.destroy');
     Route::get('/parkir_masuk', [ParkirMasukController::class, 'index'])->name('parkir.masuk');
+    Route::delete('/parkir_masuk//{id}', [ParkirMasukController::class, 'destroy'])->name('admin.parkir_masuk.destroy');
    
 });
 

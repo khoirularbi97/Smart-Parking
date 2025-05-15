@@ -59,7 +59,7 @@
                                     <a href="" class="bg-cyan-600 px-4 py-2 rounded hover:bg-cyan-300">Edit</a>
                                 </div>
                                 <div class="">
-                                    <form action="" method="POST">
+                                    <form action="{{ route('admin.transaksi.destroy', $transaksi->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="bg-red-600 px-4 py-2 rounded hover:bg-red-300">Hapus</button>

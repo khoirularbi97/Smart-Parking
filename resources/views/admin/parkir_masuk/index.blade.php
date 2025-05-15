@@ -32,26 +32,26 @@
                     <th class="px-4 py-2 border">CompanyCode</th>
                     <th class="px-4 py-2 border">IsDeleted</th>
                     <th class="px-4 py-2 border">Image</th>
-                    <th class="px-4 py-2 border">Aksi</th>
+                    <th class="px-4 py-2 border w-32">Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($parkir_masuk as $transaksi)
+                @foreach ($parkir_masuk as $masuk)
                     <tr>
                         <td class="px-4 py-2 border">{{ $loop->iteration }}</td>
-                        <td class="px-4 py-2 border">{{ $transaksi->uid }}</td>
+                        <td class="px-4 py-2 border">{{ $masuk->uid }}</td>
                       
-                        <td class="px-4 py-2 border">{{ $transaksi->CreatedDate }}</td>
-                        <td class="px-4 py-2 border">{{ $transaksi->CreatedBy }}</td>
-                        <td class="px-4 py-2 border">{{ $transaksi->LastUpdateBy }}</td>
-                        <td class="px-4 py-2 border">{{ $transaksi->LastUpdateDate }}</td>
-                        <td class="px-4 py-2 border">{{ $transaksi->CompanyCode }}</td>
-                        <td class="px-4 py-2 border">{{ $transaksi->_Status }}</td>
+                        <td class="px-4 py-2 border">{{ $masuk->CreatedDate }}</td>
+                        <td class="px-4 py-2 border">{{ $masuk->CreatedBy }}</td>
+                        <td class="px-4 py-2 border">{{ $masuk->LastUpdateBy }}</td>
+                        <td class="px-4 py-2 border">{{ $masuk->LastUpdateDate }}</td>
+                        <td class="px-4 py-2 border">{{ $masuk->CompanyCode }}</td>
+                        <td class="px-4 py-2 border">{{ $masuk->_Status }}</td>
                         <td class="px-4 py-2 border">
-                         @if (Str::startsWith($transaksi->image_base64, '/9j')) {{-- Cek awalan base64 (JPEG) --}}
-                            <img src="data:image/jpeg;base64,{{ $transaksi->image_base64 }}" alt="Gambar">
+                         @if (Str::startsWith($masuk->image_base64, '/9j')) {{-- Cek awalan base64 (JPEG) --}}
+                            <img src="data:image/jpeg;base64,{{ $masuk->image_base64 }}" alt="Gambar">
                         @else
-                            <img src="{{ $transaksi->image_path }}" alt="Gambar">
+                            <img src="{{ $masuk->image_path }}" alt="Gambar">
                         @endif
                         </td>
                         <td class="px-4 py-2 border ">
@@ -61,7 +61,7 @@
                                     <a href="" class="bg-cyan-600 px-4 py-2 rounded hover:bg-cyan-300">Edit</a>
                                 </div>
                                 <div class="mb-2">
-                                    <form action="" method="POST">
+                                    <form action="{{ route('admin.parkir_masuk.destroy', $masuk->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="bg-red-600 px-4 py-2 rounded hover:bg-red-300">Hapus</button>

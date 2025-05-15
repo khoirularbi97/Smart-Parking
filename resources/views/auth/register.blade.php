@@ -8,6 +8,18 @@
             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
+        <!-- UID-->
+        <div>
+            <x-input-label for="uid" :value="__('UID')" />
+            <x-text-input id="uid" class="block mt-1 w-full" type="text" name="uid" :value="old('uid')" required autofocus autocomplete="uid" />
+            <x-input-error :messages="$errors->get('uid')" class="mt-2" />
+        </div>
+        <!-- Saldo -->
+        <div>
+            <x-input-label for="saldo" :value="__('Saldo')" />
+            <x-text-input id="saldo" class="block mt-1 w-full" type="text" name="saldo" :value="old('saldo')" required autofocus autocomplete="saldo" />
+            <x-input-error :messages="$errors->get('saldo')" class="mt-2" />
+        </div>
 
         <!-- Email Address -->
         <div class="mt-4">
