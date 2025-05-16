@@ -23,8 +23,8 @@
             <thead>
                 <tr class="bg-gray-100">
                     <th class="px-4 py-2 border">No.</th>
-                    <th class="px-4 py-2 border">UserID</th>
-                    <th class="px-4 py-2 border">MemberID</th>
+                    <th class="px-4 py-2 border">UID</th>
+                    <th class="px-4 py-2 border">Nama</th>
                     <th class="px-4 py-2 border">Jenis</th>
                     <th class="px-4 py-2 border">Jumlah</th>
                     <th class="px-4 py-2 border">CreatedDate</th>
@@ -32,17 +32,17 @@
                     <th class="px-4 py-2 border">LastUpdateBy</th>
                     <th class="px-4 py-2 border">LastUpdateDate</th>
                     <th class="px-4 py-2 border">CompanyCode</th>
-                    <th class="px-4 py-2 border">_Status</th>
+                    <th class="px-4 py-2 border">Status</th>
                     <th class="px-4 py-2 border">IsDeleted</th>
                     <th class="px-4 py-2 border">Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($transaksis as $transaksi)
+                @forelse ($transaksis as $transaksi)
                     <tr>
                         <td class="px-4 py-2 border">{{ $loop->iteration }}</td>
-                        <td class="px-4 py-2 border">{{ $transaksi->user_id }}</td>
-                        <td class="px-4 py-2 border">{{ $transaksi->member_id }}</td>
+                        <td class="px-4 py-2 border">{{ $transaksi->uid }}</td>
+                        <td class="px-4 py-2 border">{{ $transaksi->nama }}</td>
                         <td class="px-4 py-2 border">{{ $transaksi->jenis }}</td>
                         <td class="px-4 py-2 border">Rp {{ number_format($transaksi->jumlah, 2, ',', '.') }}</td>
                         <td class="px-4 py-2 border">{{ $transaksi->CreatedDate }}</td>
@@ -56,28 +56,37 @@
                             <div class="flex justify-center-safe gap-4">
                                 <div class="">
 
-                                    <a href="" class="bg-cyan-600 px-4 py-2 rounded hover:bg-cyan-300">Edit</a>
+                                    <a href="{{ route('admin.transaksi.edit', $transaksi->id) }}" class="bg-cyan-600 px-4 py-2 rounded hover:bg-cyan-300">Edit</a>
                                 </div>
                                 <div class="">
-                                    <form action="{{ route('admin.transaksi.destroy', $transaksi->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="bg-red-600 px-4 py-2 rounded hover:bg-red-300">Hapus</button>
-                                    </form>
+                                        <button onclick="showConfirmModal({{ $transaksi->id }})" class="bg-red-600 px-4 py-2 rounded hover:bg-red-300">Hapus</button>
+                                   
 
                                 </div>
 
 
                             </div>
                         </td>
+                        
                     </tr>
-                @endforeach
+                    @empty
+                    <tr>
+                        <td class="border text-center px-4 py-2" colspan="13">Not found</td>
+                        
+                    </tr>
+                
+            @endforelse
             </tbody>
         </table>
         <div class="p-4">
             {{ $transaksis->links() }}
         </div>
-    
+
+        <form  id="deleteForm"  class="hidden" method="POST">
+        @csrf
+        @method('DELETE')
+        </form>
+         <x-popup-delete></x-popup-delete>
 </div>
 @if(session('success'))
 <x-pop-up></x-pop-up>
@@ -105,5 +114,25 @@
     };
   </script>
 @endif
+<script>
+    
+    let deleteUserId = null;
+
+    function showConfirmModal(userId) {
+        deleteUserId = userId;
+        document.getElementById('confirmModal').classList.remove('hidden');
+    }
+
+    function hideConfirmModal() {
+        document.getElementById('confirmModal').classList.add('hidden');
+    }
+
+    function submitDelete() {
+    const form = document.getElementById('deleteForm');
+    form.action = '{{ url("admin/transaksi") }}/' + deleteUserId;
+    form.submit();
+}
+</script>
+
 
 @endsection

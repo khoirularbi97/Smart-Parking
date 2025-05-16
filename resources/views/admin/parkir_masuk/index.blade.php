@@ -36,7 +36,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($parkir_masuk as $masuk)
+                @forelse ($parkir_masuk as $masuk)
                     <tr>
                         <td class="px-4 py-2 border">{{ $loop->iteration }}</td>
                         <td class="px-4 py-2 border">{{ $masuk->uid }}</td>
@@ -74,7 +74,13 @@
                         </td>
                         
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td class="border text-center px-4 py-2" colspan="13">Not found</td>
+                        
+                    </tr>
+                
+            @endforelse
             </tbody>
         </table>
         <div class="p-4">

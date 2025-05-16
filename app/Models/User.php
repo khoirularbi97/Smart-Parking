@@ -24,7 +24,12 @@ class User extends Authenticatable
         'email',
         'password',
         'uid',
-        'saldo'
+        'saldo',
+        'CreatedBy',
+        'CompanyCode' ,
+        'Status' , 
+        'IsDeleted',
+        'LastUpdateBy'
     ];
     
     public function kendaraans()
@@ -55,4 +60,5 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    
 }

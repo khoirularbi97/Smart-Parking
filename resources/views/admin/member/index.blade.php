@@ -32,13 +32,13 @@
                     <th class="px-4 py-2 border">LastUpdateBy</th>
                     <th class="px-4 py-2 border">LastUpdateDate</th>
                     <th class="px-4 py-2 border">CompanyCode</th>
-                    <th class="px-4 py-2 border">_Status</th>
+                    <th class="px-4 py-2 border">Status</th>
                     <th class="px-4 py-2 border">IsDeleted</th>
                     <th class="px-4 py-2 border">Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($users as $user)
+                @forelse ($users as $user)
                     <tr>
                         <td class="px-4 py-2 border">{{ $loop->iteration }}</td>
                         <td class="px-4 py-2 border">{{ $user->name }}</td>
@@ -50,35 +50,43 @@
                         <td class="px-4 py-2 border">{{ $user->LastUpdateBy }}</td>
                         <td class="px-4 py-2 border">{{ $user->LastUpdateDate }}</td>
                         <td class="px-4 py-2 border">{{ $user->CompanyCode }}</td>
-                        <td class="px-4 py-2 border">{{ $user->_Status }}</td>
+                        <td class="px-4 py-2 border">{{ $user->Status }}</td>
                         <td class="px-4 py-2 border">{{ $user->IsDeleted }}</td>
                         <td class="px-4 py-2 border">
                             <div class="flex justify-center-safe gap-4">
-                                <div class="">
-
+                                <div class="center">
                                     <a href="{{ route('admin.member.edit', $user->id) }}" class="bg-cyan-600 px-4 py-2 rounded hover:bg-cyan-300">Edit</a>
                                 </div>
-                                <div class="">
-                                    <form action="{{ route('admin.member.destroy', $user->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="bg-red-600 px-4 py-2 rounded hover:bg-red-300">Hapus</button>
-                                    </form>
-
+                                <div class="center">
+                                    
+                                 <button  onclick="showConfirmModal({{ $user->id }})" class="bg-red-600 px-4 py-2 rounded hover:bg-red-300">Hapus</button>
+                                
                                 </div>
 
 
                             </div>
                         </td>
                     </tr>
-                @endforeach
+                    @empty
+                        <tr>
+                            <td class="border text-center px-4 py-2" colspan="13">Not found</td>
+                            
+                        </tr>
+                    
+                @endforelse
             </tbody>
         </table>
         <div class="p-4">
             {{ $users->links() }}
         </div>
+        <form id="deleteForm"  class="hidden" method="POST">
+        @csrf
+        @method('DELETE')
+        </form>
+    </div>
+    <x-popup-delete></x-popup-delete>
     
-</div>
+    
 @if(session('success'))
 <x-pop-up></x-pop-up>
 
@@ -103,7 +111,28 @@
     window.onload = function () {
       showAlert(); // panggil hanya jika ada session success
     };
+
+
   </script>
 @endif
+<script>
+    
+    let deleteUserId = null;
+
+    function showConfirmModal(userId) {
+        deleteUserId = userId;
+        document.getElementById('confirmModal').classList.remove('hidden');
+    }
+
+    function hideConfirmModal() {
+        document.getElementById('confirmModal').classList.add('hidden');
+    }
+
+    function submitDelete() {
+    const form = document.getElementById('deleteForm');
+    form.action = '{{ url("admin/member") }}/' + deleteUserId;
+    form.submit();
+}
+</script>
 
 @endsection

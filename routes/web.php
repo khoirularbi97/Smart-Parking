@@ -78,7 +78,7 @@ Route::middleware('auth','admin')->group(function () {
     Route::get('/admin/transaksi/{user}/edit', [TransaksiController::class, 'edit'])->name('admin.transaksi.edit');
     Route::post('store/transaksi', [TransaksiController::class, 'store'])->name('store.transaksi');
     Route::put('/admin/transaksi/{user}', [TransaksiController::class, 'update'])->name('admin.transaksi.update');
-    Route::delete('/admin//{id}', [TransaksiController::class, 'destroy'])->name('admin.transaksi.destroy');
+    Route::delete('/admin/transaksi/{id}', [TransaksiController::class, 'destroy'])->name('admin.transaksi.destroy');
     Route::get('/parkir_masuk', [ParkirMasukController::class, 'index'])->name('parkir.masuk');
     Route::delete('/parkir_masuk//{id}', [ParkirMasukController::class, 'destroy'])->name('admin.parkir_masuk.destroy');
    

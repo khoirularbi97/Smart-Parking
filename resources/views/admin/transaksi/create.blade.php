@@ -19,31 +19,48 @@
                 <form method="POST" action="{{ route('store.transaksi') }}">
                     @csrf
 
-                    <!-- Nama -->
+                   <!-- Pilih User -->
+                        <div class="mb-4">
+                            <x-input-label for="users_id" :value="__('Pilih User')" />
+                            <select id="users_id" type="text" required name="users_id" class="block mt-2 w-full border-gray-300 rounded-md shadow-sm">
+                                <option class="mt-1 mb-1" >-- Pilih User --</option>
+                                @foreach($users as $user)
+                                    <option 
+                                        value="{{ $user->users_id }}" 
+                                        data-uid="{{ $user->uid }}" 
+                                        data-nama="{{ $user->name }}">
+                                        {{ $user->users_id }} - {{ $user->uid }} - {{ $user->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <x-input-error :messages="$errors->get('users_id')" class="mt-2" />
+                        </div>
+                    <!-- UID (readonly) -->
                     <div class="mb-4">
-                        <x-input-label for="userid" :value="__('UserID')" />
-                        <x-text-input id="userid" class="block mt-1 w-full" type="text" name="userid" required autofocus />
-                        <x-input-error :messages="$errors->get('userid')" class="mt-2" />
+                        <x-input-label for="uid" :value="__('UID')" />
+                        <x-text-input id="uid" class="block mt-1 w-full" type="text" name="uid" readonly />
                     </div>
 
-                    <!-- Email -->
+                    <!-- Nama (readonly) -->
                     <div class="mb-4">
-                        <x-input-label for="memberid" :value="__('MemberID')" />
-                        <x-text-input id="memberid" class="block mt-1 w-full" type="text" name="memberid"  required />
-                        <x-input-error :messages="$errors->get('memberid')" class="mt-2" />
+                        <x-input-label for="nama" :value="__('Nama')" />
+                        <x-text-input id="nama" class="block mt-1 w-full" type="text" name="nama" readonly />
                     </div>
 
-                    <!-- Password -->
+                    <!-- Jenis-->
                     <div class="mb-4">
-                        <x-input-label for="jenis" :value="__('Jenis')" />
-                        <x-text-input id="jenis" class="block mt-1 w-full" type="text" name="jenis" required />
+                        <label for="jenis" class="block text-sm font-medium text-gray-700">Pilih Jenis</label>
+                        <select type="text" required name="jenis" id="jenis" class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                            <option value="">-- Pilih Jenis --</option>
+                            <option value="debit">Debit</option>
+                            <option value="kredit">Kredit</option>
+                        </select>
                         <x-input-error :messages="$errors->get('jenis')" class="mt-2" />
                     </div>
-
-                    <!-- UID -->
+                    <!-- Jumlah -->
                     <div class="mb-4">
                         <x-input-label for="jumlah" :value="__('Jumlah')" />
-                        <x-text-input id="jumlah" class="block mt-1 w-full" type="text" name="jumlah"  required />
+                        <x-text-input id="jumlah" class="block mt-1 w-full" type="number" name="jumlah"  required />
                         <x-input-error :messages="$errors->get('jumlah')" class="mt-2" />
                     </div>
 
@@ -54,6 +71,15 @@
                         </x-primary-button>
                     </div>
                 </form>
+                @push('scripts')
+                <script>
+                document.getElementById('users_id').addEventListener('change', function () {
+                    let selected = this.options[this.selectedIndex];
+                    document.getElementById('uid').value = selected.dataset.uid || '';
+                    document.getElementById('nama').value = selected.dataset.nama || '';
+                });
+                </script>
+                @endpush
             </div>
         </div>
     </div>

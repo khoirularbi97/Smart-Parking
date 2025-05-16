@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class MemberController extends Controller
 {   public function index(Request $request) {
@@ -30,21 +32,28 @@ class MemberController extends Controller
     }
 // Menyimpan user baru
 public function store(Request $request)
-{
+{   
+    $user = Auth::user();
     $request->validate([
         'name' => 'required|string|max:255',
         'email' => 'required|email|unique:users',
         'password' => 'required|string|min:6',
-        'uid' => 'required|string|min:6',
-        'saldo' => 'required|string'
-    ]);
+        'uid' => 'required|string',
+        'saldo' => 'required|numeric',
+   ]);
 
     \App\Models\User::create([
         'name' => $request->name,
         'email' => $request->email,
         'password' => bcrypt($request->password),
         'uid' => $request->uid,
-        'saldo' => $request->saldo
+        'saldo' => $request->saldo,
+        'CreatedBy' => $user ? $user->name : 'system',
+        'CompanyCode' => 'MB01',
+        'Status' => 0 , 
+        'IsDeleted' => 1,
+        
+        
     ]);
 
     return redirect()->route('admin.member')->with('success', 'Pengguna berhasil ditambahkan.');  
@@ -71,14 +80,19 @@ public function update(Request $request, $id)
         'name' => 'required|string|max:255',
         'email' => 'required|email',
         'uid' => 'required|string|max:255',
-        'saldo' => 'required|string|max:255',
+        'saldo' => 'required|numeric',
         'password' => 'nullable|string|min:6',
     ]);
-
+    $userUpdated = Auth::user();
     $user = User::findOrFail($id);
+    $user1 =$user->name;
     $user->name = $request->name;
     $user->email = $request->email;
     $user->uid = $request->uid;
+    $user->saldo = $request->saldo;
+    $user->LastUpdateBy = $userUpdated ? $userUpdated->name : 'system';
+    $user->status = 1 ;
+    $user->LastUpdateDate = now() ;
     $user->saldo = $request->saldo;
 
     if ($request->filled('password')) {
@@ -87,7 +101,7 @@ public function update(Request $request, $id)
 
     $user->save();
 
-    return redirect()->route('admin.member')->with('success', 'Data user berhasil diperbarui!');
+    return redirect()->route('admin.member')->with('success', 'Data user (' . $user1 . ' ) berhasil diperbarui!');
 }
 
 
@@ -97,9 +111,10 @@ public function update(Request $request, $id)
     public function destroy($id)
 {
     $user = User::findOrFail($id);
+    $user1 =$user->name;
     $user->delete();
 
-    return redirect()->route('admin.member')->with('success', 'User berhasil dihapus.');
+    return redirect()->route('admin.member')->with('success', 'User (' . $user1 . ' )berhasil dihapus.');
 }
 
 }

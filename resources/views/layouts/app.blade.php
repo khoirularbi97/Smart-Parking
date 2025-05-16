@@ -42,6 +42,7 @@
                     @include('admin.footer')
                 </div>
             </div>
+            @stack('scripts')
     </body>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
