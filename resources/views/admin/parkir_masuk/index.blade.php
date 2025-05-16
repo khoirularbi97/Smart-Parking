@@ -61,11 +61,9 @@
                                     <a href="" class="bg-cyan-600 px-4 py-2 rounded hover:bg-cyan-300">Edit</a>
                                 </div>
                                 <div class="mb-2">
-                                    <form action="{{ route('admin.parkir_masuk.destroy', $masuk->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="bg-red-600 px-4 py-2 rounded hover:bg-red-300">Hapus</button>
-                                    </form>
+                                    
+                                        <button onclick="showConfirmModal({{ $masuk->id }})" class="bg-red-600 px-4 py-2 rounded hover:bg-red-300">Hapus</button>
+                                  
 
                                 </div>
 
@@ -86,8 +84,14 @@
         <div class="p-4">
             {{ $parkir_masuk->links() }}
         </div>
+        <form id="deleteForm"  class="hidden" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                          </form>
     
 </div>
+<x-popup-delete></x-popup-delete>
+    
 @if(session('success'))
 <x-pop-up></x-pop-up>
 
@@ -114,5 +118,23 @@
     };
   </script>
 @endif
+<script>
+    
+    let deleteUserId = null;
 
+    function showConfirmModal(userId) {
+        deleteUserId = userId;
+        document.getElementById('confirmModal').classList.remove('hidden');
+    }
+
+    function hideConfirmModal() {
+        document.getElementById('confirmModal').classList.add('hidden');
+    }
+
+    function submitDelete() {
+    const form = document.getElementById('deleteForm');
+    form.action = '{{ url("admin/parkir_masuk") }}/' + deleteUserId;
+    form.submit();
+}
+</script>
 @endsection
