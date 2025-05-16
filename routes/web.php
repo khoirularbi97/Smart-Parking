@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ParkirMasukController;
+use App\Http\Controllers\ProfileUserController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\UserController;
 use App\Models\Member;
 use App\Models\ParkirMasuk;
 use App\Models\Transaksi;
@@ -60,15 +62,16 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/user', [ProfileUserController::class, 'edit'])->name('profile_user.edit');
     
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('admin/notfound', [AdminController::class, 'index'])->name('admin.notfound');
+    Route::get('user/notfound', [UserController::class, 'index'])->name('user.notfound');
 });
 Route::middleware('auth','admin')->group(function () {
     Route::get('/admin/member/{user}/edit', [MemberController::class, 'edit'])->name('admin.member.edit');
     Route::put('/admin/member/{user}', [MemberController::class, 'update'])->name('admin.member.update');
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('store', [MemberController::class, 'store'])->name('store');
     Route::get('/member', [MemberController::class, 'index'])->name('admin.member');
     Route::get('admin/member/create', [MemberController::class, 'create'])->name('admin/member/create');

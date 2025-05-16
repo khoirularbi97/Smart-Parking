@@ -18,7 +18,7 @@ class Admin
     public function handle(Request $request, Closure $next): Response
     {
         if (FacadesAuth::user()->role != 'admin'){
-            return redirect('admin/notfound');
+            return redirect('user/notfound');
         }
         return $next($request);
     }

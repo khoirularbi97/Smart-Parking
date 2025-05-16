@@ -7,7 +7,7 @@ class AdminController extends Controller
 {
     public function index()
     {
-        return view('admin.notfound');
+        return view('user.notfound');
     }
 }
 
