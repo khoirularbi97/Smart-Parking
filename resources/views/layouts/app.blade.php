@@ -20,6 +20,9 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://unpkg.com/lucide@latest"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+       
+
     @livewireStyles
     </head>
     <body class="font-sans antialiased">
@@ -71,20 +74,7 @@
         dropdown.classList.toggle("hidden");
     }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-    var ctx = document.getElementById('chartTransaksi').getContext('2d');
-    var chart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Debit', 'Top Up'],
-            datasets: [{
-                data: [3, 3],
-                backgroundColor: ['#007bff', '#343a40']
-            }]
-        }
-    });
-    </script>
+    
 
    
 </html>
