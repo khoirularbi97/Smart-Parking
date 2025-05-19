@@ -71,19 +71,24 @@ Route::middleware('auth')->group(function () {
     Route::get('user/notfound', [UserController::class, 'index'])->name('user.notfound');
 });
 Route::middleware('auth','admin')->group(function () {
-    Route::get('/admin/member/{user}/edit', [MemberController::class, 'edit'])->name('admin.member.edit');
-    Route::put('/admin/member/{user}', [MemberController::class, 'update'])->name('admin.member.update');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    //route member
     Route::post('store', [MemberController::class, 'store'])->name('store');
+    Route::put('/admin/member/{user}', [MemberController::class, 'update'])->name('admin.member.update');
+    Route::get('/admin/member/{user}/edit', [MemberController::class, 'edit'])->name('admin.member.edit');
     Route::get('/member', [MemberController::class, 'index'])->name('admin.member');
     Route::get('admin/member/create', [MemberController::class, 'create'])->name('admin/member/create');
     Route::delete('/admin/member/{id}', [MemberController::class, 'destroy'])->name('admin.member.destroy');
+    //route transaksi
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi');
     Route::get('admin/transaksi/create', [TransaksiController::class, 'create'])->name('admin/transaksi/create');
     Route::get('/admin/transaksi/{user}/edit', [TransaksiController::class, 'edit'])->name('admin.transaksi.edit');
     Route::post('store/transaksi', [TransaksiController::class, 'store'])->name('store.transaksi');
-    Route::put('/admin/transaksi/{user}', [TransaksiController::class, 'update'])->name('admin.transaksi.update');
+    Route::put('/admin/transaksi/{id}', [TransaksiController::class, 'update'])->name('admin.transaksi.update');
     Route::delete('/admin/transaksi/{id}', [TransaksiController::class, 'destroy'])->name('admin.transaksi.destroy');
+
+    //route Parkir masuk
     Route::get('/parkir_masuk', [ParkirMasukController::class, 'index'])->name('parkir.masuk');
     Route::delete('admin/parkir_masuk/{id}', [ParkirMasukController::class, 'destroy'])->name('admin.parkir_masuk.destroy');
    
