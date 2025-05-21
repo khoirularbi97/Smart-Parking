@@ -33,7 +33,7 @@ class TopupController extends Controller
 
         $params = [
             'transaction_details' => [
-                'order_id' => $orderId,
+                'order_id' => $topup->order_id,
                 'gross_amount' => (int) $amount,
             ],
             'customer_details' => [
