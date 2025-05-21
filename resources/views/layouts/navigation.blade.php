@@ -79,6 +79,15 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('transaksi')" :active="request()->routeIs('transaksi')">
+                        {{ __('Transaksi') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('parkir.masuk')" :active="request()->routeIs('parkir.masuk')">
+                {{ __('Parkir Masuk') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.member')" :active="request()->routeIs('admin.member')">
+                {{ __('Register') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->

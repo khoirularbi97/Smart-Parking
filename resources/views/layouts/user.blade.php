@@ -38,6 +38,18 @@
         
                     <!-- Footer -->
                     @include('admin.footer')
+                    {{-- Bottom Nav --}}
+                    <nav class="fixed bottom-0 inset-x-0 bg-white shadow-md flex justify-around items-center py-2">
+                    <a href="{{ route('user.dashboard') }}" class="text-center">
+                        <i class="fas fa-home text-xl {{ request()->is('user/dashboard') ? 'text-blue-500' : 'bg-transparent'}} "></i><br><span class="text-xs">Home</span>
+                    </a>
+                    <a href="{{ route('topup.form') }}" class="text-center">
+                        <i class="fas fa-wallet text-xl  {{ request()->is('/topup') ? 'text-blue-500' : 'bg-transparent'}}"></i><br><span class="text-xs">Topup</span>
+                    </a>
+                    <a href="{{ route('profile_user.edit') }}" class="text-center">
+                        <i class="fas fa-user text-xl  {{ request()->is('profile/user') ? 'text-blue-500' : 'bg-transparent'}}"></i><br><span class="text-xs">Profil</span>
+                    </a>
+                </nav>
                 </div>
             </div>
             @stack('scripts')
@@ -69,20 +81,7 @@
         dropdown.classList.toggle("hidden");
     }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-    var ctx = document.getElementById('chartTransaksi').getContext('2d');
-    var chart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Debit', 'Top Up'],
-            datasets: [{
-                data: [3, 3],
-                backgroundColor: ['#007bff', '#343a40']
-            }]
-        }
-    });
-    </script>
+    
 
    
 </html>

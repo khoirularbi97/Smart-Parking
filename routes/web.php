@@ -14,6 +14,7 @@ use App\Http\Controllers\ParkirMasukController;
 use App\Http\Controllers\ProfileUserController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TopupController;
 use App\Models\Member;
 use App\Models\ParkirMasuk;
 use App\Models\Transaksi;
@@ -25,20 +26,18 @@ Route::get('/auth/google', function () {
 Route::get('/auth/google/callback', function () {
     $googleUser = Socialite::driver('google')->stateless()->user();
 
-    $user = User::updateOrCreate([
-        'email' => $googleUser->getEmail(),
-    ], [
-        'name' => $googleUser->getName(),
-        'uid' => '123456',
-        'saldo' =>0,
-        'google_id' => $googleUser->getId(),
-        'avatar' => $googleUser->getAvatar(),
-        'password' => bcrypt(Str::random(24)), // Optional, bisa random password
-    ]);
+        // Cek apakah user sudah ada berdasarkan email
+        $user = User::where('email', $googleUser->getEmail())->first();
 
-    Auth::login($user);
+        if ($user) {
+            // Login langsung jika user sudah terdaftar
+            Auth::login($user);
+        } else {
+           return redirect('login')->with('error', 'Email ini belum terdaftar.');
 
-    return redirect('/dashboard');
+        }
+
+        return redirect('/dashboard'); // arahkan setelah login
 
 });
 Route::get('/statistik-transaksi', function () {
@@ -68,7 +67,16 @@ Route::middleware('auth')->group(function () {
     
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('user/notfound', [UserController::class, 'index'])->name('user.notfound');
+    Route::get('user/dashboard', [UserController::class, 'index'])->name('user.dashboard');
+    
+    Route::get('/topup', function () {
+    return view('user.topup.form');
+    })->name('topup.form');
+
+    Route::post('/topup/process', [TopupController::class, 'process'])->name('topup.process');
+    Route::post('/midtrans/callback', [TopupController::class, 'callback']);
+
+
 });
 Route::middleware('auth','admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -91,6 +99,11 @@ Route::middleware('auth','admin')->group(function () {
     //route Parkir masuk
     Route::get('/parkir_masuk', [ParkirMasukController::class, 'index'])->name('parkir.masuk');
     Route::delete('admin/parkir_masuk/{id}', [ParkirMasukController::class, 'destroy'])->name('admin.parkir_masuk.destroy');
+
+    //topup
+    // Route::post('/topup', [App\Http\Controllers\TopupController::class, 'process'])->name('topup.process');
+    // Route::post('/topup/callback', [App\Http\Controllers\TopupController::class, 'callback']);
+
    
 });
 

@@ -3,20 +3,28 @@
 @section('title', 'Registrasi')
 
 @section('content')
+<x-page-header
+    title="Update Member"
+    :breadcrumbs="[
+        ['label' => 'Home', 'url' => '/member'],
+        ['label' => 'Update Member']
+    ]"
+/>
+
 @csrf
 @if(isset($user))
     @method('PUT')
 @endif
-<h2 class="text-2xl font-bold">Update Member</h2>
 
-<div class="p-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
-    <div class="py-12">
+<div class="p-6 grid grid-cols-1 lg:grid-cols-2 gap-4 ">
+    <div class="py-1">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <h1 class="text-2xl text-center font-bold mb-6"></h1>
                 <form method="POST" action="{{ route('admin.member.update', $user->id) }}">
                     @csrf
                     @method('PUT')
-
+                        
                     <!-- Nama -->
                     <div class="mb-4">
                         <x-input-label for="name" :value="__('Nama')" />

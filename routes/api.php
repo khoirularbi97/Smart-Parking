@@ -7,6 +7,7 @@ use App\Http\Controllers\ParkirKeluarController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\LogNotifikasiController;
 use App\Http\Controllers\RiwayatParkirController;
+use App\Http\Controllers\MidtransController;
 
 Route::apiResource('kendaraan', KendaraanController::class);
 Route::apiResource('parkir-masuk', ParkirMasukController::class);
@@ -33,3 +34,6 @@ Route::post('/payment', function (Request $request) {
 
     return response()->json(['status' => $status]);
 });
+// routes/api.php
+Route::post('/midtrans/notification', [MidtransController::class, 'notificationHandler']);
+

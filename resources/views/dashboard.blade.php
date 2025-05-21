@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    
+<div class="min-h-screen bg-gray-100">
     <h2 class="text-2xl font-bold">Dashboard</h2>
 <!-- Navbar -->
 
@@ -74,7 +74,7 @@
                                 <th class="border px-4 py-2">UID</th>
                                 <th class="border px-4 py-2">Nama</th>
                                 <th class="border px-4 py-2">Saldo</th>
-                                <th class="border px-4 py-2">Aksi</th>
+                                <th class="border px-4 py-2">Top Up</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -127,8 +127,8 @@
             </div>
         </div>
     </div>
-
-    <div class="transition-transform duration-300 hover:scale-105">
+</div>
+    <div class=" mx-auto sm:px-6 lg:px-8 mt-6 transition-transform duration-300 hover:scale-105">
         <div class="bg-white shadow-md rounded-lg p-4">
             <div class="my-6">
                 <h3 class="text-xl font-semibold  mb-4">Grafik Transaksi Harian</h3>
@@ -141,9 +141,9 @@
 
     </div>
 
-
-
 </div>
+
+
 @push('scripts')
 <script>
             const ctx1 = document.getElementById('chartTransaksiHarian').getContext('2d');

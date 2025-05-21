@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Transaksi;
+use App\Models\RiwayatParkir;
 
 
 class User extends Authenticatable
@@ -38,11 +39,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(Kendaraan::class);
     }
+    public function histories() {
+    return $this->hasMany(\App\Models\RiwayatParkir::class, 'users_id');
+    }   
     
-    public function transaksis()
+  
+public function transaksis()
 {
-    return $this->hasMany(\App\Models\Transaksi::class, 'users_id');
+    return $this->hasMany(Transaksi::class, 'users_id');
 }
+
     
     /**
      * The attributes that should be hidden for serialization.

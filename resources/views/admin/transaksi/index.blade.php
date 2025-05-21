@@ -3,11 +3,14 @@
 @section('title', 'Transaksi')
 
 @section('content')
-
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold">Transaksi</h1>
+<x-page-header2
+    title="Transaksi"
+    :breadcrumbs="[
+        ['label' => 'Home', 'url' => '/transaksi'],
         
-    </div>
+    ]"
+/>
+
     <div class="p-6 grid grid-cols-1 gap-4">
 
 
@@ -18,7 +21,7 @@
                 <button class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">Cari</button>
             </form>
             
-            <a href="{{ route('admin/transaksi/create') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Tambah Transaksi</a>
+            <a href="{{ route('admin/transaksi/create') }}" class="bg-cyan-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Tambah Transaksi</a>
             </div>
             <div class="table-responsive">
             <table class="relative min-w-full">
@@ -46,15 +49,21 @@
                             <td class="px-4 py-2 border">{{ $loop->iteration }}</td>
                             <td class="px-4 py-2 border">
                                 <div class="flex justify-center-safe gap-4">
-                                    <div class="">
+                                    <div class="center">
 
-                                    <button onclick="window.location.href='{{ route('admin.transaksi.edit', $transaksi->id) }}'" class="bg-cyan-600 px-4 py-2 rounded hover:bg-cyan-300">Edit</button>
+                                    <button onclick="window.location.href='{{ route('admin.transaksi.edit', $transaksi->id) }}'" class="bg-gray-100 px-4 py-2 rounded hover:bg-cyan-300"><i data-lucide="square-pen"></i></button>
                                     </div>
-                                    <div class="">
-                                            <button onclick="showConfirmModal({{ $transaksi->id }})" class="bg-red-600 px-4 py-2 rounded hover:bg-red-300">Hapus</button>
+                                    <div class="center">
+                                            <button onclick="showConfirmModal({{ $transaksi->id }})" class="bg-gray-100 px-4 py-2 rounded hover:bg-red-300"><i data-lucide="trash-2"></i></button>
                                     
 
                                     </div>
+                                    <div class="center">
+                                    
+                                    <button  onclick="" class="bg-gray-100 px-4 py-2 rounded hover:bg-yellow-300"><i data-lucide="printer"></i></button>
+                                    
+                                    </div>
+
 
 
                                 </div>
