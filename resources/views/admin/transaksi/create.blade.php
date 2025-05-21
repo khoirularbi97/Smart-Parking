@@ -3,19 +3,23 @@
 @section('title', 'Transaksi')
 
 @section('content')
+<x-page-header2
+    title="Tambah Transaksi"
+    :breadcrumbs="[
+        ['label' => 'Home', 'url' => '/transaksi'],
+        ['label' => 'Tambah Transaksi']
+    ]"
+/>
 @csrf
 @if(isset($user))
     @method('PUT')
 @endif
-<div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold">Tambah Transaksi</h1>
-
-</div>
 
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <h1 class="text-2xl text-center font-bold mb-6"></h1>
                 <form method="POST" action="{{ route('store.transaksi') }}">
                     @csrf
 

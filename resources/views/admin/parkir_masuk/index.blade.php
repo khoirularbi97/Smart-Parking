@@ -24,7 +24,7 @@
               <thead>
                   <tr class="bg-gray-100">
                       <th class="px-4 py-2 border">No.</th>
-                      <th class="px-4 py-2 border w-32">Aksi</th>
+                      <th class="px-4 py-2 border ">Aksi</th>
                       <th class="px-4 py-2 border">UserID</th>
                  
                       <th class="px-4 py-2 border">Status</th>
@@ -43,16 +43,21 @@
                       <td class="px-4 py-2 border">{{ $loop->iteration }}</td>
                       <td class="px-4 py-2 border ">
                           <div class="flex justify-center-safe gap-4">
-                              <div class="mb-2">
+                              <div class="center">
       
-                                  <button onclick="" class="bg-cyan-600 px-4 py-2 rounded hover:bg-cyan-300">Edit</button>
+                                  <button onclick="" class="bg-gray-100 px-4 py-2 rounded hover:bg-cyan-300"><i data-lucide="square-pen"></i></button>
                               </div>
-                              <div class="mb-2">
+                              <div class="center">
                                   
-                                      <button onclick="showConfirmModal({{ $masuk->id }})" class="bg-red-600 px-4 py-2 rounded hover:bg-red-300">Hapus</button>
+                                      <button onclick="showConfirmModal({{ $masuk->id }})" class="bg-gray-100 px-4 py-2 rounded hover:bg-red-300"><i data-lucide="trash-2"></i></button>
                               
       
                               </div>
+                              <div class="center">
+                                    
+                                    <button  onclick="" class="bg-gray-100 px-4 py-2 rounded hover:bg-yellow-300"><i data-lucide="printer"></i></button>
+                                    
+                                    </div>
       
       
                           </div>
@@ -69,7 +74,7 @@
                           <td class="px-4 py-2 border">{{ $masuk->IsDeleted }}</td>
                           <td class="px-4 py-2 border">
                            @if (Str::startsWith($masuk->image_base64, '/9j')) {{-- Cek awalan base64 (JPEG) --}}
-                              <img src="data:image/jpeg;base64,{{ $masuk->image_base64 }}" alt="Gambar" class="h-16 w-auto rounded shadow">
+                              <img src="data:image/jpeg;base64,{{ $masuk->image_base64 }}" alt="Gambar" class="h-30 w-auto rounded shadow">
                           @else
                               <img src="{{ $masuk->image_path }}" alt="Gambar">
                           @endif

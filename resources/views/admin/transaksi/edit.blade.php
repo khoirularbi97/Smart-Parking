@@ -3,15 +3,22 @@
 @section('title', 'Transaksi')
 
 @section('content')
-<div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold">Edit Transaksi</h1>
 
-</div>
+    <x-page-header 
+        title="Update Transaksi"
+        :breadcrumbs="[
+            ['label' => 'Home', 'url' => '/transaksi'],
+            ['label' => 'Update Transaksi']
+        ]"
+    />
+
+
 
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <h1 class="text-2xl text-center font-bold mb-6"></h1>
                <form method="POST" action="{{ route('admin.transaksi.update', $transaksi->id) }}">
                    @csrf
                     @method('PUT') <!-- Penting! -->

@@ -51,4 +51,32 @@
             </x-primary-button>
         </div>
     </form>
+    @if(session('error'))
+<x-error></x-error>
+
+<script>
+    // Fungsi untuk menampilkan alert
+    function showAlert() {
+      const alert = document.getElementById('errorAlert');
+      alert.classList.remove('hidden');
+  
+      // Otomatis hilang setelah 3 detik
+      setTimeout(() => {
+        alert.classList.add('hidden');
+      }, 3000);
+    }
+  
+    // Fungsi untuk menutup manual
+    function closeAlert() {
+      document.getElementById('errorAlert').classList.add('hidden');
+    }
+  
+    // Contoh pemanggilan saat halaman dimuat (bisa ubah sesuai kebutuhan)
+    window.onload = function () {
+      showAlert(); // panggil hanya jika ada session success
+    };
+
+
+  </script>
+@endif
 </x-guest-layout>

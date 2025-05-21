@@ -6,8 +6,8 @@
 <x-page-header
     title="Registrasi"
     :breadcrumbs="[
-        ['label' => 'Home', 'url' => '/dashboard'],
-        ['label' => 'Registrasi']
+        ['label' => 'Home', 'url' => '/member'],
+     
     ]"
 />
 
@@ -22,7 +22,7 @@
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama/email..." class="border p-2 rounded w-1/3">
                 <button class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">Cari</button>
             </form>
-        <a href="{{ route('admin/member/create') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Tambah Member Baru</a>
+        <a href="{{ route('admin/member/create') }}" class="bg-cyan-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Tambah Member Baru</a>
         </div>
         <div class="table-responsive">
         <table class="min-w-full ">
@@ -51,11 +51,16 @@
                         <td class="px-4 py-2 border">
                             <div class="flex justify-center-safe gap-4">
                                 <div class="center">
-                                    <button onclick="window.location='{{ route('admin.member.edit', $user->id) }}'" class="bg-cyan-600 px-4 py-2 rounded hover:bg-cyan-300">Edit</button>
+                                    <button onclick="window.location='{{ route('admin.member.edit', $user->id) }}'" class="bg-gray-100 px-4 py-2 rounded hover:bg-cyan-300"><i data-lucide="square-pen"></i></button>
                                 </div>
                                 <div class="center">
                                     
-                                 <button  onclick="showConfirmModal({{ $user->id }})" class="bg-red-600 px-4 py-2 rounded hover:bg-red-300">Hapus</button>
+                                 <button  onclick="showConfirmModal({{ $user->id }})" class="bg-gray-100 px-4 py-2 rounded hover:bg-red-300"><i data-lucide="trash-2"></i></button>
+                                
+                                </div>
+                                <div class="center">
+                                    
+                                 <button  onclick="" class="bg-gray-100 px-4 py-2 rounded hover:bg-yellow-300"><i data-lucide="printer"></i></button>
                                 
                                 </div>
 
