@@ -18,6 +18,7 @@ use App\Http\Controllers\TopupController;
 use App\Models\Member;
 use App\Models\ParkirMasuk;
 use App\Models\Transaksi;
+use App\Http\Controllers\MidtransController;
 
 Route::get('/auth/google', function () {
     return Socialite::driver('google')->redirect();
@@ -74,7 +75,10 @@ Route::middleware('auth')->group(function () {
     })->name('topup.form');
 
     Route::post('/topup/process', [TopupController::class, 'process'])->name('topup.process');
-    Route::post('/midtrans/callback', [TopupController::class, 'callback']);
+    
+
+// Route::post('/midtrans/notification', [MidtransController::class, 'notificationHandler'])->name('midtrans.notification');
+
 
 
 });
