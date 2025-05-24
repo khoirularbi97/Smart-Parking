@@ -27,8 +27,8 @@ class MidtransController extends Controller
             if ($fraud == 'challenge') {
                 $topup->status = 'challenge';
             } else {
-                $topup->status = 'success';
-                $topup->user->increment('balance', $topup->amount);
+                $topup->status = 'accept';
+                $topup->user->increment('amount', $topup->amount);
             }
         } elseif ($transaction == 'settlement') {
             $topup->status = 'success';
@@ -43,4 +43,5 @@ class MidtransController extends Controller
 
         return response()->json(['message' => 'Notification processed']);
     }
-}
+	}
+	

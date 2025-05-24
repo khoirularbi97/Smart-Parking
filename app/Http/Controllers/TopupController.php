@@ -57,7 +57,7 @@ class TopupController extends Controller
         $notif = new \Midtrans\Notification();
         $topup = Topup::where('order_id', $notif->order_id)->first();
 
-        if ($notif->transaction_status == 'settlement') {
+        if ($notif->transaction_status == 'capture') {
             $topup->status = 'success';
             $topup->save();
 
