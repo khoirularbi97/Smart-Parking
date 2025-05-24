@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Midtrans\Snap;
 use Midtrans\Config;
 use App\Models\Topup;
+use Midtrans\Notification;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,10 +13,10 @@ class TopupController extends Controller
 {
     public function __construct()
     {
-        Config::$serverKey = config('midtrans.server_key');
-        Config::$isProduction = config('midtrans.is_production');
-        Config::$isSanitized = config('midtrans.sanitized');
-        Config::$is3ds = config('midtrans.3ds');
+        Config::$serverKey = config('midtrans.serverKey');
+        Config::$isProduction = config('midtrans.isProduction');
+        Config::$isSanitized = config('midtrans.isSanitized');
+        Config::$is3ds = config('midtrans.is3ds');
     }
 
     public function process(Request $request)
@@ -52,23 +53,41 @@ class TopupController extends Controller
 
     }
 
-    public function callback(Request $request)
-    {
-        $notif = new \Midtrans\Notification();
-        $topup = Topup::where('order_id', $notif->order_id)->first();
+        public function callback(Request $request)
+        {
+            
+        // Ambil notifikasi pembayaran dari Midtrans
+        $notif = new Notification();
+        $transaction = $notif->transaction_status;
+        $orderId = $notif->order_id;
+        $fraud = $notif->fraud_status ?? null;
 
-        if ($notif->transaction_status == 'settlement') {
-            $topup->status = 'success';
-            $topup->save();
+        $topup = Topup::where('order_id', $orderId)->first();
 
-            // Tambah saldo user
-            $topup->user->increment('saldo', $topup->amount);
-
-        } else if ($notif->transaction_status == 'expire' || $notif->transaction_status == 'cancel') {
-            $topup->status = 'failed';
-            $topup->save();
+        if (!$topup) {
+            return response()->json(['message' => 'Topup not found'], 404);
         }
 
-        return response()->json(['message' => 'Callback received']);
+        if ($transaction == 'capture') {
+            if ($fraud == 'challenge') {
+                $topup->status = 'challenge';
+            } else {
+                $topup->status = 'success';
+                $topup->user->increment('balance', $topup->amount);
+            }
+        } elseif ($transaction == 'settlement') {
+            $topup->status = 'success';
+            $topup->user->increment('balance', $topup->amount);
+        } elseif ($transaction == 'pending') {
+            $topup->status = 'pending';
+        } elseif (in_array($transaction, ['deny', 'expire', 'cancel'])) {
+            $topup->status = $transaction;
+        }
+
+        $topup->save();
+
+        return response()->json(['message' => 'Notification processed']);
     }
+           
+
 }
