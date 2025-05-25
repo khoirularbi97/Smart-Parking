@@ -6,16 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Topup extends Model
 {   protected $fillable = [
-    'user_id',
+    'users_id',
     'amount',
+    'name',
+    'method',
     'status',
-    'order_id' // jika ada kolom status juga
-    // tambahkan lainnya jika perlu
+    'order_id' 
 ];
 
    public function user()
 {
     return $this->belongsTo(User::class);
 }
+
+// Topup.php
+public $timestamps = true; // default-nya true, jadi cukup hilangkan manual set created_at/updated_at
+
 
 }

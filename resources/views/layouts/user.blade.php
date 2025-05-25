@@ -32,14 +32,26 @@
                     @include('admin.header')
         
                     <!-- Main content -->
-                    <main class="flex-1 p-6">
+                    <main class="flex-1  bg-gradient-to-br from-purple-200 to-indigo-200 p-6">
                         @yield('content')
                     </main>
         
-                    <!-- Footer -->
-                    @include('admin.footer')
-                    {{-- Bottom Nav --}}
-                    <nav class="fixed bottom-0 inset-x-0 bg-white shadow-md flex justify-around items-center py-2">
+                    
+  <nav class="bg-white border-t border-gray-200 shadow-inner fixed bottom-0 w-full flex justify-around py-2">
+    <button onclick="window.location='{{ route('user.dashboard') }}'" class="flex flex-col items-center text-sm text-gray-600 hover:text-purple-600">
+      <i data-lucide="home" class="w-5 h-5 mb-1 {{ request()->is('user/dashboard') ? 'text-purple-600' : 'bg-transparent'}}"></i>
+      Home
+    </button>
+    <button onclick="window.location='{{ route('topup.form') }}'" class="flex flex-col items-center text-sm text-gray-600 font-semibold hover:text-purple-600">
+      <i data-lucide="wallet" class="w-5 h-5 mb-1 {{ request()->is('/topup') ? 'text-purple-600' : 'bg-transparent'}}"></i>
+      Topup
+    </button>
+    <button onclick="window.location='{{ route('profile_user.edit') }}'" class="flex flex-col items-center text-sm text-gray-600 hover:text-purple-600">
+      <i data-lucide="user" class="w-5 h-5 mb-1 {{ request()->is('/profile/user') ? 'text-purple-600' : 'bg-transparent'}}"></i>
+      Profil
+    </button>
+  </nav>
+                    {{-- <nav class="fixed bottom-0 inset-x-0 bg-white shadow-md flex justify-around items-center py-2">
                     <a href="{{ route('user.dashboard') }}" class="text-center">
                         <i class="fas fa-home text-xl {{ request()->is('user/dashboard') ? 'text-blue-500' : 'bg-transparent'}} "></i><br><span class="text-xs">Home</span>
                     </a>
@@ -49,7 +61,7 @@
                     <a href="{{ route('profile_user.edit') }}" class="text-center">
                         <i class="fas fa-user text-xl  {{ request()->is('profile/user') ? 'text-blue-500' : 'bg-transparent'}}"></i><br><span class="text-xs">Profil</span>
                     </a>
-                </nav>
+                </nav> --}}
                 </div>
             </div>
             @stack('scripts')

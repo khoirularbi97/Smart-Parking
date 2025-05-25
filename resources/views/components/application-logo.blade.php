@@ -1,1 +1,1 @@
-<img src="{{ asset('images/favicon-32x32.png') }}" alt="logo">
+<img src="{{ asset('images/favicon-32x32.png') }}" alt="logo" class="h-8 w-8 rounded-xl">
