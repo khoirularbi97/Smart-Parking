@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 use App\Models\Pembayaran;
 use App\Models\Member;
 use App\Models\Transaksi;
+
 use App\Models\User;
+use App\Models\Topup;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
@@ -20,8 +22,8 @@ class DashboardController extends Controller
         $transaksiPerHari = DB::table('transaksis')
         ->select(
             DB::raw('DATE(created_at) as tanggal'),
-            DB::raw("SUM(CASE WHEN jenis = 'debit' THEN 1 ELSE 0 END) as total_debit"),
-            DB::raw("SUM(CASE WHEN jenis = 'kredit' THEN 1 ELSE 0 END) as total_kredit")
+            DB::raw("SUM(CASE WHEN jenis = 'debit' THEN jumlah ELSE 0 END) as total_debit"),
+            DB::raw("SUM(CASE WHEN jenis = 'kredit' THEN jumlah ELSE 0 END) as total_kredit")
         )
         ->groupBy(DB::raw('DATE(created_at)'))
         ->orderBy('tanggal', 'ASC')
@@ -31,8 +33,14 @@ class DashboardController extends Controller
         $member = User::where('role', 'user')->count();
         $admin = User::where('role', 'admin')->count();
         
-        $total = User::where('role', 'user')->paginate(3);
+       
+        
+         $histories = DB::table('topups')
+        ->join('users', 'topups.users_id', '=', 'users.id')
+        ->select('topups.*', 'users.name as user_name')
+        ->orderByDesc('topups.created_at')
+        ->paginate(3); // <= pagination di sini
 
-        return view('dashboard', compact('member', 'total','admin', 'transaksiPerHari', 'debitCount', 'kreditCount'));
+        return view('dashboard', compact('member','admin', 'transaksiPerHari', 'debitCount', 'kreditCount', 'histories'));
 }
 }

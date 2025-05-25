@@ -73,7 +73,21 @@
         let dropdown = document.getElementById("dropdown");
         dropdown.classList.toggle("hidden");
     }
-    </script>
+
+    function toggleDropdown(id) {
+        const dropdown = document.getElementById(id);
+        const icon = document.getElementById(`icon-${id}`);
+        if (dropdown.classList.contains('hidden')) {
+            dropdown.classList.remove('hidden');
+            icon.classList.add('rotate-180');
+        } else {
+            dropdown.classList.add('hidden');
+            icon.classList.remove('rotate-180');
+        }
+    }
+</script>
+
+    
     
 
    

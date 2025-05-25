@@ -3,12 +3,15 @@
 @section('title', 'Parkir_masuk')
 
 @section('content')
-
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold">Parkir Masuk</h1>
+<x-page-header2
+    title="Parkir Masuk"
+    :breadcrumbs="[
+        ['label' => 'Home', 'url' => '/transaksi'],
         
-        
-    </div>
+    ]"
+/>
+   
+   
 
     <div class="p-6 grid grid-cols-1 gap-4">
     
