@@ -70,9 +70,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('user/dashboard', [UserController::class, 'index'])->name('user.dashboard');
     
-    Route::get('/topup', function () {
-    return view('user.topup.form');
-    })->name('topup.form');
+    Route::get('/topup', [TopupController::class, 'index'])->name('topup.form');
 
     Route::post('/topup/process', [TopupController::class, 'process'])->name('topup.process');
     

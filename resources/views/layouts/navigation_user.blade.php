@@ -4,9 +4,9 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
+                <div class="shrink-0 flex items-center rounded-md">
                     <a href="">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 rounded" />
                     </a>
                 </div>
 
@@ -68,8 +68,18 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link >
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link :href="route('user.dashboard')" :active="request()->routeIs('user/dashboard') ">
+                {{ __('Home') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link  :href="route('topup.form')" :active="request()->routeIs('/topup') " >
+                {{ __('TopUp') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link  :href="route('profile_user.edit')" :active="request()->routeIs('profile/user') ">
+                {{ __('Pengaturan') }}
             </x-responsive-nav-link>
         </div>
 

@@ -45,6 +45,8 @@ class MidtransController extends Controller
             } else {
                 $topup->status = 'success';
                 $topup->user->increment('saldo', $topup->amount);
+                $topup->method->$transaction->card_type;
+
             }
         } elseif ($transaction == 'settlement') {
             $topup->status = 'success';

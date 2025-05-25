@@ -8,9 +8,23 @@ use App\Models\Topup;
 use Midtrans\Notification;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use App\Models\ParkingSlot;
+
 
 class TopupController extends Controller
-{
+{   
+     public function index()
+     {
+    $user =Auth::user();
+    
+    if (!$user) {
+        return redirect()->route('login');
+    }
+    $histories = $user->topup()->latest()->take(5)->get(); // Ambil 5 transaksi terbaru
+    $slots = Topup::all();
+    return view('user.topup.form', compact('histories', 'slots'));
+       
+    }
     public function __construct()
     {
         Config::$serverKey = config('midtrans.serverKey');
@@ -25,11 +39,15 @@ class TopupController extends Controller
         $amount = $request->amount;
         $orderId = 'TOPUP-' . time() . '-' . Str::random(5); // contoh format order_id unik
         // Simpan ke DB dulu (optional, untuk callback tracking)
+        
         $topup = Topup::create([
-            'user_id' => $user->id,
+            'users_id' => $user->id,
+            'name'   => $user->name,
+            'method'   => 'waiting',
             'amount' => $amount,
             'status' => 'pending',
             'order_id' =>$orderId,
+            
         ]);
 
         $params = [
@@ -61,7 +79,7 @@ class TopupController extends Controller
         $transaction = $notif->transaction_status;
         $orderId = $notif->order_id;
         $fraud = $notif->fraud_status ?? null;
-
+        $user = Auth::user();
         $topup = Topup::where('order_id', $orderId)->first();
 
         if (!$topup) {
@@ -74,6 +92,7 @@ class TopupController extends Controller
             } else {
                 $topup->status = 'success';
                 $topup->user->increment('balance', $topup->amount);
+                
             }
         } elseif ($transaction == 'settlement') {
             $topup->status = 'success';

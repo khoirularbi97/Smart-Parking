@@ -48,6 +48,14 @@ public function transaksis()
 {
     return $this->hasMany(Transaksi::class, 'users_id');
 }
+public function parking()
+{
+    return $this->hasMany(RiwayatParkir::class, 'users_id');
+}
+public function topup()
+{
+    return $this->hasMany(Topup::class, 'users_id');
+}
 
     
     /**
