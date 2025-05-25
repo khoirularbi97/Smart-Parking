@@ -71,23 +71,23 @@
                         <thead>
                             <tr class="bg-gray-200">
                                 <th class="border px-4 py-2">No</th>
-                                <th class="border px-4 py-2">UID</th>
                                 <th class="border px-4 py-2">Nama</th>
-                                <th class="border px-4 py-2">Saldo</th>
-                                <th class="border px-4 py-2">Top Up</th>
+                                <th class="border px-4 py-2">Type</th>
+                                <th class="border px-4 py-2">Nominal</th>
+                                <th class="border px-4 py-2">Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                                @forelse ($total as $item)
+                                @forelse ($histories as $item)
                                 
                             <tr>
                                 <td class="border px-4 py-2">{{$loop->iteration}}</td>
-                                <td class="border px-4 py-2">{{ $item->uid }}</td>
                                 <td class="border px-4 py-2">{{ $item->name }}</td>
+                                <td class="border px-4 py-2">{{ $item->method }}</td>
                                 <td class="border px-4 py-2"> 
-                                    Rp {{ number_format($item->saldo, 2, ',', '.') }}</td>
+                                    Rp {{ number_format($item->amount, 2, ',', '.') }}</td>
                                 <td class="border px-4 py-2 text-center">
-                                    <button class="bg-green-500 text-white px-2 py-1 rounded"><i data-lucide="circle-dollar-sign"></i></button>
+                                    {{ $item->status }}
                                 </td>
                             </tr>
                             @empty
@@ -101,7 +101,7 @@
                     </table>
             
                     <div class="p-4">
-                        {{ $total->links() }}
+                        {{ $histories->links() }}
                     </div>
             </div>
         </div>

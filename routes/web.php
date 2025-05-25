@@ -18,7 +18,7 @@ use App\Http\Controllers\TopupController;
 use App\Models\Member;
 use App\Models\ParkirMasuk;
 use App\Models\Transaksi;
-use App\Http\Controllers\MidtransController;
+use App\Http\Controllers\TopupAdminController;
 
 Route::get('/auth/google', function () {
     return Socialite::driver('google')->redirect();
@@ -101,6 +101,14 @@ Route::middleware('auth','admin')->group(function () {
     //route Parkir masuk
     Route::get('/parkir_masuk', [ParkirMasukController::class, 'index'])->name('parkir.masuk');
     Route::delete('admin/parkir_masuk/{id}', [ParkirMasukController::class, 'destroy'])->name('admin.parkir_masuk.destroy');
+
+    //route Parkir Keluar
+    Route::get('/parkir_keluar', [ParkirMasukController::class, 'index'])->name('parkir.keluar');
+    Route::delete('admin/parkir_keluar/{id}', [ParkirMasukController::class, 'destroy'])->name('admin.parkir_keluar.destroy');
+    //route TopUp
+    Route::get('/topup/admin', [TopupAdminController::class, 'index'])->name('topup.admin');
+
+    Route::get('/riwayat_parkir', [ParkirMasukController::class, 'index'])->name('riwayat.parkir');
 
     //topup
     // Route::post('/topup', [App\Http\Controllers\TopupController::class, 'process'])->name('topup.process');
