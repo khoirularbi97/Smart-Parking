@@ -13,18 +13,55 @@
 
     <div class="p-6 grid grid-cols-1 gap-4">
 
-
+        
         <div class="bg-white shadow rounded overflow-x-auto p-6">
-            <div class="justify-between items-center mb-6">
-            <form action="" method="GET" class="mb-4 flex gap-2">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama/email..." class="border p-2 rounded w-1/3">
-                <button class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">Cari</button>
-            </form>
-            
-            <a href="{{ route('admin/transaksi/create') }}" class="bg-cyan-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Tambah Transaksi</a>
-            </div>
-            <div class="table-responsive">
-            <table class="relative min-w-full">
+            <div class="flex justify-between overflow-x-auto">
+                <div class="justify-between items-center mb-6">
+                <form action="" method="GET" class="mb-4 flex gap-2">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama/email..." class="border p-2 rounded w-auto">
+                    <button class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">Cari</button>
+                </form>
+                
+                <a href="{{ route('admin/transaksi/create') }}" class="bg-gray-200 hover:g-sky-200 px-4 py-2 rounded">Tambah Transaksi</a>
+                </div>
+                <div class="mt-4 gap-5 mb-4">
+                    <a href="{{ route('admin.transaksis.exportPdf', request()->query()) }}" target="_blank"
+                        class="bg-red-500 text-white px-4 py-2 rounded">Export Table Only</a>
+
+                  <button onclick="exportPDF()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-5 mb-5">Export With Chart</button>
+                </div>
+                
+
+                    <form id="pdfForm" method="POST" action="{{ route('admin.transaksi.export-pdf') }}">
+                        @csrf
+                        <input type="hidden" name="chart_image" id="chart_image">
+                    </form>
+               
+
+
+                <form method="GET" action="" class="flex flex-wrap md:flex-nowrap gap-4 items-end mb-4">
+                        <div>
+                            <label for="start_date" class="block text-sm font-medium">Dari Tanggal</label>
+                            <input type="date" name="start_date" id="start_date" value=""
+                                class="border rounded px-2 py-1">
+                        </div>
+                        <div>
+                            <label for="end_date" class="block text-sm font-medium">Sampai Tanggal</label>
+                            <input type="date" name="end_date" id="end_date" value=""
+                                class="border rounded px-2 py-1">
+                        </div>
+                        <div class="flex items-end">
+                            <button type="submit" class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"> <i data-lucide="funnel" class=""></i></button>
+                        </div>
+                    </form>
+        </div>
+        <div class="bg-white p-4 rounded shadow mb-6">
+    <h3 class="text-lg font-semibold mb-2">Grafik Transaksi</h3>
+        <canvas id="transaksiChart" height="100"></canvas>
+    </div>
+
+        <div class="table-responsive shadow">
+            <table class="relative min-w-full rounded ">
                 <thead>
                     <tr class="bg-gray-100">
                         <th class="px-4 py-2 border">No.</th>
@@ -46,7 +83,7 @@
                 <tbody>
                     @forelse ($transaksis as $transaksi)
                         <tr>
-                            <td class="px-4 py-2 border">{{ $loop->iteration }}</td>
+                            <td class="px-4 py-2 border">{{ $transaksis->firstItem() + $loop->index }}</td>
                             <td class="px-4 py-2 border">
                                 <div class="flex justify-center-safe gap-4">
                                     <div class="center">
@@ -77,7 +114,10 @@
                             <td class="px-4 py-2 border">{{ $transaksi->LastUpdateBy }}</td>
                             <td class="px-4 py-2 border">{{ $transaksi->LastUpdateDate }}</td>
                             <td class="px-4 py-2 border">{{ $transaksi->CompanyCode }}</td>
-                            <td class="px-4 py-2 border">{{ $transaksi->_Status }}</td>
+                            <td class="px-4 py-2 border"> 
+                                <span class="px-2 py-1 rounded text-xs font-semibold {{ $transaksi->Status == '1' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
+                                    {{ $transaksi->Status }}
+                                </span></td>
                             <td class="px-4 py-2 border">{{ $transaksi->IsDeleted }}</td>
                             
                             
@@ -150,6 +190,82 @@
     form.action = '{{ url("admin/transaksi") }}/' + deleteUserId;
     form.submit();
 }
+
+    const ctx = document.getElementById('transaksiChart').getContext('2d');
+
+    const transaksiChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {!! json_encode($dates) !!},
+            datasets: [{
+                label: 'Total Transaksi (Rp)',
+                data: {!! json_encode($totals) !!},
+                borderColor: 'rgba(59, 130, 246, 1)', // Tailwind blue-500
+                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.3,
+                pointRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let value = context.raw;
+                            return 'Rp ' + new Intl.NumberFormat('id-ID').format(value);
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'Rp ' + new Intl.NumberFormat('id-ID').format(value);
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+  
+function downloadChartPDF() {
+    domtoimage.toPng(document.getElementById('transaksiChart')).then(function (dataUrl) {
+        const docDefinition = {
+            content: [
+                { text: 'Laporan Transaksi', style: 'header' },
+                {
+                    image: dataUrl,
+                    width: 500
+                }
+            ],
+            styles: {
+                header: {
+                    fontSize: 18,
+                    bold: true,
+                    marginBottom: 15
+                }
+            }
+        };
+        pdfMake.createPdf(docDefinition).download("laporan-transaksi-grafik.pdf");
+    });
+}
+
+function exportPDF() {
+        const canvas = document.getElementById('transaksiChart');
+        const image = canvas.toDataURL('image/png'); // Convert to Base64 PNG
+        document.getElementById('chart_image').value = image;
+        document.getElementById('pdfForm').submit();
+    }
+
 </script>
 
 

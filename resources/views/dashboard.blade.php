@@ -81,7 +81,7 @@
                                 @forelse ($histories as $item)
                                 
                             <tr>
-                                <td class="border px-4 py-2">{{$loop->iteration}}</td>
+                                <td class="border px-4 py-2">{{ $histories->firstItem() + $loop->index }}</td>
                                 <td class="border px-4 py-2">{{ $item->name }}</td>
                                 <td class="border px-4 py-2">{{ $item->method }}</td>
                                 <td class="border px-4 py-2"> 

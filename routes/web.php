@@ -34,8 +34,18 @@ Route::get('/auth/google/callback', function () {
             // Login langsung jika user sudah terdaftar
             Auth::login($user);
         } else {
-           return redirect('login')->with('error', 'Email ini belum terdaftar.');
+          // return redirect('login')->with('error', 'Email ini belum terdaftar.');
+          $id = uniqid();
+             $user = User::create([
+                'name' => $googleUser->getName(),
+                'uid' => $id,
+                'saldo' => 0,
+                'email' => $googleUser->getEmail(),
+                'google_id' => $googleUser->getId(),
+                'password' => bcrypt(Str::random(16)), // bisa dikunci random
+            ]);
 
+            Auth::login($user);
         }
 
         return redirect('/dashboard'); // arahkan setelah login
@@ -109,6 +119,12 @@ Route::middleware('auth','admin')->group(function () {
     Route::get('/topup/admin', [TopupAdminController::class, 'index'])->name('topup.admin');
 
     Route::get('/riwayat_parkir', [ParkirMasukController::class, 'index'])->name('riwayat.parkir');
+
+    // print
+    Route::get('/admin/transaksis/export-pdf', [TransaksiController::class, 'exportPdf'])->name('admin.transaksis.exportPdf');
+    Route::get('/admin/transaksis/chart-preview', [TransaksiController::class, 'chartPreview'])->name('admin.transaksis.chartPreview');
+
+    Route::post('/admin/transaksi/export-pdf', [TransaksiController::class, 'exportPDF2'])->name('admin.transaksi.export-pdf');
 
     //topup
     // Route::post('/topup', [App\Http\Controllers\TopupController::class, 'process'])->name('topup.process');

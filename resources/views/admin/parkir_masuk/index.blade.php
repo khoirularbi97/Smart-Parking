@@ -43,7 +43,7 @@
               <tbody>
                   @forelse ($parkir_masuk as $masuk)
                   <tr>
-                      <td class="px-4 py-2 border">{{ $loop->iteration }}</td>
+                      <td class="px-4 py-2 border">{{$parkir_masuk->firstItem() + $loop->index}}</td>
                       <td class="px-4 py-2 border ">
                           <div class="flex justify-center-safe gap-4">
                               <div class="center">

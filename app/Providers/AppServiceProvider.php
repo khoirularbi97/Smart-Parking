@@ -10,10 +10,12 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    public function register(): void
-    {
-        //
-    }
+    public function register()
+{
+    $this->app->singleton('chart', function () {
+        return new \App\Services\ChartService();
+    });
+}
 
     /**
      * Bootstrap any application services.

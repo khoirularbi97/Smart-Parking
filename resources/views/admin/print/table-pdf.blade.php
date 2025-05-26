@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Laporan Transaksi</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 40px;
+            font-size: 14px;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+        .header p {
+            margin: 2px;
+            font-size: 13px;
+        }
+        .title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 6px 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+        .footer {
+            width: 100%;
+            margin-top: 30px;
+        }
+        .footer .left {
+            float: left;
+            width: 50%;
+        }
+        .footer .right {
+            float: right;
+            width: 50%;
+            text-align: center;
+        }
+        .footer p {
+            margin: 4px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Kop Surat -->
+    <div class="header">
+        <h1>PT. Smart Parking</h1>
+        <p>Jl. Inspeksi Kalimalang Tegal Danas Arah Deltamas, Cibatu, Cikarang, Bekasi ,Jawa Barat Indonesia 17532</p>
+        <p>Email: arinklise@khoirularbi.com | Telp: (021) 12345678</p>
+    </div>
+
+    <!-- Judul Laporan -->
+    <div class="title">LAPORAN TRANSAKSI</div>
+    
+
+    <!-- Tabel Transaksi -->
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama</th>
+                <th>UID</th>
+                <th>Nominal</th>
+                <th>Metode</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($transaksis as $i => $item)
+                <tr>
+                    <td>{{ $i + 1 }}</td>
+                    <td>{{ $item->nama }}</td>
+                    <td>{{ $item->uid }}</td>
+                    <td>Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
+                    <td>{{ $item->jenis }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+    <!-- Footer Tanda Tangan -->
+    <div class="footer">
+        <div class="left">
+            <p>Dicetak pada: {{ date('d-m-Y') }}</p>
+        </div>
+        <div class="right">
+            <p>Mengetahui,</p>
+            <br><br><br>
+            <p><strong>________________________</strong></p>
+            <p>Manager Keuangan</p>
+        </div>
+    </div>
+
+</body>
+</html>
