@@ -33,7 +33,7 @@ class MidtransController extends Controller
         $fraud = $notif->fraud_status ?? null;
 
         $topup = Topup::where('order_id', $orderId)->first();
-
+      
         if (!$topup) {
             Log::warning("Topup not found for order_id: $orderId");
             return response()->json(['message' => 'Topup not found'], 404);
@@ -45,13 +45,34 @@ class MidtransController extends Controller
             } else {
 
                 $topup->status = 'success';
-                $topup->user->increment('saldo', $topup->amount);
-                $topup->method->$transaction->card_type;
+                if ($topup->user) {
+			    $topup->user->increment('saldo', $topup->amount);
+			} else {
+			    Log::error("User not found for Topup ID: {$topup->id}, Order ID: {$orderId}");
+			    return response()->json(['message' => 'User not found'], 404);
+			}
+
+
+		
+		                if (isset($notif->card_type)) {
+		            $cardType = $notif->card_type;
+		            Log::info("Card type used: " . $cardType);
+		            
+			}
+	$topup->method = $notif->card_type ?? null;
 
             }
         } elseif ($transaction == 'settlement') {
             $topup->status = 'success';
-            $topup->user->increment('saldo', $topup->amount);
+            if ($topup->user) {
+			    $topup->user->increment('saldo', $topup->amount);
+			} else {
+			    Log::error("User not found for Topup ID: {$topup->id}, Order ID: {$orderId}");
+			    return response()->json(['message' => 'User not found'], 404);
+			}
+
+
+		
         } elseif ($transaction == 'pending') {
             $topup->status = 'pending';
         } elseif (in_array($transaction, ['deny', 'expire', 'cancel'])) {
