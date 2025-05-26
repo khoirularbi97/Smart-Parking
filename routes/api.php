@@ -38,5 +38,5 @@ use App\Http\Controllers\MidtransController;
 //     return response()->json(['status' => $status]);
 // });
 // routes/api.php
-Route::post('/midtrans/callback', [MidtransController::class, 'notificationHandler']);
+Route::post('/midtrans/notification', [MidtransController::class, 'notificationHandler']);
 
