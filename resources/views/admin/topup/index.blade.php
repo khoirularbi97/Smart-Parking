@@ -21,7 +21,7 @@
                 <button class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">Cari</button>
             </form>
             
-            <a href="{{ route('admin/transaksi/create') }}" class="bg-cyan-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Top Up Member</a>
+            <a href="{{ route('admin/transaksi/create') }}" class="bg-sky-600 hover:bg-cyan-500 text-white px-4 py-2 rounded">Top Up Member</a>
             </div>
             <div class="table-responsive">
             <table class="relative min-w-full">
@@ -46,7 +46,7 @@
                 <tbody>
                     @forelse ($topup as $topups)
                         <tr>
-                            <td class="px-4 py-2 border">{{ $loop->iteration }}</td>
+                            <td class="px-4 py-2 border">{{$topup->firstItem() + $loop->index }}</td>
                             <td class="px-4 py-2 border">
                                 <div class="flex justify-center-safe gap-4">
                                     <div class="center">

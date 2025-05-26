@@ -22,7 +22,7 @@
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama/email..." class="border p-2 rounded w-1/3">
                 <button class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">Cari</button>
             </form>
-        <a href="{{ route('admin/member/create') }}" class="bg-cyan-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Tambah Member Baru</a>
+        <a href="{{ route('admin/member/create') }}" class="bg-sky-600 hover:bg-cyan-500 text-white px-4 py-2 rounded">Tambah Member Baru</a>
         </div>
         <div class="table-responsive">
         <table class="min-w-full ">
@@ -47,7 +47,7 @@
             <tbody>
                 @forelse ($users as $user)
                     <tr>
-                        <td class="px-4 py-2 border">{{ $loop->iteration }}</td>
+                        <td class="px-4 py-2 border">{{$users->firstItem() + $loop->index }}</td>
                         <td class="px-4 py-2 border">
                             <div class="flex justify-center-safe gap-4">
                                 <div class="center">
