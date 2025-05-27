@@ -34,13 +34,13 @@
                 Rp {{ number_format($history->amount, 0, ',', '.') }}
             </div>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 justify-between">
             <p class="text-xs mt-2 text-purple-500">Riwayat topup</p>
             
+            <button class="btn-check-status bg-pink-400 hover:bg-purple-400 text-white p-2 rounded-lg transition duration-300 shadow-md" data-order-id="{{ $history->order_id }}">
+                Detail
+                    </button>
         </div>
-        <button class="btn-check-status mt-2 bg-pink-400 hover:bg-purple-400 text-white p-2 rounded-lg transition duration-300 shadow-md" data-order-id="{{ $history->order_id }}">
-            Detail
-                </button>
                 {{-- <button 
                 class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 cek-status"
                 data-id="{{ $history->id }}" 
