@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hero Page - Dashboard</title>
+    <title>E-Parking</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
@@ -49,8 +49,8 @@
     <p class="text-lg text-gray-600 mb-8">
       Kelola area parkir Anda secara efisien dengan teknologi ANPR, kartu RFID, dan sistem pembayaran digital terintegrasi.
     </p>
-    <div class="space-x-4">
-      <a href="#fitur" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition">
+    <div class="flex gap-2">
+      <a href="#fitur" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 ">
         Pelajari Lebih Lanjut
       </a>
       <a href="{{ route('login') }}" class="bg-gray-300 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-400 transition">
