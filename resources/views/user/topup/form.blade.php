@@ -26,7 +26,7 @@
             <div class="flex items-center gap-2">
                 <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-400"><i data-lucide="{{ $history->method =='credit' ? 'credit-card' : 'wallet-minimal'  }} " class="w-8 h-8 p-1"></i></div>
                 <div>
-                    <p class="font-bold text-sm">{{ $history->status ?? 'Nama Tidak Diketahui' }}</p>
+                    <p class="font-bold text-sm"><span id="status-{{ $history->order_id }}">{{ $history->status ?? 'Nama Tidak Diketahui' }} </span></p>
                     <p class="text-xs text-gray-500">{{ $history->created_at->format('d M Y H:i') }}</p>
                 </div>
             </div>
@@ -34,7 +34,20 @@
                 Rp {{ number_format($history->amount, 0, ',', '.') }}
             </div>
         </div>
-        <p class="text-xs mt-2 text-purple-500">Riwayat topup</p>
+        <div class="flex items-center gap-2">
+            <p class="text-xs mt-2 text-purple-500">Riwayat topup</p>
+            
+        </div>
+        <button class="btn-check-status mt-2 bg-pink-400 hover:bg-purple-400 text-white p-2 rounded-lg transition duration-300 shadow-md" data-order-id="{{ $history->order_id }}">
+            Detail
+                </button>
+                {{-- <button 
+                class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 cek-status"
+                data-id="{{ $history->id }}" 
+                data-order-id="{{ $history->order_id }}">
+                Detail
+                </button> --}}
+
     </div>
     @endforeach
     </div>
@@ -49,6 +62,21 @@
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Topup</button>
             </form>
         </div> --}}
+<!-- Overlay -->
+<div id="modalOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <!-- Modal box -->
+  <div id="modalBox" class="bg-white p-6 rounded-xl shadow-lg transform scale-95 opacity-0 transition duration-300 ease-out w-full max-w-md">
+    <h2 class="text-xl font-semibold mb-4">Detail Topup</h2>
+    <p><strong>Order ID:</strong> <span id="modalOrderId"></span></p>
+    <p><strong>Status:</strong> <span id="modalStatus"></span></p>
+    <p><strong>Waktu:</strong> <span id="modalTransactionTime"></span></p>
+    <p><strong>Metode:</strong> <span id="modalPaymentType"></span></p>
+    <p><strong>Nominal:</strong> <span id="modalAmount"></span></p>
+    <button onclick="closeModal()" class="mt-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Tutup</button>
+  </div>
+</div>
+
+
 
 <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
 <script>
@@ -72,6 +100,7 @@ document.getElementById('topup-form').addEventListener('submit', function (e) {
         window.snap.pay(data.token, {
             onSuccess: function(result) {
                 alert('Topup berhasil!');
+
                 window.location.reload();
             },
             onPending: function(result) {
@@ -87,6 +116,75 @@ document.getElementById('topup-form').addEventListener('submit', function (e) {
     }
 });
 });
+function openModal() {
+  const overlay = document.getElementById('modalOverlay');
+  const modal = document.getElementById('modalBox');
+
+  overlay.classList.remove('hidden');
+
+  // Pakai timeout agar animasi bisa berjalan setelah visible
+  setTimeout(() => {
+    modal.classList.remove('scale-95', 'opacity-0');
+    modal.classList.add('scale-100', 'opacity-100');
+  }, 10);
+}
+function formatRupiah(angka) {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR'
+  }).format(angka);
+}
+
+function closeModal() {
+  const overlay = document.getElementById('modalOverlay');
+  const modal = document.getElementById('modalBox');
+
+  modal.classList.remove('scale-100', 'opacity-100');
+  modal.classList.add('scale-95', 'opacity-0');
+
+  setTimeout(() => {
+    overlay.classList.add('hidden');
+  }, 300); // waktu sesuai dengan duration-300
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.btn-check-status').forEach(button => {
+        button.addEventListener('click', function () {
+            const orderId = this.getAttribute('data-order-id');
+            const statusElement = document.getElementById(`status-${orderId}`);
+
+            fetch(`/api/midtrans/status/${orderId}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('status', data);
+                const statusText = data.status ?? 'Tidak ditemukan';
+                statusElement.textContent = statusText;
+                document.getElementById('modalOrderId').innerText = orderId;
+                document.getElementById('modalStatus').innerText = data.status ?? 'Tidak diketahui';
+                document.getElementById('modalTransactionTime').innerText = data.transaction_time ?? '-';
+                document.getElementById('modalPaymentType').innerText = data.payment_type ?? '-';
+                document.getElementById('modalAmount').textContent = formatRupiah(data.gross_amount || 0);
+  
+                
+                openModal();
+
+                // // Optional: Tambahkan alert jika ingin notifikasi
+                // alert(`Status untuk Order ${orderId}: ${statusText}`);
+            })
+            .catch(error => {
+                console.error('Gagal mengambil status:', error);
+                alert('Gagal mengambil status transaksi');
+            });
+        });
+    });
+});
+
+
 
 </script>
 @endsection

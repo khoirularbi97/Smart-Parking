@@ -24,7 +24,6 @@ class TopupController extends Controller
     $slots = Topup::all();
     return view('user.topup.form', compact('histories', 'slots'));
        
-
     
     }
     public function __construct()

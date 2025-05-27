@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Midtrans\Notification;
 use App\Models\Topup;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
+use Midtrans\Config;
 
 class MidtransController extends Controller
 {
@@ -88,6 +91,109 @@ class MidtransController extends Controller
     }
 
 }
+
+
+
+public function checkStatus($orderId)
+{
+    try {
+        Log::info('Cek status topup', [
+            'order_id' => $orderId,
+            'server_key' => config('midtrans.serverKey'),
+            'env' => config('midtrans.is_Production')
+        ]);
+
+        Config::$serverKey = config('midtrans.serverKey');
+        Config::$isProduction = config('midtrans.is_Production');
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
+
+        $status = \Midtrans\Transaction::status($orderId);
+ 
+
+
+
+        Log::info('Midtrans Status Result:', (array) $status);
+
+        
+        // $url = "https://api.sandbox.midtrans.com/v2/{$orderId}/status";
+
+        // $response = Http::withBasicAuth($serverKey, '')
+        //     ->get($url);
+        // Log::info('Full Midtrans Status Response:', (array) $response);
+
+
+        $transactionStatus = $status->transaction_status;
+        $fraudStatus = $status->fraud_status;
+        if (
+            $transactionStatus === 'capture' && $fraudStatus  === 'accept' ||
+            $transactionStatus === 'settlement'
+        ) {
+            $_status = 'success';
+        } else {
+            $_status = 'failed';
+        }
+        $topup = Topup::where('order_id', $orderId)->first();
+        if (!$topup) {
+            Log::warning("Topup not found for order_id: $orderId");
+            return response()->json(['message' => 'Topup not found'], 404);
+        }
+        $topup->status = $_status;
+        // $topup->user->increment('saldo', $topup->amount);
+        $topup->method = $status->payment_type;
+        $topup->updated_at = now();
+
+        $topup->save();
+
+
+   
+        return response()->json([
+            'message' => 'Status berhasil diambil',
+            'status' => $_status  ?? null,
+            'payment_type' => $status->payment_type ?? null,
+            'transaction_time' => Carbon::parse($status->transaction_time)->setTimezone('Asia/Jakarta')->format('Y-m-d H:i:s'),
+            'gross_amount' => $status->gross_amount ?? null
+        ]);
+            
+    } catch (\Exception $e) {
+        Log::error("Midtrans Status Error: " . $e->getMessage());
+        return response()->json([
+            'error' => 'Terjadi kesalahan server',
+            'message' => $e->getMessage()
+        ], 500);
+    }
+}
+public function getStatus($orderId)
+{
+    try {
+        Log::info('Cek status topup', [
+            'order_id' => $orderId,
+            'server_key' => config('midtrans.serverKey'),
+            'env' => config('midtrans.is_Production')
+        ]);
+
+        Config::$serverKey = config('midtrans.serverKey');
+        Config::$isProduction = config('midtrans.is_Production');
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
+
+        $status = \Midtrans\Transaction::status($orderId);
+
+        return response()->json([
+            'message' => 'Status berhasil diambil',
+            'status' => $status->transaction_status ?? null,
+            'payment_type' => $status->payment_type ?? null,
+            'transaction_time' => Carbon::parse($status->transaction_time)->setTimezone('Asia/Jakarta')->format('Y-m-d H:i:s'),
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Gagal mengambil status',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
+
 }
 
 
