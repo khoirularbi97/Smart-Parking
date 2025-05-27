@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-Parking</title>
     <script src="https://cdn.tailwindcss.com"></script>
+     <script src="https://kit.fontawesome.com/your_kit_id.js" crossorigin="anonymous"></script>
 </head>
 <body class="bg-gray-100">
 
@@ -49,7 +50,7 @@
     <p class="text-lg text-gray-600 mb-8">
       Kelola area parkir Anda secara efisien dengan teknologi ANPR, kartu RFID, dan sistem pembayaran digital terintegrasi.
     </p>
-    <div class="flex gap-2">
+    <div class="flex gap-2 justify-center">
       <a href="#fitur" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 ">
         Pelajari Lebih Lanjut
       </a>
@@ -137,7 +138,21 @@
           <p class="text-gray-600">Pantau statistik parkir, riwayat transaksi, dan aktivitas pengguna melalui dashboard admin yang mudah digunakan.</p>
         </div>
       </div>
+
+      <div class="flex items-start space-x-4">
+        <div class="text-yellow-600 text-3xl">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold text-gray-800 mb-1">Tarif Parkir</h3>
+            <ul class="text-gray-600">
+                <li>- Mobil: Rp3.000 untuk 1 jam pertama, dan tarif progresif untuk jam berikutnya.</li>
+                <li>- Motor: Rp2.000 untuk 1 jam pertama, dan tarif progresif untuk jam berikutnya.</li>
+            </ul>
+        </div>
+      </div>
     </div>
+     
 
     <div class="text-center mt-12">
       <a href="{{ route('login') }}" class="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition">
