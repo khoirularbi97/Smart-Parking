@@ -20,6 +20,8 @@ use App\Models\ParkirMasuk;
 use App\Models\Transaksi;
 use App\Http\Controllers\TopupAdminController;
 use App\Http\Controllers\MidtransController;
+use App\Http\Controllers\RiwayatParkirController;
+use App\Models\RiwayatParkir;
 
 Route::get('/auth/google', function () {
     return Socialite::driver('google')->redirect();
@@ -113,6 +115,14 @@ Route::middleware('auth','admin')->group(function () {
     Route::put('/admin/transaksi/{id}', [TransaksiController::class, 'update'])->name('admin.transaksi.update');
     Route::delete('/admin/transaksi/{id}', [TransaksiController::class, 'destroy'])->name('admin.transaksi.destroy');
 
+    //route riwayat parkir
+    Route::get('/riwayat-parkir', [RiwayatParkirController::class, 'index'])->name('riwayat.parkir');
+    Route::get('admin/riwayat-parkir/create', [RiwayatParkirController::class, 'create'])->name('admin.riwayat-parkir.create');
+    Route::get('/admin/riwayat-parkir/{user}/edit', [RiwayatParkirController::class, 'edit'])->name('admin.riwayat-parkir.edit');
+    Route::post('store/riwayat-parkir', [RiwayatParkirController::class, 'store'])->name('store.riwayat-parkir');
+    Route::put('/admin/riwayat-parkir/{id}', [RiwayatParkirController::class, 'update'])->name('admin.riwayat-parkir.update');
+    Route::delete('/admin/riwayat-parking/{id}', [RiwayatParkirController::class, 'destroy'])->name('admin.riwayat-parking.destroy');
+
     //route Parkir masuk
     Route::get('/parkir_masuk', [ParkirMasukController::class, 'index'])->name('parkir.masuk');
     Route::delete('admin/parkir_masuk/{id}', [ParkirMasukController::class, 'destroy'])->name('admin.parkir_masuk.destroy');
@@ -123,7 +133,7 @@ Route::middleware('auth','admin')->group(function () {
     //route TopUp
     Route::get('/topup/admin', [TopupAdminController::class, 'index'])->name('topup.admin');
 
-    Route::get('/riwayat_parkir', [ParkirMasukController::class, 'index'])->name('riwayat.parkir');
+    // Route::get('/riwayat_parkir', [ParkirMasukController::class, 'index'])->name('riwayat.parkir');
 
     // print
     Route::get('/admin/transaksis/export-pdf', [TransaksiController::class, 'exportPdf'])->name('admin.transaksis.exportPdf');

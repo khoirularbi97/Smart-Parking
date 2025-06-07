@@ -24,15 +24,14 @@
             <a href="{{ route('admin/transaksi/create') }}" class="bg-sky-600 hover:bg-cyan-500 text-white px-4 py-2 rounded">Top Up Member</a>
             </div>
             <div class="table-responsive">
-            <table class="relative min-w-full">
+            <table class="relative min-w-full rounded-lg shadow">
                 <thead>
                     <tr class="bg-gray-100">
                         <th class="px-4 py-2 border">No.</th>
+                        <th class="px-4 py-2 border">Aksi</th>
                         <th class="px-4 py-2 border">Nama</th>
-                        <th class="px-4 py-2 border">UID</th>
                         <th class="px-4 py-2 border">Order ID</th>
                         <th class="px-4 py-2 border">Type</th>
-                        <th class="px-4 py-2 border">Jumlah</th>
                         <th class="px-4 py-2 border">CreatedDate</th>
                         <th class="px-4 py-2 border">CreatedBy</th>
                         <th class="px-4 py-2 border">LastUpdateBy</th>
@@ -40,6 +39,7 @@
                         <th class="px-4 py-2 border">CompanyCode</th>
                         <th class="px-4 py-2 border">Status</th>
                         <th class="px-4 py-2 border">IsDeleted</th>
+                        <th class="px-4 py-2 border">Jumlah</th>
                         
                     </tr>
                 </thead>
@@ -47,20 +47,20 @@
                     @forelse ($topup as $topups)
                         <tr>
                             <td class="px-4 py-2 border">{{$topup->firstItem() + $loop->index }}</td>
-                            <td class="px-4 py-2 border">
-                                <div class="flex justify-center-safe gap-4">
+                            <td class="p-1 border">
+                                <div class="flex justify-center-safe gap-1 p-1">
                                     <div class="center">
 
-                                    <button onclick="window.location.href='{{ route('admin.transaksi.edit', $topups->id) }}'" class="bg-gray-100 px-4 py-2 rounded hover:bg-cyan-300"><i data-lucide="square-pen"></i></button>
+                                    <button onclick="window.location.href='{{ route('admin.transaksi.edit', $topups->id) }}'" class="bg-gray-100 p-1 rounded hover:bg-cyan-300"><i data-lucide="square-pen"></i></button>
                                     </div>
                                     <div class="center">
-                                            <button onclick="showConfirmModal({{ $topups->id }})" class="bg-gray-100 px-4 py-2 rounded hover:bg-red-300"><i data-lucide="trash-2"></i></button>
+                                            <button onclick="showConfirmModal({{ $topups->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"><i data-lucide="trash-2"></i></button>
                                     
 
                                     </div>
                                     <div class="center">
                                     
-                                    <button  onclick="" class="bg-gray-100 px-4 py-2 rounded hover:bg-yellow-300"><i data-lucide="printer"></i></button>
+                                    <button  onclick="" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="printer"></i></button>
                                     
                                     </div>
 
@@ -71,14 +71,25 @@
                             <td class="px-4 py-2 border">{{ $topups->name }}</td>
                             <td class="px-4 py-2 border">{{ $topups->order_id }}</td>
                             <td class="px-4 py-2 border">{{ $topups->method }}</td>
-                            <td class="px-4 py-2 border">Rp {{ number_format($topups->amount, 2, ',', '.') }}</td>
-                            <td class="px-4 py-2 border">{{ $topups->CreatedDate }}</td>
+                            <td class="px-4 py-2 border">{{ $topups->created_at }}</td>
                             <td class="px-4 py-2 border">{{ $topups->CreatedBy }}</td>
                             <td class="px-4 py-2 border">{{ $topups->LastUpdateBy }}</td>
                             <td class="px-4 py-2 border">{{ $topups->LastUpdateDate }}</td>
                             <td class="px-4 py-2 border">{{ $topups->CompanyCode }}</td>
-                            <td class="px-4 py-2 border">{{ $topups->status }}</td>
+                            <td class="px-4 py-2 border">
+                                <span class="px-2 py-1 rounded text-xs font-semibold 
+                                    @if($topups->status == 'success') 
+                                        bg-green-200 text-green-800 
+                                    @elseif($topups->status == 'pending') 
+                                        bg-yellow-200 text-yellow-800 
+                                    @else 
+                                        bg-red-200 text-red-800 
+                                    @endif">
+                                    {{ ucfirst($topups->status) }}
+                                </span>
+                            </td>
                             <td class="px-4 py-2 border">{{ $topups->IsDeleted }}</td>
+                            <td class="px-4 py-2 border">Rp {{ number_format($topups->amount, 2, ',', '.') }}</td>
                             
                             
                         </tr>

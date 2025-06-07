@@ -48,19 +48,19 @@
                 @forelse ($users as $user)
                     <tr>
                         <td class="px-4 py-2 border">{{$users->firstItem() + $loop->index }}</td>
-                        <td class="px-4 py-2 border">
-                            <div class="flex justify-center-safe gap-4">
+                        <td class="p-1 border">
+                            <div class="flex justify-center-safe gap-1">
                                 <div class="center">
-                                    <button onclick="window.location='{{ route('admin.member.edit', $user->id) }}'" class="bg-gray-100 px-4 py-2 rounded hover:bg-cyan-300"><i data-lucide="square-pen"></i></button>
+                                    <button onclick="window.location='{{ route('admin.member.edit', $user->id) }}'" class="bg-gray-100 p-1 rounded hover:bg-cyan-300"><i data-lucide="square-pen"></i></button>
                                 </div>
                                 <div class="center">
                                     
-                                 <button  onclick="showConfirmModal({{ $user->id }})" class="bg-gray-100 px-4 py-2 rounded hover:bg-red-300"><i data-lucide="trash-2"></i></button>
+                                 <button  onclick="showConfirmModal({{ $user->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"><i data-lucide="trash-2"></i></button>
                                 
                                 </div>
                                 <div class="center">
                                     
-                                 <button  onclick="" class="bg-gray-100 px-4 py-2 rounded hover:bg-yellow-300"><i data-lucide="printer"></i></button>
+                                 <button  onclick="" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="printer"></i></button>
                                 
                                 </div>
 

@@ -22,7 +22,7 @@
                     <button class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">Cari</button>
                 </form>
                 
-                <a href="{{ route('admin/transaksi/create') }}" class="bg-gray-200 hover:g-sky-200 px-4 py-2 rounded">Tambah Transaksi</a>
+                <a href="{{ route('admin.riwayat-parkir.create') }}" class="bg-gray-200 hover:g-sky-200 px-4 py-2 rounded">Tambah Transaksi</a>
                 </div>
                 <div class="mt-4 gap-5 mb-4">
                     <a href="{{ route('admin.transaksis.exportPdf', request()->query()) }}" target="_blank"
@@ -63,12 +63,13 @@
         <div class="table-responsive shadow">
             <table class="relative min-w-full rounded ">
                 <thead>
-                    <tr class=" bg-gray-100">
+                    <tr class="bg-gray-100">
                         <th class="px-4 py-2 border">No.</th>
                         <th class="px-4 py-2 border">Aksi</th>
                         <th class="px-4 py-2 border">UID</th>
                         <th class="px-4 py-2 border">Nama</th>
                         <th class="px-4 py-2 border">Jenis</th>
+                        <th class="px-4 py-2 border">Jumlah</th>
                         <th class="px-4 py-2 border">Keterangan</th>
                         <th class="px-4 py-2 border">CreatedDate</th>
                         <th class="px-4 py-2 border">CreatedBy</th>
@@ -77,7 +78,6 @@
                         <th class="px-4 py-2 border">CompanyCode</th>
                         <th class="px-4 py-2 border">Status</th>
                         <th class="px-4 py-2 border">IsDeleted</th>
-                        <th class="px-4 py-2 border">Jumlah</th>
                         
                     </tr>
                 </thead>
@@ -85,20 +85,20 @@
                     @forelse ($transaksis as $transaksi)
                         <tr>
                             <td class="px-4 py-2 border">{{ $transaksis->firstItem() + $loop->index }}</td>
-                            <td class="p-1 border">
-                                <div class="flex justify-center-safe gap-1">
+                            <td class="px-4 py-2 border">
+                                <div class="flex justify-center-safe gap-4">
                                     <div class="center">
 
-                                    <button onclick="window.location.href='{{ route('admin.transaksi.edit', $transaksi->id) }}'" class="bg-gray-100 p-1 rounded hover:bg-cyan-300"><i data-lucide="square-pen"></i></button>
+                                    <button onclick="window.location.href='{{ route('admin.transaksi.edit', $transaksi->id) }}'" class="bg-gray-100 px-4 py-2 rounded hover:bg-cyan-300"><i data-lucide="square-pen"></i></button>
                                     </div>
                                     <div class="center">
-                                            <button onclick="showConfirmModal({{ $transaksi->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"><i data-lucide="trash-2"></i></button>
+                                            <button onclick="showConfirmModal({{ $transaksi->id }})" class="bg-gray-100 px-4 py-2 rounded hover:bg-red-300"><i data-lucide="trash-2"></i></button>
                                     
 
                                     </div>
                                     <div class="center">
                                     
-                                    <button  onclick="" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="printer"></i></button>
+                                    <button  onclick="" class="bg-gray-100 px-4 py-2 rounded hover:bg-yellow-300"><i data-lucide="printer"></i></button>
                                     
                                     </div>
 
@@ -109,21 +109,19 @@
                             <td class="px-4 py-2 border">{{ $transaksi->uid }}</td>
                             <td class="px-4 py-2 border">{{ $transaksi->nama }}</td>
                             <td class="px-4 py-2 border">{{ $transaksi->jenis }}</td>
+                            <td class="px-4 py-2 border">Rp {{ number_format($transaksi->jumlah, 2, ',', '.') }}</td>
                             <td class="px-4 py-2 border">{{ $transaksi->keterangan }}</td>
-                            <td class="px-4 py-2 border">{{ $transaksi->created_at }}</td>
+                            <td class="px-4 py-2 border">{{ $transaksi->CreatedDate }}</td>
                             <td class="px-4 py-2 border">{{ $transaksi->CreatedBy }}</td>
                             <td class="px-4 py-2 border">{{ $transaksi->LastUpdateBy }}</td>
                             <td class="px-4 py-2 border">{{ $transaksi->LastUpdateDate }}</td>
                             <td class="px-4 py-2 border">{{ $transaksi->CompanyCode }}</td>
                             <td class="px-4 py-2 border"> 
-                                <span class="px-2 py-1 rounded text-xs font-semibold 
-                                    {{ $transaksi->Status == '1' ? 'bg-green-200 text-green-800' : 'bg-green-200 text-green-800' }}">
-                                    {{ $transaksi->Status == '1' ? 'Success' : 'Success' }}
-                                </span>
-                                </td>
-                                <td class="px-4 py-2 border">{{ $transaksi->IsDeleted }}</td>
-                                <td class="px-4 py-2 border">Rp {{ number_format($transaksi->jumlah, 2, ',', '.') }}</td>
-                                
+                                <span class="px-2 py-1 rounded text-xs font-semibold {{ $transaksi->Status == '1' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
+                                    {{ $transaksi->Status }}
+                                </span></td>
+                            <td class="px-4 py-2 border">{{ $transaksi->IsDeleted }}</td>
+                            
                             
                         </tr>
                         @empty

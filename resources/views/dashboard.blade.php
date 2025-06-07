@@ -87,7 +87,9 @@
                                 <td class="border px-4 py-2"> 
                                     Rp {{ number_format($item->amount, 2, ',', '.') }}</td>
                                 <td class="border px-4 py-2 text-center">
+                                    <span class="px-2 py-1 rounded text-xs font-semibold {{ $item->status == 'success' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
                                     {{ $item->status }}
+                                </span>
                                 </td>
                             </tr>
                             @empty

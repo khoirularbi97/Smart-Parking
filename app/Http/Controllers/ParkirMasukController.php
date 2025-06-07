@@ -22,7 +22,7 @@ class ParkirMasukController extends Controller
         });
     }
 
-    $parkir_masuk = $query->paginate(5)->withQueryString();
+    $parkir_masuk = $query->latest()->paginate(10)->withQueryString();
     return view('admin.parkir_masuk.index', compact('parkir_masuk'));
 
 }

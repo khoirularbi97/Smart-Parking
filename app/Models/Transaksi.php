@@ -12,6 +12,7 @@ class Transaksi extends Model
         'nama',
         'jenis',
         'jumlah',
+        'keterangan',
         'CreatedBy',
         'LastUpdateBy',
         'CompanyCode',

@@ -23,7 +23,7 @@
         </form>
       <div class="overflow-x-auto w-full">
         <div class="table-responsive">
-          <table class="min-w-full border-collapse text-sm text-left text-gray-700 border border-gray-200 bg-white shadow rounded">
+          <table class="min-w-full border-collapse text-sm text-left text-gray-700 border border-gray-200 bg-white shadow rounded-lg">
               <thead>
                   <tr class="bg-gray-100">
                       <th class="px-4 py-2 border">No.</th>
@@ -44,21 +44,21 @@
                   @forelse ($parkir_masuk as $masuk)
                   <tr>
                       <td class="px-4 py-2 border">{{$parkir_masuk->firstItem() + $loop->index}}</td>
-                      <td class="px-4 py-2 border ">
-                          <div class="flex justify-center-safe gap-4">
+                      <td class="p-1 border ">
+                          <div class="flex justify-center-safe gap-1">
                               <div class="center">
       
-                                  <button onclick="" class="bg-gray-100 px-4 py-2 rounded hover:bg-cyan-300"><i data-lucide="square-pen"></i></button>
+                                  <button onclick="" class="bg-gray-100 p-1 rounded hover:bg-cyan-300"><i data-lucide="square-pen"></i></button>
                               </div>
                               <div class="center">
                                   
-                                      <button onclick="showConfirmModal({{ $masuk->id }})" class="bg-gray-100 px-4 py-2 rounded hover:bg-red-300"><i data-lucide="trash-2"></i></button>
+                                      <button onclick="showConfirmModal({{ $masuk->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"><i data-lucide="trash-2"></i></button>
                               
       
                               </div>
                               <div class="center">
                                     
-                                    <button  onclick="" class="bg-gray-100 px-4 py-2 rounded hover:bg-yellow-300"><i data-lucide="printer"></i></button>
+                                    <button  onclick="" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="printer"></i></button>
                                     
                                     </div>
       
@@ -68,8 +68,12 @@
                       
                       <td class="px-4 py-2 border">{{ $masuk->uid }}</td>
                         
-                      <td class="px-4 py-2 border">{{ $masuk->status }}</td>
-                          <td class="px-4 py-2 border">{{ $masuk->CreatedDate }}</td>
+                      <td class="px-4 py-2 border">
+                            <span class="px-2 py-1 rounded text-xs font-semibold 
+                                    {{ $masuk->status == 'aktif' ? 'bg-green-200 text-green-800' : 'bg-green-200 text-green-800' }}">
+                                    {{ $masuk->status }}
+                                </span></td>
+                          <td class="px-4 py-2 border">{{ $masuk->CreatedDate}}</td>
                           <td class="px-4 py-2 border">{{ $masuk->CreatedBy }}</td>
                           <td class="px-4 py-2 border">{{ $masuk->LastUpdateBy }}</td>
                           <td class="px-4 py-2 border">{{ $masuk->LastUpdateDate }}</td>
@@ -77,10 +81,11 @@
                           <td class="px-4 py-2 border">{{ $masuk->IsDeleted }}</td>
                           <td class="px-4 py-2 border">
                            @if (Str::startsWith($masuk->image_base64, '/9j')) {{-- Cek awalan base64 (JPEG) --}}
-                              <img src="data:image/jpeg;base64,{{ $masuk->image_base64 }}" alt="Gambar" class="h-30 w-auto rounded shadow">
+                              <img src="data:image/jpeg;base64,{{ $masuk->image_base64 }}" alt="Gambar" class="h-auto w-auto cursor-pointer rounded shadow" onclick="showImageModal(this.src)">
                           @else
                               <img src="{{ $masuk->image_path }}" alt="Gambar">
                           @endif
+                           
                           </td>
                       </tr>
                   @empty
@@ -105,11 +110,18 @@
     
 </div>
 <x-popup-delete></x-popup-delete>
+<!-- Image Modal -->
+<div id="imageModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-75 flex items-center justify-center">
+    <span class="absolute top-4 right-6 text-white text-3xl cursor-pointer" onclick="closeImageModal()">&times;</span>
+    <img id="modalImage" src="" class="max-w-full max-h-[90vh] rounded-lg border-4 border-white">
+</div>
+
     
 @if(session('success'))
 <x-pop-up></x-pop-up>
 
 <script>
+    
     // Fungsi untuk menampilkan alert
     function showAlert() {
       const alert = document.getElementById('successAlert');
@@ -150,5 +162,23 @@
     form.action = '{{ url("admin/parkir_masuk") }}/' + deleteUserId;
     form.submit();
 }
+
+    function showImageModal(src) {
+        document.getElementById('modalImage').src = src;
+        document.getElementById('imageModal').classList.remove('hidden');
+    }
+
+    function closeImageModal() {
+        document.getElementById('imageModal').classList.add('hidden');
+    }
+
+    // Tutup modal jika klik di luar gambar
+    document.getElementById('imageModal').addEventListener('click', function (e) {
+        if (e.target.id === 'imageModal') {
+            closeImageModal();
+        }
+    });
+
+
 </script>
 @endsection
