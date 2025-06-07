@@ -9,7 +9,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Midtrans\Config;
-
 class MidtransController extends Controller
 {
    
@@ -195,5 +194,6 @@ public function getStatus($orderId)
 
 
 }
+
 
 
