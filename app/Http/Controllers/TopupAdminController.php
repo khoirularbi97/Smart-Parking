@@ -23,7 +23,7 @@ class TopupAdminController extends Controller
         });
     }
 
-    $topup= $query->paginate(5)->withQueryString();
+    $topup= $query->latest()->paginate(10)->withQueryString();
 
     
     

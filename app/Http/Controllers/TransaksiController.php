@@ -27,7 +27,7 @@ class TransaksiController extends Controller
             $request->end_date . ' 23:59:59'
         ]);
     }
-    $transaksis = $query->paginate(5)->withQueryString();
+    $transaksis = $query->latest()->paginate(10)->withQueryString();
 
 
    // Ambil data untuk chart (7 hari terakhir)
