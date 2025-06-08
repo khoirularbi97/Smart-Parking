@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Midtrans\Notification;
 use App\Models\Topup;
+use App\Models\Transaksi;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
@@ -35,6 +36,7 @@ class MidtransController extends Controller
         $fraud = $notif->fraud_status ?? null;
 
         $topup = Topup::where('order_id', $orderId)->first();
+        $transaksi = Transaksi::where('order_id', $orderId)->first();
       
         if (!$topup) {
             Log::warning("Topup not found for order_id: $orderId");
@@ -47,6 +49,8 @@ class MidtransController extends Controller
             } else {
 
                 $topup->status = 'success';
+                $transaksi->Status = 1;
+                
                 if ($topup->user) {
 			    $topup->user->increment('saldo', $topup->amount);
 			} else {
@@ -66,6 +70,7 @@ class MidtransController extends Controller
             }
         } elseif ($transaction == 'settlement') {
             $topup->status = 'success';
+            $transaksi->Status = 1;
             if ($topup->user) {
 			    $topup->user->increment('saldo', $topup->amount);
 			} else {
@@ -82,6 +87,7 @@ class MidtransController extends Controller
         }
 
         $topup->save();
+        $transaksi->save();
 
         return response()->json(['message' => 'Notification processed']);
     } catch (\Exception $e) {
@@ -108,6 +114,7 @@ public function checkStatus($orderId)
         Config::$is3ds = true;
 
         $status = \Midtrans\Transaction::status($orderId);
+        $transaksi = Transaksi::where('order_id', $orderId)->first();
  
 
 
@@ -138,11 +145,19 @@ public function checkStatus($orderId)
             return response()->json(['message' => 'Topup not found'], 404);
         }
         $topup->status = $_status;
+        
         // $topup->user->increment('saldo', $topup->amount);
         $topup->method = $status->payment_type;
         $topup->updated_at = now();
+        if ($_status == 'success'){
+            $transaksi->Status = 1;
+        }else{
+            $transaksi->Status = 0;
+        }
 
         $topup->save();
+        $transaksi->save();
+
 
 
    

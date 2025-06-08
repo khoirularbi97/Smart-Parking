@@ -73,7 +73,9 @@ class TopupAdminController extends Controller
             'uid'   => $user->uid,
             'jenis'   => 'debit',
             'jumlah' => $amount,
-            'Status' => 1,
+            'keterangan' => 'topup',
+            'order_id' => $orderId,
+            'Status' => 0,
             
             
         ]);

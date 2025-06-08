@@ -14,6 +14,7 @@ class Transaksi extends Model
         'jenis',
         'jumlah',
         'keterangan',
+        'order_id',
         'CreatedBy',
         'LastUpdateBy',
         'CompanyCode',
