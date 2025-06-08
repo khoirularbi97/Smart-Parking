@@ -132,6 +132,9 @@ Route::middleware('auth','admin')->group(function () {
     Route::delete('admin/parkir_keluar/{id}', [ParkirMasukController::class, 'destroy'])->name('admin.parkir_keluar.destroy');
     //route TopUp
     Route::get('/topup/admin', [TopupAdminController::class, 'index'])->name('topup.admin');
+    Route::get('/topup/admin/create-topup', [TopupAdminController::class, 'create'])->name('create.topup');
+    Route::post('/topup/admin/proses', [TopupAdminController::class, 'process'])->name('admin.topup.process');
+
 
     // Route::get('/riwayat_parkir', [ParkirMasukController::class, 'index'])->name('riwayat.parkir');
 

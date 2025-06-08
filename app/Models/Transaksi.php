@@ -10,6 +10,7 @@ class Transaksi extends Model
         'users_id',        
         'uid',
         'nama',
+        'alamat',
         'jenis',
         'jumlah',
         'keterangan',
