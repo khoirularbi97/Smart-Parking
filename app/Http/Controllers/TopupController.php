@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Midtrans\Snap;
 use Midtrans\Config;
 use App\Models\Topup;
+use App\Models\Transaksi;
 use Midtrans\Notification;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -51,7 +52,19 @@ class TopupController extends Controller
             'order_id' =>$orderId,
             
         ]);
-
+       $transaksi = Transaksi::create([
+            'users_id' => $user->id,
+            'nama'   => $user->name,
+            'uid'   => $user->uid,
+            'jenis'   => 'debit',
+            'jumlah' => $amount,
+            'keterangan' => 'topup',
+            'order_id' => $orderId,
+            'Status' => 0,
+            
+            
+            
+        ]);
         $params = [
             'transaction_details' => [
                 'order_id' => $topup->order_id,
