@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Topup;
+use App\Models\Transaksi;
 use App\Models\User;
 use Midtrans\Snap;
 use Midtrans\Config;
@@ -64,6 +65,16 @@ class TopupAdminController extends Controller
             'amount' => $amount,
             'status' => 'pending',
             'order_id' =>$orderId,
+            
+        ]);
+        $transaksi = Transaksi::create([
+            'users_id' => $user->id,
+            'nama'   => $user->name,
+            'uid'   => $user->uid,
+            'jenis'   => 'debit',
+            'jumlah' => $amount,
+            'Status' => 1,
+            
             
         ]);
 
