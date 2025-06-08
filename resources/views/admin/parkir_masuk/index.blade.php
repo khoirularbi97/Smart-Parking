@@ -32,11 +32,6 @@
                  
                       <th class="px-4 py-2 border">Status</th>
                       <th class="px-4 py-2 border">CreatedDate</th>
-                      <th class="px-4 py-2 border">CreatedBy</th>
-                      <th class="px-4 py-2 border">LastUpdateBy</th>
-                      <th class="px-4 py-2 border">LastUpdateDate</th>
-                      <th class="px-4 py-2 border">CompanyCode</th>
-                      <th class="px-4 py-2 border">IsDeleted</th>
                       <th class="px-4 py-2 border">Image</th>
                   </tr>
               </thead>
@@ -74,14 +69,11 @@
                                     {{ $masuk->status }}
                                 </span></td>
                           <td class="px-4 py-2 border">{{ $masuk->CreatedDate}}</td>
-                          <td class="px-4 py-2 border">{{ $masuk->CreatedBy }}</td>
-                          <td class="px-4 py-2 border">{{ $masuk->LastUpdateBy }}</td>
-                          <td class="px-4 py-2 border">{{ $masuk->LastUpdateDate }}</td>
-                          <td class="px-4 py-2 border">{{ $masuk->CompanyCode }}</td>
-                          <td class="px-4 py-2 border">{{ $masuk->IsDeleted }}</td>
+                          
+                          
                           <td class="px-4 py-2 border">
                            @if (Str::startsWith($masuk->image_base64, '/9j')) {{-- Cek awalan base64 (JPEG) --}}
-                              <img src="data:image/jpeg;base64,{{ $masuk->image_base64 }}" alt="Gambar" class="h-auto w-auto cursor-pointer rounded shadow" onclick="showImageModal(this.src)">
+                              <img src="data:image/jpeg;base64,{{ $masuk->image_base64 }}" alt="Gambar" class="h-10 w-10 cursor-pointer rounded shadow" onclick="showImageModal(this.src)">
                           @else
                               <img src="{{ $masuk->image_path }}" alt="Gambar">
                           @endif
@@ -111,9 +103,21 @@
 </div>
 <x-popup-delete></x-popup-delete>
 <!-- Image Modal -->
-<div id="imageModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-75 flex items-center justify-center">
+
+<div id="imageModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+     <!-- Modal box -->
+  <div id="modalBox" class="bg-white p-6 rounded-xl shadow-lg transform scale-95 opacity-0 transition duration-300 ease-out w-full max-w-md">
+    <h2 class="text-xl font-semibold mb-4">Detail Parkir Masuk</h2>
+    <img id="modalImage" src="" class="max-w-full max-h-[100vh] rounded-lg border-4 border-white">
+    <p><strong>UID:</strong> <span id="modalOrderId"></span></p>
+    <p><strong>Status:</strong> <span id="modalStatus"></span></p>
+    <p><strong>Waktu:</strong> <span id="modalTransactionTime"></span></p>
+    <p><strong>Metode:</strong> <span id="modalPaymentType"></span></p>
+    <p><strong>Nominal:</strong> <span id="modalAmount"></span></p>
+    <button onclick="closeImageModal()" class="mt-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Tutup</button>
+  </div>
     <span class="absolute top-4 right-6 text-white text-3xl cursor-pointer" onclick="closeImageModal()">&times;</span>
-    <img id="modalImage" src="" class="max-w-full max-h-[90vh] rounded-lg border-4 border-white">
+    
 </div>
 
     
@@ -121,7 +125,7 @@
 <x-pop-up></x-pop-up>
 
 <script>
-    
+   
     // Fungsi untuk menampilkan alert
     function showAlert() {
       const alert = document.getElementById('successAlert');
@@ -145,6 +149,7 @@
   </script>
 @endif
 <script>
+
     
     let deleteUserId = null;
 
@@ -162,21 +167,62 @@
     form.action = '{{ url("admin/parkir_masuk") }}/' + deleteUserId;
     form.submit();
 }
+     function openModal() {
+            const overlay = document.getElementById('modalOverlay');
+            const modal = document.getElementById('modalBox');
+
+            overlay.classList.remove('hidden');
+
+            // Pakai timeout agar animasi bisa berjalan setelah visible
+            setTimeout(() => {
+                modal.classList.remove('scale-95', 'opacity-0');
+                modal.classList.add('scale-100', 'opacity-100');
+            }, 10);
+            }
+            function formatRupiah(angka) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR'
+            }).format(angka);
+            }
+
+            function closeModal() {
+            const overlay = document.getElementById('modalOverlay');
+            const modal = document.getElementById('modalBox');
+
+            modal.classList.remove('scale-100', 'opacity-100');
+            modal.classList.add('scale-95', 'opacity-0');
+
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+            }, 300); // waktu sesuai dengan duration-300
+            }
+    
 
     function showImageModal(src) {
         document.getElementById('modalImage').src = src;
         document.getElementById('imageModal').classList.remove('hidden');
+        const modal = document.getElementById('modalBox');
+        modal.classList.add('scale-100', 'opacity-100');
+
     }
 
     function closeImageModal() {
         document.getElementById('imageModal').classList.add('hidden');
+        const modal = document.getElementById('modalBox');
+
+            modal.classList.remove('scale-100', 'opacity-100');
+            modal.classList.add('scale-95', 'opacity-0');
     }
 
     // Tutup modal jika klik di luar gambar
     document.getElementById('imageModal').addEventListener('click', function (e) {
         if (e.target.id === 'imageModal') {
             closeImageModal();
+            
         }
+         
+
     });
 
 

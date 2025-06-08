@@ -44,6 +44,7 @@ class TopupController extends Controller
         $topup = Topup::create([
             'users_id' => $user->id,
             'name'   => $user->name,
+            'alamat'   => $user->alamat,
             'method'   => 'waiting',
             'amount' => $amount,
             'status' => 'pending',
@@ -59,6 +60,7 @@ class TopupController extends Controller
             'customer_details' => [
                 'first_name' => $user->name,
                 'email' => $user->email,
+                
             ],
         ];
 
@@ -68,7 +70,7 @@ class TopupController extends Controller
                 return response()->json([
             'message' => 'Testing Midtrans',
             'token' => $snapToken
-]);
+        ]);
 
     }
 

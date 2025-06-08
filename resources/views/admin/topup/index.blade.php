@@ -21,11 +21,11 @@
                 <button class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">Cari</button>
             </form>
             
-            <a href="{{ route('admin/transaksi/create') }}" class="bg-sky-600 hover:bg-cyan-500 text-white px-4 py-2 rounded">Top Up Member</a>
+            <a href="{{ route('create.topup') }}" class="bg-sky-600 hover:bg-cyan-500 text-white px-4 py-2 rounded">Top Up Member</a>
             </div>
             <div class="table-responsive">
             <table class="relative min-w-full rounded-lg shadow">
-                <thead>
+                <thead >
                     <tr class="bg-gray-100">
                         <th class="px-4 py-2 border">No.</th>
                         <th class="px-4 py-2 border">Aksi</th>
@@ -51,16 +51,16 @@
                                 <div class="flex justify-center-safe gap-1 p-1">
                                     <div class="center">
 
-                                    <button onclick="window.location.href='{{ route('admin.transaksi.edit', $topups->id) }}'" class="bg-gray-100 p-1 rounded hover:bg-cyan-300"><i data-lucide="square-pen"></i></button>
+                                    <button onclick="window.location.href='{{ route('admin.transaksi.edit', $topups->id) }}'" class="bg-gray-100 p-1 rounded hover:bg-cyan-300"><i data-lucide="square-pen" class="text-cyan-800"></i></button>
                                     </div>
                                     <div class="center">
-                                            <button onclick="showConfirmModal({{ $topups->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"><i data-lucide="trash-2"></i></button>
+                                            <button onclick="showConfirmModal({{ $topups->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"><i data-lucide="trash-2" class="text-red-800"></i></button>
                                     
 
                                     </div>
                                     <div class="center">
                                     
-                                    <button  onclick="" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="printer"></i></button>
+                                    <button  onclick="" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="printer" class="text-yellow-800"></i></button>
                                     
                                     </div>
 

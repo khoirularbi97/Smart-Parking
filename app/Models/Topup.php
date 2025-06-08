@@ -9,6 +9,7 @@ class Topup extends Model
     'users_id',
     'amount',
     'name',
+    'alamat',
     'method',
     'status',
     'order_id' 
