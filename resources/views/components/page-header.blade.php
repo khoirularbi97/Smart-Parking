@@ -4,10 +4,11 @@
     'back' => true
 ])
 
-<div class="flex items-center justify-between mb-6">
+<div class="flex items-center justify-between mb-1">
     {{-- Breadcrumb dan Judul --}}
     <div class="space-y-1">
         <nav class="text-md text-gray-500 flex items-center space-x-2">
+            <i data-lucide="home"></i>
             @foreach ($breadcrumbs as $breadcrumb)
                 @if (!$loop->last)
                     <a href="{{ $breadcrumb['url'] }}" class="hover:text-blue-600">{{ $breadcrumb['label'] }}</a>

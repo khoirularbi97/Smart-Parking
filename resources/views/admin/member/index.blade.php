@@ -4,19 +4,15 @@
 
 @section('content')
 <x-page-header
-    title="Registrasi"
+    title=""
     :breadcrumbs="[
         ['label' => 'Home', 'url' => '/member'],
      
-    ]"
-/>
-
-
-
-
-    
-    <div class="p-6 grid grid-cols-1 gap-4">
-    <div class="bg-white shadow rounded  p-6">
+    ]"/>
+ 
+    <div class="p-6 grid grid-cols-1 gap-1">
+        <div class="bg-white shadow rounded  p-6">
+        <h1 class="text-2xl text-center font-bold mb-10">Registrasi</h1>
         <div class="justify-between items-center mb-6">
             <form action="{{ route('admin.member') }}" method="GET" class="mb-4 flex gap-2">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama/email..." class="border p-2 rounded w-1/3">
@@ -51,16 +47,16 @@
                         <td class="p-1 border">
                             <div class="flex justify-center-safe gap-1">
                                 <div class="center">
-                                    <button onclick="window.location='{{ route('admin.member.edit', $user->id) }}'" class="bg-gray-100 p-1 rounded hover:bg-cyan-300"><i data-lucide="square-pen"></i></button>
+                                    <button onclick="window.location='{{ route('admin.member.edit', $user->id) }}'" class="bg-gray-100 p-1 rounded hover:bg-cyan-300"><i data-lucide="square-pen" class="text-cyan-800"></i></button>
                                 </div>
                                 <div class="center">
                                     
-                                 <button  onclick="showConfirmModal({{ $user->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"><i data-lucide="trash-2"></i></button>
+                                 <button  onclick="showConfirmModal({{ $user->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"><i data-lucide="trash-2" class="text-red-800"></i></button>
                                 
                                 </div>
                                 <div class="center">
                                     
-                                 <button  onclick="" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="printer"></i></button>
+                                 <button  onclick="" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="eye" class="text-yellow-800"></i></button>
                                 
                                 </div>
 

@@ -19,7 +19,8 @@ class TransaksiController extends Controller
               ->orWhere('uid', 'like', "%$search%")
               ->orWhere('nama', 'like', "%$search%")
               ->orWhere('jenis', 'like', "%$search%")
-              ->orWhere('jumlah', 'like', "%$search%");
+              ->orWhere('jumlah', 'like', "%$search%")
+              ->orWhere('keterangan', 'like', "%$search%");
         });
     } elseif ($request->filled('start_date') && $request->filled('end_date')) {
         $query->whereBetween('created_at', [
@@ -68,6 +69,7 @@ class TransaksiController extends Controller
         'users_id' => 'required|string|max:255',
         'uid' => 'required|string|max:255',
         'jumlah' => 'required|numeric',
+        'keterangan' => 'required|string',
     ]);
     
     $userUpdated = Auth::user();
@@ -96,14 +98,14 @@ class TransaksiController extends Controller
         $user->save(); // Simpan saldo baru
     }else{
     // Step 1: Kembalikan saldo user lama berdasarkan transaksi sebelumnya
-    if ($transaksi->jenis == 'kredit') {
+    if ($transaksi->jenis == 'debit') {
         $oldUser->saldo -= $transaksi->jumlah;
     } else {
         $oldUser->saldo += $transaksi->jumlah;
     }
 
     // Step 2: Terapkan transaksi baru ke user baru
-    if ($request->jenis == 'kredit') {
+    if ($request->jenis == 'debit') {
         $newUser->saldo += $request->jumlah;
     } else { // debit
         $newUser->saldo -= $request->jumlah;
@@ -151,7 +153,8 @@ class TransaksiController extends Controller
             'uid' => 'required|string',
             'nama' => 'required|string',
             'jenis' => 'required|in:kredit,debit',
-            'jumlah' => 'required|numeric'
+            'jumlah' => 'required|numeric',
+            'keterangan' => 'required|string'
         ]);
         \App\Models\Transaksi::create([
             'users_id' => $request->users_id,
@@ -159,9 +162,10 @@ class TransaksiController extends Controller
             'nama' => $request->nama,
             'jenis' => $request->jenis,
             'jumlah' => $request->jumlah,
+            'keterangan' => $request->keterangan,
             'CreatedBy' => $user ? $user->name : 'system',
             'CompanyCode' => 'TR01',
-            'Status' => 0 , 
+            'Status' => 1 , 
             'IsDeleted' => 0,
 
         ]);
@@ -215,7 +219,8 @@ class TransaksiController extends Controller
               ->orWhere('uid', 'like', "%$search%")
               ->orWhere('nama', 'like', "%$search%")
               ->orWhere('jenis', 'like', "%$search%")
-              ->orWhere('jumlah', 'like', "%$search%");
+              ->orWhere('jumlah', 'like', "%$search%")
+              ->orWhere('keterangan', 'like', "%$search%");
         });
     }
 
@@ -242,7 +247,8 @@ public function exportPDF2(Request $request)
               ->orWhere('uid', 'like', "%$search%")
               ->orWhere('nama', 'like', "%$search%")
               ->orWhere('jenis', 'like', "%$search%")
-              ->orWhere('jumlah', 'like', "%$search%");
+              ->orWhere('jumlah', 'like', "%$search%")
+              ->orWhere('keterangan', 'like', "%$search%");
         });
     }
 

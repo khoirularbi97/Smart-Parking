@@ -4,17 +4,18 @@
 
 @section('content')
 <x-page-header2
-    title="Transaksi"
+    title=""
     :breadcrumbs="[
-        ['label' => 'Home', 'url' => '/transaksi'],
+        ['label' => 'Home ', 'url' => '/transaksi'],
         
     ]"
 />
 
-    <div class="p-6 grid grid-cols-1 gap-4">
+    <div class="p-6 grid grid-cols-1 gap-4 ">
 
         
-        <div class="bg-white shadow rounded overflow-x-auto p-6">
+        <div class="bg-white shadow rounded overflow-x-auto p-6 mt-1">
+            <h1 class="text-2xl text-center font-bold mb-10">Riwayat Transaksi</h1>
             <div class="flex justify-between overflow-x-auto">
                 <div class="justify-between items-center mb-6">
                 <form action="" method="GET" class="mb-4 flex gap-2">
@@ -22,14 +23,13 @@
                     <button class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">Cari</button>
                 </form>
                 
-                <a href="{{ route('admin/transaksi/create') }}" class="bg-gray-200 hover:g-sky-200 px-4 py-2 rounded">Tambah Transaksi</a>
-                </div>
-                <div class="mt-4 gap-5 mb-4">
-                    <a href="{{ route('admin.transaksis.exportPdf', request()->query()) }}" target="_blank"
-                        class="bg-red-500 text-white px-4 py-2 rounded">Export Table Only</a>
+                <a href="{{ route('admin/transaksi/create') }}" class="bg-sky-400 hover:bg-sky-200 px-4 py-2 rounded gap-4">Tambah Transaksi</a>
+                 {{-- <a href="{{ route('admin.transaksis.exportPdf', request()->query()) }}" target="_blank"
+                        class="bg-red-500 text-white px-4 py-2 rounded">Export pdf</a> --}}
 
-                  <button onclick="exportPDF()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-5 mb-5">Export With Chart</button>
+                  <button onclick="exportPDF()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2">Export pdf</button>
                 </div>
+               
                 
 
                     <form id="pdfForm" method="POST" action="{{ route('admin.transaksi.export-pdf') }}">
@@ -53,7 +53,10 @@
                         <div class="flex items-end">
                             <button type="submit" class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"> <i data-lucide="funnel" class=""></i></button>
                         </div>
+                         <div class="mt-4 gap-5 mb-4">
+                        </div>
                     </form>
+                   
         </div>
         <div class="bg-white p-4 rounded shadow mb-6">
     <h3 class="text-lg font-semibold mb-2">Grafik Transaksi</h3>
@@ -89,16 +92,16 @@
                                 <div class="flex justify-center-safe gap-1">
                                     <div class="center">
 
-                                    <button onclick="window.location.href='{{ route('admin.transaksi.edit', $transaksi->id) }}'" class="bg-gray-100 p-1 rounded hover:bg-cyan-300"><i data-lucide="square-pen"></i></button>
+                                    <button onclick="window.location.href='{{ route('admin.transaksi.edit', $transaksi->id) }}'" class="bg-gray-100 p-1 rounded hover:bg-cyan-300"><i data-lucide="square-pen" class="text-cyan-800"></i></button>
                                     </div>
                                     <div class="center">
-                                            <button onclick="showConfirmModal({{ $transaksi->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"><i data-lucide="trash-2"></i></button>
+                                            <button onclick="showConfirmModal({{ $transaksi->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"><i data-lucide="trash-2" class="text-red-800"></i></button>
                                     
 
                                     </div>
                                     <div class="center">
                                     
-                                    <button  onclick="" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="printer"></i></button>
+                                    <button  onclick="" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="eye" class="text-yellow-800"></i></button>
                                     
                                     </div>
 
