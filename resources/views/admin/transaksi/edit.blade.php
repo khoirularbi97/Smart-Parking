@@ -74,6 +74,13 @@
                         <x-input-error :messages="$errors->get('jumlah')" class="mt-2" />
                     </div>
 
+                    <!-- Keterangan -->
+                    <div class="mb-4">
+                        <x-input-label for="Keterangan" :value="__('Keterangan')" />
+                        <x-text-input id="keterangan" class="block mt-1 w-full text-box" type="text" name="keterangan"  required value="{{ old('keterangan', $transaksi->keterangan) }}" />
+                        <x-input-error :messages="$errors->get('keterangan')" class="mt-2" />
+                    </div>
+
                     <!-- Tombol -->
                     <div class="flex justify-end">
                         <x-primary-button class="ml-4">

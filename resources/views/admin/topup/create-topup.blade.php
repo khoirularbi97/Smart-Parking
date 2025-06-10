@@ -4,7 +4,7 @@
 
 @section('content')
 <x-page-header-topup
-    title="Craete Topup Member"
+    title=""
     :breadcrumbs="[
         ['label' => 'Home', 'url' => '/topup/admin'],
         ['label' => 'Create Topup Member']
@@ -19,7 +19,7 @@
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <h1 class="text-2xl text-center font-bold mb-6"></h1>
+                <h1 class="text-2xl text-center font-bold mb-6">Craete Topup Member</h1>
                 <form method="POST" id="topup-form">
                     @csrf
 

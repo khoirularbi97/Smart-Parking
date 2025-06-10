@@ -4,7 +4,7 @@
 
 @section('content')
 <x-page-header2
-    title="Tambah Transaksi"
+    title=""
     :breadcrumbs="[
         ['label' => 'Home', 'url' => '/transaksi'],
         ['label' => 'Tambah Transaksi']
@@ -19,7 +19,7 @@
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <h1 class="text-2xl text-center font-bold mb-6"></h1>
+                <h1 class="text-2xl text-center font-bold mb-6">Tambah Transaksi</h1>
                 <form method="POST" action="{{ route('store.transaksi') }}">
                     @csrf
 
@@ -33,7 +33,7 @@
                                         value="{{ $user->users_id }}" 
                                         data-uid="{{ $user->uid }}" 
                                         data-nama="{{ $user->name }}">
-                                        {{ $user->users_id }} - {{ $user->uid }} - {{ $user->name }}
+                                        {{ $user->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -42,13 +42,13 @@
                     <!-- UID (readonly) -->
                     <div class="mb-4">
                         <x-input-label for="uid" :value="__('UID')" />
-                        <x-text-input id="uid" class="block mt-1 w-full" type="text" name="uid" readonly />
+                        <x-text-input id="uid" class="block mt-1 w-full bg-gray-100" type="text" name="uid" readonly />
                     </div>
 
                     <!-- Nama (readonly) -->
                     <div class="mb-4">
                         <x-input-label for="nama" :value="__('Nama')" />
-                        <x-text-input id="nama" class="block mt-1 w-full" type="text" name="nama" readonly />
+                        <x-text-input id="nama" class="block mt-1 w-full bg-gray-100" type="text" name="nama" readonly />
                     </div>
 
                     <!-- Jenis-->
@@ -66,6 +66,12 @@
                         <x-input-label for="jumlah" :value="__('Jumlah')" />
                         <x-text-input id="jumlah" class="block mt-1 w-full" type="number" name="jumlah"  required />
                         <x-input-error :messages="$errors->get('jumlah')" class="mt-2" />
+                    </div>
+                    <!-- Keterangan -->
+                    <div class="mb-4">
+                        <x-input-label for="Keterangan" :value="__('Keterangan')" />
+                        <x-text-input id="keterangan" class="block mt-1 w-full text-box" type="text" name="keterangan"  required />
+                        <x-input-error :messages="$errors->get('keterangan')" class="mt-2" />
                     </div>
 
                     <!-- Tombol -->

@@ -4,7 +4,7 @@
 
 @section('content')
 <x-page-header2
-    title="Parkir Masuk"
+    title=""
     :breadcrumbs="[
         ['label' => 'Home', 'url' => '/transaksi'],
         
@@ -13,9 +13,10 @@
    
    
 
-    <div class="p-6 grid grid-cols-1 gap-4">
+    <div class="p-6 grid grid-cols-1 gap-1">
     
     <div class="bg-white shadow rounded overflow-x-auto p-6">
+        <h1 class="text-2xl text-center font-bold mb-10">Parkir Masuk</h1>
 
         <form action="" method="GET" class="mb-4 flex gap-2">
             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari..." class="border p-2 rounded w-1/3">
@@ -43,17 +44,17 @@
                           <div class="flex justify-center-safe gap-1">
                               <div class="center">
       
-                                  <button onclick="" class="bg-gray-100 p-1 rounded hover:bg-cyan-300"><i data-lucide="square-pen"></i></button>
+                                  <button onclick="" class="bg-gray-100 p-1 rounded hover:bg-cyan-300"><i data-lucide="square-pen" class="text-cyan-800"></i></button>
                               </div>
                               <div class="center">
                                   
-                                      <button onclick="showConfirmModal({{ $masuk->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"><i data-lucide="trash-2"></i></button>
+                                      <button onclick="showConfirmModal({{ $masuk->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"><i data-lucide="trash-2" class="text-red-800"></i></button>
                               
       
                               </div>
                               <div class="center">
                                     
-                                    <button  onclick="" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="printer"></i></button>
+                                    <button  onclick="showImageModal(this.src)" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="eye" class="text-yellow-800"></i></button>
                                     
                                     </div>
       

@@ -4,17 +4,17 @@
 
 @section('content')
 <x-page-header2
-    title="Top Up"
+    title=""
     :breadcrumbs="[
         ['label' => 'Home', 'url' => '/topup_member'],
         
     ]"
 />
 
-    <div class="p-6 grid grid-cols-1 gap-4">
+    <div class="p-6 grid grid-cols-1 gap-1">
 
-
-        <div class="bg-white shadow rounded overflow-x-auto p-6">
+        <div class="bg-white shadow rounded overflow-x-auto p-6 mt-1">
+            <h1 class="text-2xl text-center font-bold mb-10">Riwayat Top Up</h1>
             <div class="justify-between items-center mb-6">
             <form action="" method="GET" class="mb-4 flex gap-2">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama/email..." class="border p-2 rounded w-1/3">
@@ -60,7 +60,7 @@
                                     </div>
                                     <div class="center">
                                     
-                                    <button  onclick="" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="printer" class="text-yellow-800"></i></button>
+                                    <button  onclick="" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="eye" class="text-yellow-800"></i></button>
                                     
                                     </div>
 

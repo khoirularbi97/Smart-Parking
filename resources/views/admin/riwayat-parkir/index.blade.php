@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Transaksi')
+@section('title', 'Riwayat Parkir')
 
 @section('content')
 <x-page-header2
