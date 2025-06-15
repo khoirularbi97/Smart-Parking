@@ -12,7 +12,12 @@ class Topup extends Model
     'alamat',
     'method',
     'status',
-    'order_id' 
+    'order_id',
+    'CreatedBy',
+    'LastUpdateBy',
+    'CompanyCode',
+    'Status',
+    'IsDeleted'
 ];
 
    public function user()

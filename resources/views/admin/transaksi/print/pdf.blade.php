@@ -101,8 +101,9 @@
                 <th>No</th>
                 <th>Nama</th>
                 <th>UID</th>
-                <th>Nominal</th>
                 <th>Metode</th>
+                <th>Tanggal</th>
+                <th>Nominal</th>
             </tr>
         </thead>
         <tbody>
@@ -111,8 +112,9 @@
                     <td>{{ $i + 1 }}</td>
                     <td>{{ $item->nama }}</td>
                     <td>{{ $item->uid }}</td>
-                    <td>Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
                     <td>{{ $item->jenis }}</td>
+                    <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y H:i') }}</td>
+                    <td>Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
                 </tr>
             @endforeach
         </tbody>

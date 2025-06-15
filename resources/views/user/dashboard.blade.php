@@ -4,6 +4,7 @@
 
 @section('content')
 <!-- Header -->
+
 <header class="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-3xl font-bold py-7 px-10 rounded-2xl shadow-lg">
     <div class="max-w-7xl mx-auto py-6 px-4 flex justify-between items-center sm:px-6 lg:px-8">
         <h1 class="text-2xl font-bold text-gray-900">Hai!   {{ Auth::user()->name }}</h1>

@@ -226,7 +226,7 @@ class TransaksiController extends Controller
 
     $transaksis = $query->latest()->get();
 
-    $pdf = Pdf::loadView('admin.print.table-pdf', compact('transaksis'));
+    $pdf = Pdf::loadView('admin.transaksi.print.table-pdf', compact('transaksis'));
     return $pdf->download('laporan-transaksi.pdf');
 }
 public function exportPDF2(Request $request)
@@ -255,7 +255,7 @@ public function exportPDF2(Request $request)
     $transaksis = $query->latest()->orderBy('created_at')->get();
    
 
-    $pdf = Pdf::loadView('admin.print.pdf', [
+    $pdf = Pdf::loadView('admin.transaksi.print.pdf', [
          'chartBase64' => $base64Image, // Kirim ke Blade
     ],compact('transaksis'));
 

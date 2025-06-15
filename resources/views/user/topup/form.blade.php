@@ -13,7 +13,7 @@
       <form id="topup-form">
         @csrf
       <label class="block mb-2 text-sm text-gray-600">Masukkan jumlah topup</label>
-      <input type="number" name="amount" placeholder="Contoh: 10000" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none mb-4" required />
+      <input type="text" name="amount" id="amount" placeholder="Contoh: 10000" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none mb-4" required />
       <button class="w-full bg-purple-500 hover:bg-purple-600 text-white py-2 rounded-lg transition duration-300 shadow-md" type="submit">Topup</button>
       </form>
     </div>
@@ -90,18 +90,20 @@ document.getElementById('topup-form').addEventListener('submit', function (e) {
         'Accept': 'application/json',
     },
     body: JSON.stringify({
-        amount: document.querySelector('[name="amount"]').value
+         amount: document.querySelector('[name="amount"]').value.replace(/[^0-9]/g, ""),
+
     })
 })
 .then(async response => {
     const text = await response.text();
     try {
         const data = JSON.parse(text);
+        const orderId = data.order_id;
         window.snap.pay(data.token, {
             onSuccess: function(result) {
-                alert('Topup berhasil!');
+                
 
-                window.location.reload();
+                window.location.href = "{{ url('/invoice/user') }}/" + orderId;
             },
             onPending: function(result) {
                 alert('Menunggu pembayaran...');
@@ -182,7 +184,37 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     });
-});
+    const hargaInput = document.getElementById("amount");
+
+                if (hargaInput) {
+                    hargaInput.addEventListener("input", function (e) {
+                        let value = e.target.value.replace(/[^0-9]/g, "");
+                        if (value) {
+                            e.target.value = new Intl.NumberFormat("id-ID", {
+                                style: "currency",
+                                currency: "IDR",
+                                minimumFractionDigits: 0
+                            }).format(value);
+                        } else {
+                            e.target.value = "";
+                        }
+                    });
+
+                    // Format nilai awal jika ada
+                    let initialValue = hargaInput.value.replace(/[^0-9]/g, "");
+                    if (initialValue) {
+                        hargaInput.value = new Intl.NumberFormat("id-ID", {
+                            style: "currency",
+                            currency: "IDR",
+                            minimumFractionDigits: 0
+                        }).format(initialValue);
+                    }
+
+                    // Sebelum submit, hilangkan format dan kirim angka asli saja
+                    
+                }
+            });
+
 
 
 
