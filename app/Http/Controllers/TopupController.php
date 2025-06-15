@@ -50,6 +50,9 @@ class TopupController extends Controller
             'amount' => $amount,
             'status' => 'pending',
             'order_id' =>$orderId,
+            'CreatedBy' =>$user ? $user->name : 'system',
+            'CompanyCode' => 'TU01',
+            'IsDeleted' => 0,
             
         ]);
        $transaksi = Transaksi::create([
@@ -61,6 +64,10 @@ class TopupController extends Controller
             'keterangan' => 'topup',
             'order_id' => $orderId,
             'Status' => 0,
+            'CreatedBy' =>$user ? $user->name : 'system',
+            'CompanyCode' => 'TR01',
+            'IsDeleted' => 0,
+            
             
             
             
@@ -82,7 +89,8 @@ class TopupController extends Controller
        
                 return response()->json([
             'message' => 'Testing Midtrans',
-            'token' => $snapToken
+            'token' => $snapToken,
+            'order_id' => $orderId
         ]);
 
     }
@@ -123,6 +131,12 @@ class TopupController extends Controller
 
         return response()->json(['message' => 'Notification processed']);
     }
+
+    public function showInvoice($order_id)
+{
+    $invoice = Topup::where('order_id', $order_id)->firstOrFail();
+    return view('user.topup.invoice', compact('invoice'));
+}
            
 
 }

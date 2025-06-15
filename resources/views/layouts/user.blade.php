@@ -22,10 +22,10 @@
         <script src="https://unpkg.com/lucide@latest"></script>
     @livewireStyles
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+    <body class="font-sans antialiased ">
+        <div class="min-h-screen bg-gray-100 ">
             @include('layouts.navigation_user')
-            <div class="min-h-screen flex">
+            <div class="min-h-screen flex ">
                
                 <div class="flex-1 flex flex-col">
                     <!-- Header -->

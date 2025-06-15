@@ -88,6 +88,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/topup/process', [TopupController::class, 'process'])->name('topup.process');
 
     Route::get('/api/midtrans/status/{orderId}', [MidtransController::class, 'checkStatus']);
+    Route::get('/invoice/user/{order_id}', [TopupController::class, 'showInvoice'])->name('invoice.user.show');
    
 
     
@@ -130,17 +131,23 @@ Route::middleware('auth','admin')->group(function () {
     //route Parkir Keluar
     Route::get('/parkir_keluar', [ParkirMasukController::class, 'index'])->name('parkir.keluar');
     Route::delete('admin/parkir_keluar/{id}', [ParkirMasukController::class, 'destroy'])->name('admin.parkir_keluar.destroy');
+
     //route TopUp
     Route::get('/topup/admin', [TopupAdminController::class, 'index'])->name('topup.admin');
     Route::get('/topup/admin/create-topup', [TopupAdminController::class, 'create'])->name('create.topup');
+    Route::get('/topup/admin/edit-topup{id}', [TopupAdminController::class, 'edit'])->name('edit.topup');
     Route::post('/topup/admin/proses', [TopupAdminController::class, 'process'])->name('admin.topup.process');
+    Route::delete('/topup/admin/delete/{id}', [TopupAdminController::class, 'destroy'])->name('admin.topup.delete');
+    Route::match(['get', 'post'], '/topup/admin/export-pdf', [TopupAdminController::class, 'exportPDF2'])->name('admin.topup.export-pdf');
+    Route::get('/invoice/{order_id}', [TopupAdminController::class, 'showInvoice'])->name('invoice.show');
+
 
 
     // Route::get('/riwayat_parkir', [ParkirMasukController::class, 'index'])->name('riwayat.parkir');
 
     // print
-    Route::get('/admin/transaksis/export-pdf', [TransaksiController::class, 'exportPdf'])->name('admin.transaksis.exportPdf');
-    Route::get('/admin/transaksis/chart-preview', [TransaksiController::class, 'chartPreview'])->name('admin.transaksis.chartPreview');
+    //Route::get('/admin/transaksis/export-pdf', [TransaksiController::class, 'exportPdf'])->name('admin.transaksis.exportPdf');
+    //Route::get('/admin/transaksis/chart-preview', [TransaksiController::class, 'chartPreview'])->name('admin.transaksis.chartPreview');
 
     Route::post('/admin/transaksi/export-pdf', [TransaksiController::class, 'exportPDF2'])->name('admin.transaksi.export-pdf');
 

@@ -110,11 +110,10 @@
   <div id="modalBox" class="bg-white p-6 rounded-xl shadow-lg transform scale-95 opacity-0 transition duration-300 ease-out w-full max-w-md">
     <h2 class="text-xl font-semibold mb-4">Detail Parkir Masuk</h2>
     <img id="modalImage" src="" class="max-w-full max-h-[100vh] rounded-lg border-4 border-white">
-    <p><strong>UID:</strong> <span id="modalOrderId"></span></p>
-    <p><strong>Status:</strong> <span id="modalStatus"></span></p>
-    <p><strong>Waktu:</strong> <span id="modalTransactionTime"></span></p>
-    <p><strong>Metode:</strong> <span id="modalPaymentType"></span></p>
-    <p><strong>Nominal:</strong> <span id="modalAmount"></span></p>
+    <p><strong>UID:</strong> <span id="modalOrderId">{{ $masuk->uid }}</span></p>
+    <p><strong>Status:</strong> <span id="modalStatus">{{ $masuk->status }}</span></p>
+    <p><strong>Waktu:</strong> <span id="modalTransactionTime">
+                          <td class="px-4 py-2 border">{{ \Carbon\Carbon::parse($masuk->created_at)->format('d M Y H:i') }}</span></p>
     <button onclick="closeImageModal()" class="mt-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Tutup</button>
   </div>
     <span class="absolute top-4 right-6 text-white text-3xl cursor-pointer" onclick="closeImageModal()">&times;</span>

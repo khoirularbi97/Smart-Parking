@@ -20,7 +20,7 @@
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <h1 class="text-2xl text-center font-bold mb-6">Craete Topup Member</h1>
-                <form method="POST" id="topup-form">
+                <form method="POST" id="topup-form" enctype="multipart/form-data">
                     @csrf
 
                    <!-- Pilih User -->
@@ -55,7 +55,7 @@
                     <!-- Jumlah -->
                     <div class="mb-4">
                         <x-input-label for="amount" :value="__('Jumlah')" />
-                        <x-text-input id="amount" class="block mt-1 w-full" type="number" name="amount"  required />
+                        <x-text-input id="amount" class="block mt-1 w-full" type="text" name="amount"  required />
                         <x-input-error :messages="$errors->get('amount')" class="mt-2" />
                     </div>
 
@@ -84,25 +84,28 @@
                         'Accept': 'application/json',
                     },
                     body: JSON.stringify({
-                        amount: document.querySelector('[name="amount"]').value,
+                        amount: document.querySelector('[name="amount"]').value.replace(/[^0-9]/g, ""),
                         users_id: document.querySelector('[name="users_id"]').value
                     })
                 })
                 .then(async response => {
                     const text = await response.text();
+                    
                     try {
                         const data = JSON.parse(text);
+                        const orderId = data.order_id; 
                         window.snap.pay(data.token, {
                             onSuccess: function(result) {
-                                alert('Topup berhasil!');
+                               
 
-                                window.location.reload();
+                                 window.location.href = "{{ url('/invoice') }}/" + orderId;
                             },
                             onPending: function(result) {
                                 alert('Menunggu pembayaran...');
                             },
                             onError: function(result) {
                                 alert('Pembayaran gagal.');
+                                window.location.href = "{{ url('/topup/admin') }}";
                             }
                         });
                     } catch (e) {
@@ -177,7 +180,36 @@
                             });
                         });
                     });
-                });
+                 const hargaInput = document.getElementById("amount");
+
+                if (hargaInput) {
+                    hargaInput.addEventListener("input", function (e) {
+                        let value = e.target.value.replace(/[^0-9]/g, "");
+                        if (value) {
+                            e.target.value = new Intl.NumberFormat("id-ID", {
+                                style: "currency",
+                                currency: "IDR",
+                                minimumFractionDigits: 0
+                            }).format(value);
+                        } else {
+                            e.target.value = "";
+                        }
+                    });
+
+                    // Format nilai awal jika ada
+                    let initialValue = hargaInput.value.replace(/[^0-9]/g, "");
+                    if (initialValue) {
+                        hargaInput.value = new Intl.NumberFormat("id-ID", {
+                            style: "currency",
+                            currency: "IDR",
+                            minimumFractionDigits: 0
+                        }).format(initialValue);
+                    }
+
+                    // Sebelum submit, hilangkan format dan kirim angka asli saja
+                    
+                }
+            });
 
 
 
