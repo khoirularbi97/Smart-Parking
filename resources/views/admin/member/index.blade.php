@@ -67,7 +67,7 @@
                         <td class="px-4 py-2 border">{{ $user->email }}</td>
                         <td class="px-4 py-2 border">{{ $user->uid }}</td>
                         <td class="px-4 py-2 border">{{ $user->saldo }}</td>
-                        <td class="px-4 py-2 border">{{ $user->CreatedDate }}</td>
+                        <td class="px-4 py-2 border">{{ \Carbon\Carbon::parse($user->created_at)->format('d M Y H:i') }}</td>
                         <td class="px-4 py-2 border">{{ $user->CreatedBy }}</td>
                         <td class="px-4 py-2 border">{{ $user->LastUpdateBy }}</td>
                         <td class="px-4 py-2 border">{{ $user->LastUpdateDate }}</td>

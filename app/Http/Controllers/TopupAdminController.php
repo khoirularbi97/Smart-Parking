@@ -7,6 +7,7 @@ use App\Models\Topup;
 use App\Models\Transaksi;
 use App\Models\User;
 use Midtrans\Snap;
+use Illuminate\Support\Facades\DB;
 use Midtrans\Config;
 use Midtrans\Notification;
 use Illuminate\Support\Str;
@@ -28,13 +29,37 @@ class TopupAdminController extends Controller
               ->orWhere('status', 'like', "%$search%")
               ->orWhere('created_at', 'like', "%$search%");
         });
+    } elseif ($request->filled('start_date') && $request->filled('end_date')) {
+        $query->whereBetween('created_at', [
+            $request->start_date . ' 00:00:00',
+            $request->end_date . ' 23:59:59'
+        ]);
     }
 
     $topup= $query->latest()->paginate(10)->withQueryString();
+    // Ambil data untuk chart (7 hari terakhir)
+    $chartData = Topup::select(
+        DB::raw("DATE(created_at) as date"),
+        DB::raw("SUM(amount) as total")
+    )
+    ->when($request->filled('start_date') && $request->filled('end_date'), function ($q) use ($request) {
+        $q->whereBetween('created_at', [
+            $request->start_date . ' 00:00:00',
+            $request->end_date . ' 23:59:59'
+        ]);
+    })
+    ->groupBy('date')
+    ->orderBy('date')
+    ->get();
+
+    // Siapkan data untuk chart.js
+    $dates = $chartData->pluck('date');
+    $totals = $chartData->pluck('total');
+
 
     
     
-    return view('admin.topup.index', compact('topup'));
+    return view('admin.topup.index', compact('topup', 'dates', 'totals'));
 
     }
      public function create()
@@ -51,7 +76,8 @@ class TopupAdminController extends Controller
     }
 
     public function process(Request $request)
-    {
+    {   
+        $user_auth = Auth::user();
         $user =User::findOrFail($request->users_id);
         $amount = $request->amount;
         $orderId = 'TOPUP-' . time() . '-' . Str::random(5); // contoh format order_id unik
@@ -65,6 +91,9 @@ class TopupAdminController extends Controller
             'amount' => $amount,
             'status' => 'pending',
             'order_id' =>$orderId,
+            'CreatedBy' =>$user_auth ? $user_auth->name : 'system',
+            'CompanyCode' => 'TR01',
+            'IsDeleted' => 0,
             
         ]);
         $transaksi = Transaksi::create([
@@ -76,6 +105,9 @@ class TopupAdminController extends Controller
             'keterangan' => 'topup',
             'order_id' => $orderId,
             'Status' => 0,
+            'CreatedBy' =>$user_auth ? $user_auth->name : 'system',
+            'CompanyCode' => 'TR01',
+            'IsDeleted' => 0,
             
             
         ]);

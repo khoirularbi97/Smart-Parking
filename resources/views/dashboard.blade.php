@@ -73,8 +73,9 @@
                                 <th class="border px-4 py-2">No</th>
                                 <th class="border px-4 py-2">Nama</th>
                                 <th class="border px-4 py-2">Type</th>
-                                <th class="border px-4 py-2">Nominal</th>
+                                <th class="border px-4 py-2">Tanggal</th>
                                 <th class="border px-4 py-2">Status</th>
+                                <th class="border px-4 py-2">Nominal</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,6 +85,7 @@
                                 <td class="border px-4 py-2">{{ $histories->firstItem() + $loop->index }}</td>
                                 <td class="border px-4 py-2">{{ $item->name }}</td>
                                 <td class="border px-4 py-2">{{ $item->method }}</td>
+                                <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y H:i') }}</td>
                                 <td class="border px-4 py-2"> 
                                     Rp {{ number_format($item->amount, 2, ',', '.') }}</td>
                                 <td class="border px-4 py-2 text-center">

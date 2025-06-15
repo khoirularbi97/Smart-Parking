@@ -4,9 +4,9 @@
 
 @section('content')
 <x-page-header2
-    title="Transaksi"
+    title=""
     :breadcrumbs="[
-        ['label' => 'Home', 'url' => '/transaksi'],
+        ['label' => 'Home', 'url' => '/Riwayat parkir'],
         
     ]"
 />
@@ -32,7 +32,7 @@
                 </div>
                 
 
-                    <form id="pdfForm" method="POST" action="{{ route('admin.transaksi.export-pdf') }}">
+                    <form id="pdfForm" method="POST" action="">
                         @csrf
                         <input type="hidden" name="chart_image" id="chart_image">
                     </form>
@@ -65,10 +65,10 @@
                 <thead>
                     <tr class="bg-gray-100">
                         <th class="px-4 py-2 border">No.</th>
-                        <th class="px-4 py-2 border">Aksi</th>
-                        <th class="px-4 py-2 border">UID</th>
-                        <th class="px-4 py-2 border">Nama</th>
-                        <th class="px-4 py-2 border">Jenis</th>
+                        <th class="px-4 py-2 border">Slot Parkir</th>
+                        <th class="px-4 py-2 border">Total Durasi </th>
+                        <th class="px-4 py-2 border">Jumlah Transaksi</th>
+                        <th class="px-4 py-2 border">total biaya</th>
                         <th class="px-4 py-2 border">Jumlah</th>
                         <th class="px-4 py-2 border">Keterangan</th>
                         <th class="px-4 py-2 border">CreatedDate</th>
@@ -82,17 +82,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($transaksis as $transaksi)
+                    @forelse ($riwayat_parkir as $riwayat)
                         <tr>
-                            <td class="px-4 py-2 border">{{ $transaksis->firstItem() + $loop->index }}</td>
+                            <td class="px-4 py-2 border">{{ $riwayat_parkir->firstItem() + $loop->index }}</td>
                             <td class="px-4 py-2 border">
                                 <div class="flex justify-center-safe gap-4">
                                     <div class="center">
 
-                                    <button onclick="window.location.href='{{ route('admin.transaksi.edit', $transaksi->id) }}'" class="bg-gray-100 px-4 py-2 rounded hover:bg-cyan-300"><i data-lucide="square-pen"></i></button>
+                                    <button onclick="window.location.href=" class="bg-gray-100 px-4 py-2 rounded hover:bg-cyan-300"><i data-lucide="square-pen"></i></button>
                                     </div>
                                     <div class="center">
-                                            <button onclick="showConfirmModal({{ $transaksi->id }})" class="bg-gray-100 px-4 py-2 rounded hover:bg-red-300"><i data-lucide="trash-2"></i></button>
+                                            <button onclick="showConfirmModal({{ $riwayat->id }})" class="bg-gray-100 px-4 py-2 rounded hover:bg-red-300"><i data-lucide="trash-2"></i></button>
                                     
 
                                     </div>
@@ -106,21 +106,21 @@
 
                                 </div>
                             </td>
-                            <td class="px-4 py-2 border">{{ $transaksi->uid }}</td>
-                            <td class="px-4 py-2 border">{{ $transaksi->nama }}</td>
-                            <td class="px-4 py-2 border">{{ $transaksi->jenis }}</td>
-                            <td class="px-4 py-2 border">Rp {{ number_format($transaksi->jumlah, 2, ',', '.') }}</td>
-                            <td class="px-4 py-2 border">{{ $transaksi->keterangan }}</td>
-                            <td class="px-4 py-2 border">{{ $transaksi->CreatedDate }}</td>
-                            <td class="px-4 py-2 border">{{ $transaksi->CreatedBy }}</td>
-                            <td class="px-4 py-2 border">{{ $transaksi->LastUpdateBy }}</td>
-                            <td class="px-4 py-2 border">{{ $transaksi->LastUpdateDate }}</td>
-                            <td class="px-4 py-2 border">{{ $transaksi->CompanyCode }}</td>
+                            <td class="px-4 py-2 border">{{ $riwayat->parking_slot_id}}</td>
+                            <td class="px-4 py-2 border">{{ $riwayat->total_durasi}}</td>
+                            <td class="px-4 py-2 border">{{ $riwayat->jumlah_transaksi}}</td>
+                            <td class="px-4 py-2 border">Rp {{ number_format($riwayat->total_biaya, 2, ',', '.') }}</td>
+                            <td class="px-4 py-2 border">{{ \Carbon\Carbon::parse($riwayat->created_at)->format('d M Y H:i') }}</td>
+                            <td class="px-4 py-2 border">{{ $riwayat->CreatedDate }}</td>
+                            <td class="px-4 py-2 border">{{ $riwayat->CreatedBy }}</td>
+                            <td class="px-4 py-2 border">{{ $riwayat->LastUpdateBy }}</td>
+                            <td class="px-4 py-2 border">{{ $riwayat->LastUpdateDate }}</td>
+                            <td class="px-4 py-2 border">{{ $riwayat->CompanyCode }}</td>
                             <td class="px-4 py-2 border"> 
-                                <span class="px-2 py-1 rounded text-xs font-semibold {{ $transaksi->Status == '1' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
-                                    {{ $transaksi->Status }}
+                                <span class="px-2 py-1 rounded text-xs font-semibold {{ $riwayat->Status == '1' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
+                                    {{ $riwayat->Status }}
                                 </span></td>
-                            <td class="px-4 py-2 border">{{ $transaksi->IsDeleted }}</td>
+                            <td class="px-4 py-2 border">{{ $riwayat->IsDeleted }}</td>
                             
                             
                         </tr>
@@ -134,7 +134,7 @@
                 </tbody>
             </table>
             <div class="p-4">
-                {{ $transaksis->links() }}
+                {{ $riwayat_parkir->links() }}
             </div>
         </div>
     </div>
@@ -198,10 +198,10 @@
     const transaksiChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: {!! json_encode($dates) !!},
+            labels: {},
             datasets: [{
                 label: 'Total Transaksi (Rp)',
-                data: {!! json_encode($totals) !!},
+                data: {},
                 borderColor: 'rgba(59, 130, 246, 1)', // Tailwind blue-500
                 backgroundColor: 'rgba(59, 130, 246, 0.2)',
                 borderWidth: 2,

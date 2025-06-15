@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RiwayatParkir;
 use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Container\Attributes\DB;
@@ -16,7 +17,7 @@ class RiwayatParkirController extends Controller
      */
     public function index(Request $request)
     {
-         $query = Transaksi::query(); // tanpa with('roles')
+         $query = RiwayatParkir::query(); // tanpa with('roles')
     
     if ($request->filled('search')) {
         $search = $request->search;
@@ -34,29 +35,14 @@ class RiwayatParkirController extends Controller
             $request->end_date . ' 23:59:59'
         ]);
     }
-    $transaksis = $query->latest()->paginate(10)->withQueryString();
+    $riwayat_parkir = $query->latest()->paginate(10)->withQueryString();
 
 
-   // Ambil data untuk chart (7 hari terakhir)
-    $chartData = Transaksi::select(
-        DB::raw("DATE(created_at) as date"),
-        DB::raw("SUM(jumlah) as total")
-    )
-    ->when($request->filled('start_date') && $request->filled('end_date'), function ($q) use ($request) {
-        $q->whereBetween('created_at', [
-            $request->start_date . ' 00:00:00',
-            $request->end_date . ' 23:59:59'
-        ]);
-    })
-    ->groupBy('date')
-    ->orderBy('date')
-    ->get();
+   
 
-    // Siapkan data untuk chart.js
-    $dates = $chartData->pluck('date');
-    $totals = $chartData->pluck('total');
+   
 
-    return view('admin.transaksi.index', compact('transaksis', 'dates', 'totals'));
+    return view('admin.riwayat-parkir.index', compact('riwayat_parkir'));
 
 }
     

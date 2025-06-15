@@ -62,7 +62,7 @@
                     <!-- Tombol -->
                     <div class="flex justify-end">
                         <x-primary-button class="ml-4">
-                            {{ __('Simpan') }}
+                            {{ __('Top Up') }}
                         </x-primary-button>
                     </div>
                 </form>

@@ -69,7 +69,7 @@
                                     {{ $masuk->status == 'aktif' ? 'bg-green-200 text-green-800' : 'bg-green-200 text-green-800' }}">
                                     {{ $masuk->status }}
                                 </span></td>
-                          <td class="px-4 py-2 border">{{ $masuk->CreatedDate}}</td>
+                          <td class="px-4 py-2 border">{{ \Carbon\Carbon::parse($masuk->created_at)->format('d M Y H:i') }}</td>
                           
                           
                           <td class="px-4 py-2 border">
