@@ -25,7 +25,7 @@
                 <a href="{{ route('admin.riwayat-parkir.create') }}" class="bg-gray-200 hover:g-sky-200 px-4 py-2 rounded">Tambah Transaksi</a>
                 </div>
                 <div class="mt-4 gap-5 mb-4">
-                    <a href="{{ route('admin.transaksis.exportPdf', request()->query()) }}" target="_blank"
+                    <a href="" target="_blank"
                         class="bg-red-500 text-white px-4 py-2 rounded">Export Table Only</a>
 
                   <button onclick="exportPDF()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-5 mb-5">Export With Chart</button>
