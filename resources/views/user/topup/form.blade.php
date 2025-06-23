@@ -26,17 +26,24 @@
             <div class="flex items-center gap-2">
                 <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-400"><i data-lucide="{{ $history->method =='credit' ? 'credit-card' : 'wallet-minimal'  }} " class="w-8 h-8 p-1"></i></div>
                 <div>
-                    <p class="font-bold text-sm"><span id="status-{{ $history->order_id }}">{{ $history->status ?? 'Nama Tidak Diketahui' }} </span></p>
+                    <p class="font-bold text-sm"><span class=" @if($history->status == 'success') 
+                                        text-green-500 
+                                    @elseif($history->status == 'pending') 
+                                        text-yellow-500 
+                                    @else 
+                                        text-red-500 
+                                    @endif " id="status-{{ $history->order_id }}">{{ $history->status ?? 'Nama Tidak Diketahui' }} </span></p>
                     <p class="text-xs text-gray-500">{{ $history->created_at->format('d M Y H:i') }}</p>
                 </div>
             </div>
             <div class="text-right text-purple-700 font-semibold">
-                Rp {{ number_format($history->amount, 0, ',', '.') }}
+               Rp {{ number_format($history->amount, 0, ',', '.') }}
             </div>
         </div>
         <div class="flex items-center gap-2 justify-between">
-            <p class="text-xs mt-2 text-purple-500">Riwayat topup</p>
+            <p class="text-xs mt-2 text-black-500">Riwayat topup</p>
             
+            <button  onclick="window.location.href='{{ route('invoice.user.show', $history->order_id) }}'" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="printer" class="text-purple-800"></i></button>
             <button class="btn-check-status bg-pink-400 hover:bg-purple-400 text-white p-2 rounded-lg transition duration-300 shadow-md" data-order-id="{{ $history->order_id }}">
                 Detail
                     </button>

@@ -11,25 +11,25 @@
     ]"
 />
 
-    <div class="p-6 grid grid-cols-1 gap-4">
+    <div class="p-1 grid grid-cols-1 gap-4">
 
         
-        <div class="bg-white shadow rounded overflow-x-auto p-6">
+        <div class="bg-white border-4 border-indigo-200 border-t-cyan-500 shadow rounded overflow-x-auto p-6">
+            <h1 class="text-2xl text-center font-bold mb-10">Riwayat Parkir</h1>
             <div class="flex justify-between overflow-x-auto">
                 <div class="justify-between items-center mb-6">
                 <form action="" method="GET" class="mb-4 flex gap-2">
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama/email..." class="border p-2 rounded w-auto">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari " class="border p-2 rounded w-auto">
                     <button class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">Cari</button>
                 </form>
                 
-                <a href="{{ route('admin.riwayat-parkir.create') }}" class="bg-gray-200 hover:g-sky-200 px-4 py-2 rounded">Tambah Transaksi</a>
+                <a href="{{ route('admin.riwayat-parkir.create') }}" class="bg-cyan-500 hover:g-sky-200 px-4 py-2 rounded">+Tambah Transaksi</a>
+                <button onclick="exportPDF()" class="flex bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2 ">
+                    <i data-lucide="file-down"></i>pdf
+                    </button>
                 </div>
-                <div class="mt-4 gap-5 mb-4">
-                    <a href="{{ route('admin.transaksis.exportPdf', request()->query()) }}" target="_blank"
-                        class="bg-red-500 text-white px-4 py-2 rounded">Export Table Only</a>
-
-                  <button onclick="exportPDF()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-5 mb-5">Export With Chart</button>
-                </div>
+                
+         
                 
 
                     <form id="pdfForm" method="POST" action="">
@@ -89,16 +89,16 @@
                                 <div class="flex justify-center-safe gap-4">
                                     <div class="center">
 
-                                    <button onclick="window.location.href=" class="bg-gray-100 px-4 py-2 rounded hover:bg-cyan-300"><i data-lucide="square-pen"></i></button>
+                                    <button onclick="window.location.href=" class="bg-gray-100 px-4 py-2 rounded hover:bg-cyan-300"><i data-lucide="square-pen" class="text-cyan-800"></i></button>
                                     </div>
                                     <div class="center">
-                                            <button onclick="showConfirmModal({{ $riwayat->id }})" class="bg-gray-100 px-4 py-2 rounded hover:bg-red-300"><i data-lucide="trash-2"></i></button>
+                                            <button onclick="showConfirmModal({{ $riwayat->id }})" class="bg-gray-100 px-4 py-2 rounded hover:bg-red-300"><i data-lucide="trash-2" class="text-red-800"></i></button>
                                     
 
                                     </div>
                                     <div class="center">
                                     
-                                    <button  onclick="" class="bg-gray-100 px-4 py-2 rounded hover:bg-yellow-300"><i data-lucide="printer"></i></button>
+                                    <button  onclick="" class="bg-gray-100 px-4 py-2 rounded hover:bg-yellow-300"><i data-lucide="printer" class="text-yellow-800"></i></button>
                                     
                                     </div>
 

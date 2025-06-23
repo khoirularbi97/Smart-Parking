@@ -10,15 +10,18 @@
      
     ]"/>
  
-    <div class="p-6 grid grid-cols-1 gap-1">
-        <div class="bg-white shadow rounded  p-6">
+    <div class="p-1 grid grid-cols-1 gap-1">
+        <div class="bg-white border-4 border-indigo-200 border-t-green-500 shadow rounded  p-6">
         <h1 class="text-2xl text-center font-bold mb-10">Registrasi</h1>
         <div class="justify-between items-center mb-6">
             <form action="{{ route('admin.member') }}" method="GET" class="mb-4 flex gap-2">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama/email..." class="border p-2 rounded w-1/3">
                 <button class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">Cari</button>
             </form>
-        <a href="{{ route('admin/member/create') }}" class="bg-sky-600 hover:bg-cyan-500 text-white px-4 py-2 rounded">Tambah Member Baru</a>
+        <a href="{{ route('admin/member/create') }}" class="bg-sky-600 hover:bg-cyan-500 text-white px-4 py-2 rounded">+Tambah Member Baru</a>
+        <button onclick="exportPDF()" class="flex bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2 ">
+                    <i data-lucide="file-down"></i>pdf
+                    </button>
         </div>
         <div class="table-responsive">
         <table class="min-w-full ">

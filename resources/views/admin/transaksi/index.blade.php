@@ -11,10 +11,10 @@
     ]"
 />
 
-    <div class="p-6 grid grid-cols-1 gap-4 ">
+    <div class="p-1 grid grid-cols-1 gap-4 ">
 
         
-        <div class="bg-white shadow rounded overflow-x-auto p-6 mt-1">
+        <div class="bg-white border-4 border-indigo-200 border-t-blue-500 shadow rounded overflow-x-auto p-6 mt-1">
             <h1 class="text-2xl text-center font-bold mb-10">Riwayat Transaksi</h1>
             <div class="flex justify-between overflow-x-auto">
                 <div class="justify-between items-center mb-6">
@@ -23,11 +23,13 @@
                     <button class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">Cari</button>
                 </form>
                 
-                <a href="{{ route('admin/transaksi/create') }}" class="bg-sky-400 hover:bg-sky-200 px-4 py-2 rounded gap-4">Tambah Transaksi</a>
+                <a href="{{ route('admin/transaksi/create') }}" class="bg-sky-400 hover:bg-sky-200 px-4 py-2 rounded gap-4">+Tambah Transaksi</a>
                  {{-- <a href="{{ route('admin.transaksis.exportPdf', request()->query()) }}" target="_blank"
                         class="bg-red-500 text-white px-4 py-2 rounded">Export pdf</a> --}}
 
-                  <button onclick="exportPDF()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2">Export pdf</button>
+                  <button onclick="exportPDF()" class="flex bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2 ">
+                    <i data-lucide="file-down"></i>pdf
+                    </button>
                 </div>
                
                 
