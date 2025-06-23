@@ -1,10 +1,10 @@
 @extends('layouts.user')
 
 @section('content')
-<div class=" bg-gradient-to-b from-blue-100 to-white flex items-center justify-center py-10">
+<div class="flex items-center justify-center py-10">
     <div class="bg-white w-[360px] rounded-xl shadow-lg overflow-hidden">
         <!-- Header -->
-        <div class="bg-blue-600 text-white text-center py-4 relative">
+        <div class="bg-gradient-to-r from-pink-400 to-purple-500  text-white text-center py-4 relative">
             <a href="{{ route('topup.form') }}" class="absolute left-4 top-4 text-white text-xl">&#8592;</a>
             <p class="text-sm font-medium">#{{ $invoice->order_id }}</p>
 
@@ -14,7 +14,7 @@
                         <path d="M9 17v-6h13M9 11V5h13M5 21h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2z"/>
                         
                     </svg> --}}
-                    <i data-lucide="circle-check-big" class="w-10 h-10 text-blue-600 "></i>
+                    <i data-lucide="circle-check-big" class="w-10 h-10 text-green-600 "></i>
                 </div>
                 <p class="text-xs mt-2 font-bold font-light tracking-wide uppercase">SUCCESS</p>
             </div>
@@ -50,8 +50,8 @@
             </div>
 
             <div class="mt-6">
-                <a href="{{ route('user.dashboard') }}" class="block bg-green-500 hover:bg-green-600 text-white text-center py-3 rounded-lg text-sm font-semibold shadow-md">
-                    Back to Home
+                <a href="{{ route('user.dashboard') }}" class="block bg-purple-500 hover:bg-green-600 text-white text-center py-3 rounded-lg text-sm font-semibold shadow-md">
+                    Cetak
                 </a>
             </div>
         </div>

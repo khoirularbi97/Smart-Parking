@@ -23,9 +23,12 @@
     @livewireStyles
     </head>
     <body class="font-sans antialiased ">
+        <div class="row justify-content-md-center">
+        <div class="col-md-6">
+      
         <div class="min-h-screen bg-gray-100 ">
             @include('layouts.navigation_user')
-            <div class="min-h-screen flex ">
+            <div class="min-h-screen">
                
                 <div class="flex-1 flex flex-col">
                     <!-- Header -->
@@ -35,20 +38,24 @@
                     <main class="flex-1  bg-gradient-to-br from-purple-200 to-indigo-200 p-6">
                         @yield('content')
                     </main>
-        
+                    </div>
+            </div>
+            </div>
+            </div>
+        </div>
                     
   <nav class="bg-white border-t border-gray-200 shadow-inner fixed bottom-0 w-full flex justify-around py-2">
-    <button onclick="window.location='{{ route('user.dashboard') }}'" class="flex flex-col items-center text-sm text-gray-600 hover:text-purple-600">
+    <button onclick="window.location='{{ route('user.dashboard') }}'" class="flex flex-col items-center text-sm text-gray-600 hover:text-purple-600 {{ request()->is('user/dashboard') ? 'text-purple-600' : 'bg-transparent'}}">
       <i data-lucide="home" class="w-5 h-5 mb-1 {{ request()->is('user/dashboard') ? 'text-purple-600' : 'bg-transparent'}}"></i>
       Home
     </button>
-    <button onclick="window.location='{{ route('topup.form') }}'" class="flex flex-col items-center text-sm text-gray-600 font-semibold hover:text-purple-600">
-      <i data-lucide="wallet" class="w-5 h-5 mb-1 {{ request()->is('/topup') ? 'text-purple-600' : 'bg-transparent'}}"></i>
+    <button onclick="window.location='{{ route('topup.form') }}'" class="flex flex-col items-center text-sm text-gray-600 hover:text-purple-600 {{ request()->is('topup') ? 'text-purple-600' : 'bg-transparent'}}">
+      <i data-lucide="wallet" class="w-5 h-5 mb-1 {{ request()->is('topup') ? 'text-purple-600' : 'bg-transparent'}}"></i>
       Topup
     </button>
-    <button onclick="window.location='{{ route('profile_user.edit') }}'" class="flex flex-col items-center text-sm text-gray-600 hover:text-purple-600">
-      <i data-lucide="user" class="w-5 h-5 mb-1 {{ request()->is('/profile/user') ? 'text-purple-600' : 'bg-transparent'}}"></i>
-      Profil
+    <button onclick="window.location='{{ route('profile_user.edit') }}'" class="flex flex-col items-center text-sm text-gray-600 hover:text-purple-600 {{ request()->is('profile/user') ? 'text-purple-600' : 'bg-transparent'}}">
+      <i data-lucide="settings" class="w-5 h-5 mb-1 {{ request()->is('profile/user') ? 'text-purple-600' : 'bg-transparent'}}"></i>
+      Setting
     </button>
   </nav>
                     {{-- <nav class="fixed bottom-0 inset-x-0 bg-white shadow-md flex justify-around items-center py-2">
@@ -62,9 +69,10 @@
                         <i class="fas fa-user text-xl  {{ request()->is('profile/user') ? 'text-blue-500' : 'bg-transparent'}}"></i><br><span class="text-xs">Profil</span>
                     </a>
                 </nav> --}}
-                </div>
-            </div>
-            @stack('scripts')
+        
+                
+                @stack('scripts')
+            
     </body>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
