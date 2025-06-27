@@ -16,7 +16,7 @@
     <div class="p-1 grid grid-cols-1 gap-1">
     
     <div class="bg-white border-4 border-indigo-200 border-t-yellow-500 shadow rounded overflow-x-auto p-6">
-        <h1 class="text-2xl text-center font-bold mb-10">Parkir Masuk</h1>
+        <h1 class="text-2xl text-center font-bold mb-10">Parkir Keluar</h1>
 
         <form action="" method="GET" class="mb-4 flex gap-2">
             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari..." class="border p-2 rounded w-1/3">
@@ -32,15 +32,17 @@
                       <th class="px-4 py-2 border">UID</th>
                       <th class="px-4 py-2 border">Nama</th>
                  
-                      <th class="px-4 py-2 border">Status</th>
-                      <th class="px-4 py-2 border">CreatedDate</th>
+                 
+                      <th class="px-4 py-2 border">Status pembayaran</th>
+                      <th class="px-4 py-2 border">Waktu keluar</th>
                       <th class="px-4 py-2 border">Image</th>
+                      <th class="px-4 py-2 border">biaya</th>
                   </tr>
               </thead>
               <tbody>
-                  @forelse ($parkir_masuk as $masuk)
+                  @forelse ($parkir_keluar as $keluar)
                   <tr>
-                      <td class="px-4 py-2 border">{{$parkir_masuk->firstItem() + $loop->index}}</td>
+                      <td class="px-4 py-2 border">{{$parkir_keluar->firstItem() + $loop->index}}</td>
                       <td class="p-1 border ">
                           <div class="flex justify-center-safe gap-1">
                               <div class="center">
@@ -49,7 +51,7 @@
                               </div>
                               <div class="center">
                                   
-                                      <button onclick="showConfirmModal({{ $masuk->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"><i data-lucide="trash-2" class="text-red-800"></i></button>
+                                      <button onclick="showConfirmModal({{ $keluar->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"><i data-lucide="trash-2" class="text-red-800"></i></button>
                               
       
                               </div>
@@ -63,25 +65,26 @@
                           </div>
                       </td>
                       
-                      <td class="px-4 py-2 border">{{ $masuk->uid }}</td>
-                      <td class="px-4 py-2 border">{{ $masuk->user->name}}</td>
+                      <td class="px-4 py-2 border">{{ $keluar->uid }}</td>
+                      <td class="px-4 py-2 border">{{ $keluar->user->name }}</td>
                         
                       <td class="px-4 py-2 border">
                             <span class="px-2 py-1 rounded text-xs font-semibold 
-                                    {{ $masuk->status == 'aktif' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
-                                    {{ $masuk->status }}
+                                    {{ $keluar->status_pembayaran == 'lunas' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
+                                    {{ $keluar->status_pembayaran }}
                                 </span></td>
-                          <td class="px-4 py-2 border">{{ \Carbon\Carbon::parse($masuk->waktu_masuk)->format('d M Y H:i') }}</td>
+                          <td class="px-4 py-2 border">{{ \Carbon\Carbon::parse($keluar->waktu_keluar)->format('d M Y H:i') }}</td>
                           
                           
                           <td class="px-4 py-2 border">
-                           @if (Str::startsWith($masuk->image_base64, '/9j')) {{-- Cek awalan base64 (JPEG) --}}
-                              <img src="data:image/jpeg;base64,{{ $masuk->image_base64 }}" alt="Gambar" class="h-10 w-10 cursor-pointer rounded shadow" onclick="showImageModal(this.src)">
+                           @if (Str::startsWith($keluar->image_base64, '/9j')) {{-- Cek awalan base64 (JPEG) --}}
+                              <img src="data:image/jpeg;base64,{{ $keluar->image_base64 }}" alt="Gambar" class="h-10 w-10 cursor-pointer rounded shadow" onclick="showImageModal(this.src)">
                           @else
-                              <img src="{{ $masuk->image_path }}" alt="Gambar">
+                              <img src="{{ $keluar->image_path }}" alt="Gambar">
                           @endif
                            
                           </td>
+                          <td class="px-4 py-2 border">Rp {{ number_format($keluar->biaya, 2, ',', '.') }}</td>
                       </tr>
                   @empty
                       <tr>
@@ -95,7 +98,7 @@
         </div>
       </div>  
       <div class="mt-4">
-          {{ $parkir_masuk->links() }}
+          {{ $parkir_keluar->links() }}
         </div>
     </div>  
         <form id="deleteForm"  class="hidden" method="POST">
@@ -110,12 +113,12 @@
 <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
      <!-- Modal box -->
   <div id="modalBox" class="bg-white p-6 rounded-xl shadow-lg transform scale-95 opacity-0 transition duration-300 ease-out w-full max-w-md">
-    <h2 class="text-xl font-semibold mb-4">Detail Parkir Masuk</h2>
+    <h2 class="text-xl font-semibold mb-4">Detail PFoto</h2>
     <img id="modalImage" src="" class="max-w-full max-h-[100vh] rounded-lg border-4 border-white">
-    <p><strong>UID:</strong> <span id="modalOrderId"></span></p>
-    <p><strong>Status:</strong> <span id="modalStatus"></span></p>
+    <p><strong>UID:</strong> <span id="modalOrderId">{{ $keluar->uid }}</span></p>
+    <p><strong>Status:</strong> <span id="modalStatus">{{ $keluar->status_pembayaran }}</span></p>
     <p><strong>Waktu:</strong> <span id="modalTransactionTime">
-                          <td class="px-4 py-2 border"></span></p>
+                          <td class="px-4 py-2 border">{{ \Carbon\Carbon::parse($keluar->waktu_keluar)->format('d M Y H:i') }}</span></p>
     <button onclick="closeImageModal()" class="mt-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Tutup</button>
   </div>
     <span class="absolute top-4 right-6 text-white text-3xl cursor-pointer" onclick="closeImageModal()">&times;</span>

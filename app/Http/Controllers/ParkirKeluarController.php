@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ParkirKeluar;
 use Illuminate\Http\Request;
 
 class ParkirKeluarController extends Controller
@@ -9,9 +10,21 @@ class ParkirKeluarController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+    $query = ParkirKeluar::query(); // tanpa with('roles')
+    
+
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('uid', 'like', "%$search%");
+              
+        });
+    }
+
+    $parkir_keluar = $query->latest()->paginate(10)->withQueryString();
+    return view('admin.parkir_keluar.index', compact('parkir_keluar'));
     }
 
     /**

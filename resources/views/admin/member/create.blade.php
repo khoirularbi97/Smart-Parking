@@ -45,10 +45,11 @@
                     </div>
 
                     <!-- UID -->
+                                      
                     <div class="mb-4">
-                        <x-input-label for="name" :value="__('UID')" />
-                        <x-text-input id="uid" class="block mt-1 w-full" type="text" name="uid"  required />
-                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                        <x-input-label for="uid" :value="__('UID')" />
+                        <x-text-input id="uid" class="block mt-1 w-full bg-gray-100" type="text" name="uid" required readonly />
+                        <x-input-error :messages="$errors->get('uid')" class="mt-2" />
                     </div>
 
                     <!-- Saldo -->
@@ -71,6 +72,41 @@
                         </x-primary-button>
                     </div>
                 </form>
+                @push('scripts')
+                <script>
+                 const ws = new WebSocket("ws://localhost:5000"); // ganti jika ws lokal: ws://localhost:5000
+
+                    ws.onopen = () => {
+                        console.log("✅ WebSocket frontend terhubung.");
+                    };
+
+                  ws.onmessage = (event) => {
+                    console.log("📨 Pesan masuk:", event.data);
+
+                    try {
+                        const data = JSON.parse(event.data);
+
+                        if (data.type === "uid_scanned" && data.uid) {
+                            const inputUID = document.getElementById("uid");
+                            if (inputUID) {
+                                inputUID.value = data.uid;
+                                console.log("✅ UID dimasukkan:", data.uid);
+                            } else {
+                                console.warn("⚠️ Input UID tidak ditemukan.");
+                            }
+                        } else {
+                            console.warn("⚠️ Format data tidak dikenali:", data);
+                        }
+                    } catch (e) {
+                        console.error("❌ Gagal parsing JSON:", e, event.data);
+                    }
+                };
+
+
+                    ws.onerror = (e) => console.error("❌ WebSocket error:", e);
+
+                </script>
+                @endpush
             </div>
         </div>
     </div>

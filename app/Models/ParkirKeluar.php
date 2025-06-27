@@ -15,4 +15,7 @@ class ParkirKeluar extends Model
     {
         return $this->belongsTo(ParkirMasuk::class);
     }
+    public function user() {
+        return $this->belongsTo(User::class, 'users_id');
+    }
 }

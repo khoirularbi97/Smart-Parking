@@ -22,8 +22,7 @@
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari " class="border p-2 rounded w-auto">
                     <button class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">Cari</button>
                 </form>
-       
-                <a href="{{ route('admin.riwayat-parkir.create') }}" class="bg-cyan-500 hover:g-sky-200 px-4 py-2 rounded">+Tambah Transaksi</a>
+
                 <button onclick="exportPDF()" class="flex bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2 ">
                     <i data-lucide="file-down"></i>pdf
                     </button>
@@ -57,20 +56,24 @@
         </div>
         <div class="bg-white p-4 rounded shadow mb-6">
     <h3 class="text-lg font-semibold mb-2">Grafik Transaksi</h3>
-        <canvas id="transaksiChart" height="100"></canvas>
+        <canvas id="parkingChart" height="100"></canvas>
     </div>
 
         <div class="table-responsive shadow">
-            <table class="relative min-w-full rounded ">
+            <table class="rounded ">
                 <thead>
                     <tr class="bg-gray-100">
                         <th class="px-4 py-2 border">No.</th>
+                        <th class="px-4 py-2 border">Aksi</th>
+                        <th class="px-4 py-2 border">Nama</th>
                         <th class="px-4 py-2 border">Slot Parkir</th>
-                        <th class="px-4 py-2 border">Total Durasi </th>
-                        <th class="px-4 py-2 border">Jumlah Transaksi</th>
-                        <th class="px-4 py-2 border">total biaya</th>
-                        <th class="px-4 py-2 border">Jumlah</th>
-                        <th class="px-4 py-2 border">Keterangan</th>
+                        <th class="px-4 py-2 border">UID</th>
+                        <th class="px-4 py-2 border">Waktu Masuk </th>
+                        <th class="px-4 py-2 border">Gambar Masuk</th>
+                        <th class="px-4 py-2 border">Waktu Keluar</th>
+                        <th class="px-4 py-2 border">Gambar Keluar</th>
+                        <th class="px-4 py-2 border">Durasi</th>
+                        <th class="px-4 py-2 border">Biaya</th>
                         <th class="px-4 py-2 border">CreatedDate</th>
                         <th class="px-4 py-2 border">CreatedBy</th>
                         <th class="px-4 py-2 border">LastUpdateBy</th>
@@ -106,20 +109,39 @@
 
                                 </div>
                             </td>
-                            <td class="px-4 py-2 border">{{ $riwayat->parking_slot_id}}</td>
-                            <td class="px-4 py-2 border">{{ $riwayat->total_durasi}}</td>
-                            <td class="px-4 py-2 border">{{ $riwayat->jumlah_transaksi}}</td>
-                            <td class="px-4 py-2 border">Rp {{ number_format($riwayat->total_biaya, 2, ',', '.') }}</td>
-                            <td class="px-4 py-2 border">{{ \Carbon\Carbon::parse($riwayat->created_at)->format('d M Y H:i') }}</td>
+                            <td class="px-4 py-2 border">{{ $riwayat->user->name}}</td>
+                            <td class="px-4 py-2 border">{{ $riwayat->parking_slot->name}}</td>
+                            <td class="px-4 py-2 border">{{ $riwayat->uid}}</td>
+                            <td class="px-4 py-2 border">{{ \Carbon\Carbon::parse($riwayat->waktu_masuk)->format('d M Y H:i') }}</td>
+                            <td class="px-4 py-2 border">
+                           @if (Str::startsWith($riwayat->image_masuk, '/9j')) {{-- Cek awalan base64 (JPEG) --}}
+                              <img src="data:image/jpeg;base64,{{ $riwayat->image_masuk }}" alt="Gambar" class="h-10 w-10 cursor-pointer rounded shadow" onclick="showImageModal(this.src)">
+                          @else
+                              <img src="{{ $riwayat->image_path }}" alt="Gambar">
+                          @endif
+                           
+                          </td>
+                          <td class="px-4 py-2 border">{{ \Carbon\Carbon::parse($riwayat->waktu_keluar)->format('d M Y H:i') }}</td>
+                          <td class="px-4 py-2 border">
+                         @if (Str::startsWith($riwayat->image_keluar, '/9j')) {{-- Cek awalan base64 (JPEG) --}}
+                            <img src="data:image/jpeg;base64,{{ $riwayat->image_keluar }}" alt="Gambar" class="h-10 w-10 cursor-pointer rounded shadow" onclick="showImageModal(this.src)">
+                        @else
+                            <img src="{{ $riwayat->image_path }}" alt="Gambar">
+                        @endif
+                         
+                        </td>
+                            <td class="px-4 py-2 border">{{ $riwayat->durasi}}</td>
+                            <td class="px-4 py-2 border">Rp {{ number_format($riwayat->biaya, 2, ',', '.') }}</td>
                             <td class="px-4 py-2 border">{{ $riwayat->CreatedDate }}</td>
                             <td class="px-4 py-2 border">{{ $riwayat->CreatedBy }}</td>
                             <td class="px-4 py-2 border">{{ $riwayat->LastUpdateBy }}</td>
                             <td class="px-4 py-2 border">{{ $riwayat->LastUpdateDate }}</td>
                             <td class="px-4 py-2 border">{{ $riwayat->CompanyCode }}</td>
                             <td class="px-4 py-2 border"> 
-                                <span class="px-2 py-1 rounded text-xs font-semibold {{ $riwayat->Status == '1' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
-                                    {{ $riwayat->Status }}
-                                </span></td>
+                                <span class="px-2 py-1 rounded text-xs font-semibold 
+                                    {{ $riwayat->Status == '1' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
+                                    {{ $riwayat->Status == '1' ? 'Success' : 'Gagal' }}
+                                </span>
                             <td class="px-4 py-2 border">{{ $riwayat->IsDeleted }}</td>
                             
                             
@@ -147,6 +169,25 @@
         @method('DELETE')
         </form>
          <x-popup-delete></x-popup-delete>
+         <!-- Image Modal -->
+
+<div id="imageModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+     <!-- Modal box -->
+  <div id="modalBox" class="bg-white p-6 rounded-xl shadow-lg transform scale-95 opacity-0 transition duration-300 ease-out w-full max-w-md">
+    <h2 class="text-xl font-semibold mb-4">Detail Foto</h2>
+    <img id="modalImage" src="" class="max-w-full max-h-[100vh] rounded-lg border-4 border-white">
+    <p><strong>UID:</strong> <span id="modalOrderId">{{ $riwayat->uid }}</span></p>
+    <p><strong>Status:</strong> <span id="modalStatus" class="px-2 py-1 rounded text-xs font-semibold 
+    {{ $riwayat->Status == '1' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
+    {{ $riwayat->Status == '1' ? 'Success' : 'Gagal' }}</span></p>
+    <p><strong>Waktu:</strong> <span id="modalTransactionTime">
+                          <td class="px-4 py-2 border">{{ \Carbon\Carbon::parse($riwayat->created_at)->format('d M Y H:i') }}</span></p>
+    <button onclick="closeImageModal()" class="mt-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Tutup</button>
+  </div>
+    <span class="absolute top-4 right-6 text-white text-3xl cursor-pointer" onclick="closeImageModal()">&times;</span>
+    
+</div>
+
 </div>
 @if(session('success'))
 <x-pop-up></x-pop-up>
@@ -191,17 +232,74 @@
     const form = document.getElementById('deleteForm');
     form.action = '{{ url("admin/transaksi") }}/' + deleteUserId;
     form.submit();
-}
+    }
+    function openModal() {
+            const overlay = document.getElementById('modalOverlay');
+            const modal = document.getElementById('modalBox');
 
-    const ctx = document.getElementById('transaksiChart').getContext('2d');
+            overlay.classList.remove('hidden');
+
+            // Pakai timeout agar animasi bisa berjalan setelah visible
+            setTimeout(() => {
+                modal.classList.remove('scale-95', 'opacity-0');
+                modal.classList.add('scale-100', 'opacity-100');
+            }, 10);
+            }
+            function formatRupiah(angka) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR'
+            }).format(angka);
+            }
+
+            function closeModal() {
+            const overlay = document.getElementById('modalOverlay');
+            const modal = document.getElementById('modalBox');
+
+            modal.classList.remove('scale-100', 'opacity-100');
+            modal.classList.add('scale-95', 'opacity-0');
+
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+            }, 300); // waktu sesuai dengan duration-300
+            }
+    
+
+    function showImageModal(src) {
+        document.getElementById('modalImage').src = src;
+        document.getElementById('imageModal').classList.remove('hidden');
+        const modal = document.getElementById('modalBox');
+        modal.classList.add('scale-100', 'opacity-100');
+
+    }
+
+    function closeImageModal() {
+        document.getElementById('imageModal').classList.add('hidden');
+        const modal = document.getElementById('modalBox');
+
+            modal.classList.remove('scale-100', 'opacity-100');
+            modal.classList.add('scale-95', 'opacity-0');
+    }
+
+    // Tutup modal jika klik di luar gambar
+    document.getElementById('imageModal').addEventListener('click', function (e) {
+        if (e.target.id === 'imageModal') {
+            closeImageModal();
+            
+        }
+         
+
+    });
+
+    const ctx = document.getElementById('parkingChart').getContext('2d');
 
     const transaksiChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: {},
+            labels: {!! json_encode($dates) !!},
             datasets: [{
                 label: 'Total Transaksi (Rp)',
-                data: {},
+                data: {!! json_encode($totals) !!},
                 borderColor: 'rgba(59, 130, 246, 1)', // Tailwind blue-500
                 backgroundColor: 'rgba(59, 130, 246, 0.2)',
                 borderWidth: 2,
@@ -240,7 +338,7 @@
 
   
 function downloadChartPDF() {
-    domtoimage.toPng(document.getElementById('transaksiChart')).then(function (dataUrl) {
+    domtoimage.toPng(document.getElementById('parkingChart')).then(function (dataUrl) {
         const docDefinition = {
             content: [
                 { text: 'Laporan Transaksi', style: 'header' },
@@ -262,7 +360,7 @@ function downloadChartPDF() {
 }
 
 function exportPDF() {
-        const canvas = document.getElementById('transaksiChart');
+        const canvas = document.getElementById('parkingChart');
         const image = canvas.toDataURL('image/png'); // Convert to Base64 PNG
         document.getElementById('chart_image').value = image;
         document.getElementById('pdfForm').submit();

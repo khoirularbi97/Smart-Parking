@@ -9,7 +9,7 @@ class RiwayatParkir extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['parking_slot_id', 'user_id', 'tanggal', 'total_durasi', 'total_biaya', 'jumlah_transaksi'];
+    protected $fillable = ['parking_slot_id', 'parking_masuk_id', 'users_id', 'uid', 'waktu_masuk', 'image_masuk', 'waktu_keluar', 'image_keluar', 'durasi', 'biaya'];
 
     public function kendaraan()
     {
@@ -18,8 +18,7 @@ class RiwayatParkir extends Model
      public function user() {
         return $this->belongsTo(User::class, 'users_id');
     }
-
     public function parking_slot() {
-        return $this->belongsTo(ParkingSlot::class);
+        return $this->belongsTo(ParkingSlot::class, 'parking_slot_id');
     }
 }

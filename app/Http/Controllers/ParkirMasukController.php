@@ -11,7 +11,7 @@ class ParkirMasukController extends Controller
      * Display a listing of the resource.
      */
           public function index(Request $request) {
-    $query = ParkirMasuk::query(); // tanpa with('roles')
+    $query = ParkirMasuk::query()->with(['user']);
     
 
     if ($request->filled('search')) {

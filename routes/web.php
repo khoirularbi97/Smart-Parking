@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ParkirMasukController;
+use App\Http\Controllers\ParkirKeluarController;
 use App\Http\Controllers\ProfileUserController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
@@ -129,8 +130,8 @@ Route::middleware('auth','admin')->group(function () {
     Route::delete('admin/parkir_masuk/{id}', [ParkirMasukController::class, 'destroy'])->name('admin.parkir_masuk.destroy');
 
     //route Parkir Keluar
-    Route::get('/parkir_keluar', [ParkirMasukController::class, 'index'])->name('parkir.keluar');
-    Route::delete('admin/parkir_keluar/{id}', [ParkirMasukController::class, 'destroy'])->name('admin.parkir_keluar.destroy');
+    Route::get('/parkir_keluar', [ParkirKeluarController::class, 'index'])->name('parkir.keluar');
+    Route::delete('admin/parkir_keluar/{id}', [ParkirKeluarController::class, 'destroy'])->name('admin.parkir_keluar.destroy');
 
     //route TopUp
     Route::get('/topup/admin', [TopupAdminController::class, 'index'])->name('topup.admin');
