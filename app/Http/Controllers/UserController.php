@@ -19,8 +19,9 @@ class UserController extends Controller
         return redirect()->route('login');
     }
     $histories = $user->parking()->latest()->take(5)->get(); // Ambil 5 transaksi terbaru
+    $isAktiv= $user->masuk()->latest()->take(5)->get(); // Ambil 5 transaksi terbaru
     $slots = ParkingSlot::all();
-    return view('user.dashboard', compact('histories', 'slots'));
+    return view('user.dashboard', compact('histories', 'slots', 'isAktiv'));
        
     }
 
