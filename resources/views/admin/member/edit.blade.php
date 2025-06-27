@@ -69,7 +69,7 @@
                 </form>
                  @push('scripts')
                 <script>
-                 const ws = new WebSocket("ws://localhost:5000"); // ganti jika ws lokal: ws://localhost:5000
+                 const ws = new WebSocket("wss://scurebot.cloud/ws/"); // ganti jika ws lokal: ws://localhost:5000
 
                     ws.onopen = () => {
                         console.log("✅ WebSocket frontend terhubung.");
