@@ -70,7 +70,7 @@
         <div id="progressBar_{{ $history->id }}" class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all duration-500" style="width: 0%"></div>
     </div>
 
-    <p class="text-xs text-gray-500 mt-1" id="progressText_{{ $history->id }}">
+    <p class="text-xs text-purple-500 mt-1" id="progressText_{{ $history->id }}">
         Menghitung durasi parkir...
     </p>
 
