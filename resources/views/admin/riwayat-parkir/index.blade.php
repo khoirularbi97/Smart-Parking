@@ -140,8 +140,8 @@
                             <td class="px-4 py-2 border">{{ $riwayat->CompanyCode }}</td>
                             <td class="px-4 py-2 border"> 
                                 <span class="px-2 py-1 rounded text-xs font-semibold 
-                                    {{ $riwayat->Status == '1' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
-                                    {{ $riwayat->Status == '1' ? 'Success' : 'Gagal' }}
+                                    {{ $riwayat->_Status == '1' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
+                                    {{ $riwayat->_Status == '1' ? 'Success' : 'Gagal' }}
                                 </span>
                             <td class="px-4 py-2 border">{{ $riwayat->IsDeleted }}</td>
                             
