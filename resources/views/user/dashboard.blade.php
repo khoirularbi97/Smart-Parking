@@ -40,11 +40,11 @@
                     <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-400"><i data-lucide="square parking" class="w-8 h-8 p-1"></i></div>
                     <div>
                         <p class="font-bold text-sm">{{ $history->parking_slot->name ?? 'Slot Tidak Diketahui' }}</p>
-                        <p class="text-xs text-gray-500">{{ $history->created_at->format('d M Y H:i') }}</p>
+                        <p class="text-xs text-gray-500">{{ $history->waktu_masuk->format('d M Y H:i') }}</p>
                     </div>
                 </div>
                 <div class="text-right text-purple-700 font-semibold">
-                    Rp {{ number_format($history->total_biaya, 0, ',', '.') }}
+                    Rp {{ number_format($history->biaya, 0, ',', '.') }}
                 </div>
             </div>
 
@@ -52,7 +52,7 @@
             <div class="w-full h-2 bg-purple-100 rounded-full overflow-hidden">
                 <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" style="width: 70%"></div>
             </div>
-            <p class="text-xs mt-2 text-purple-500">Parkir selama {{ $history->total_durasi .' menit'?? '0 menit' }}</p>
+            <p class="text-xs mt-2 text-purple-500">Parkir selama {{ $history->durasi}}</p>
         </div>
         @endforeach
         </div>
@@ -60,7 +60,7 @@
     <h5 class="mb-1 text-white text-3xl font-bold py-6  mt-2">Slot Parkir</h5>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
     @foreach ($slots as $slot)
-        <div class="p-4 rounded-lg shadow-md {{ $slot->is_available === 'Tersedia' ? 'bg-green-100' : 'bg-red-100' }}">
+        <div class="p-4 rounded-lg shadow-md {{ $slot->is_available === 'tersedia' ? 'bg-green-100' : 'bg-red-100' }}">
             <h6 class="font-semibold">Slot {{ $slot->name }}</h6>
             <span class="inline-block px-2 py-1 mt-2 text-xs font-bold rounded-full 
                 {{ $slot->is_available === 'Tersedia' ? 'bg-green-500 text-white' : 'bg-red-500 text-white' }}">
