@@ -85,7 +85,7 @@
             const progressText = document.getElementById("progressText_{{ $history->id }}");
 
             function updateProgress() {
-                const endTime = status === 1 && waktuKeluar ? new Date(waktuKeluar) : new Date();
+                const endTime = status === 0 && waktuKeluar ? new Date(waktuKeluar) : new Date();
                 const diffMs = endTime - createdAt;
                 const diffMinutes = Math.floor(diffMs / 60000); // ms to minutes
                 const percent = Math.min(100, (diffMinutes / 1440) * 100); // 1440 = 24 jam
