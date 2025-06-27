@@ -68,7 +68,7 @@
                         
                       <td class="px-4 py-2 border">
                             <span class="px-2 py-1 rounded text-xs font-semibold 
-                                    {{ $masuk->status == 'aktif' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
+                                    {{ $masuk->status == 'aktif' ? 'bg-green-200 text-green-800' : 'bg-gray-200 text-gray-800' }}">
                                     {{ $masuk->status }}
                                 </span></td>
                           <td class="px-4 py-2 border">{{ \Carbon\Carbon::parse($masuk->waktu_masuk)->format('d M Y H:i') }}</td>
