@@ -121,9 +121,9 @@
                           @endif
                            
                           </td>
+                          <td class="px-4 py-2 border">{{ $riwayat->waktu_keluar ? \Carbon\Carbon::parse($riwayat->waktu_keluar)->format('d M Y H:i') : '0000-00-00 00:00:00' }}
+                          </td>
                           <td class="px-4 py-2 border">
-                                {{ $riwayat->waktu_keluar ? \Carbon\Carbon::parse($riwayat->waktu_keluar)->format('d M Y H:i') : '0000-00-00 00:00:00' }}
-                            </td>
                          @if (Str::startsWith($riwayat->image_keluar, '/9j')) {{-- Cek awalan base64 (JPEG) --}}
                             <img src="data:image/jpeg;base64,{{ $riwayat->image_keluar }}" alt="Gambar" class="h-10 w-10 cursor-pointer rounded shadow" onclick="showImageModal(this.src)">
                         @else
