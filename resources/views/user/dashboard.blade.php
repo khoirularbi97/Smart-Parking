@@ -40,7 +40,7 @@
                     <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-400"><i data-lucide="square parking" class="w-8 h-8 p-1"></i></div>
                     <div>
                         <p class="font-bold text-sm">{{ $history->parking_slot->name ?? 'Slot Tidak Diketahui' }}</p>
-                        <p class="text-xs text-gray-500">{{ $history->created_at->format('d M Y H:i') }}</p>
+                        <p class="text-xs text-gray-500">{{  optional($history->created_at)->format('d M Y H:i') ?? 'Tanggal tidak tersedia'}}</p>
                     </div>
                 </div>
                 <div class="text-right text-purple-700 font-semibold">
