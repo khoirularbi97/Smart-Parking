@@ -15,7 +15,7 @@
 
     <div class="p-1 grid grid-cols-1 gap-1">
     
-    <div class="bg-white border-4 border-indigo-200 border-t-yellow-500 shadow rounded overflow-x-auto p-6">
+    <div class="bg-white border-4 border-indigo-200 border-t-red-500 shadow rounded overflow-x-auto p-6">
         <h1 class="text-2xl text-center font-bold mb-10">Parkir Keluar</h1>
 
         <form action="" method="GET" class="mb-4 flex gap-2">

@@ -137,6 +137,10 @@ Route::middleware('auth','admin')->group(function () {
     //route slot  parking
     Route::get('/slot_parking', [ParkingSlotController::class, 'index'])->name('parkir.slot');
     Route::delete('admin/parkir_slot/{id}', [ParkingSlotController::class, 'destroy'])->name('admin.parkir_slot.destroy');
+    Route::post('/slot/store', [ParkingSlotController::class, 'store'])->name('slot.store');
+    Route::put('/slot/update/{id}', [ParkingSlotController::class, 'update'])->name('slot.update');
+
+
 
     //route TopUp
     Route::get('/topup/admin', [TopupAdminController::class, 'index'])->name('topup.admin');
