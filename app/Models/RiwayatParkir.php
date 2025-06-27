@@ -21,4 +21,10 @@ class RiwayatParkir extends Model
     public function parking_slot() {
         return $this->belongsTo(ParkingSlot::class, 'parking_slot_id');
     }
+    // app/Models/RiwayatParkir.php
+    public function getStatusLabelAttribute()
+    {
+        return $this->status == 1 ? 'Aktif' : 'Selesai';
+    }
+
 }

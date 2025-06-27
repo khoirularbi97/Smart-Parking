@@ -27,6 +27,12 @@
                 </a>
             </li>
             <li class="mb-3">
+                <a href="{{ route('parkir.slot') }}" class="flex items-center  border-white border-b border-t  p-3 rounded-lg hover:bg-sky-500 transition{{ request()->is('/slot_parking') ? 'bg-sky-500' : 'bg-transparent'}}">
+                    <i data-lucide="parking-meter" class="w-7 h-7"></i>
+                    <span class="ml-6 border-white p-1 rounded-md">Slot Parkir</span>
+                </a>
+            </li>
+            <li class="mb-3">
                 <a href="{{ route('riwayat.parkir') }}" class="flex items-center  border-white border-b border-t  p-3 rounded-lg hover:bg-sky-500 transition{{ request()->is('/riwayat_parkir') ? 'bg-sky-500' : 'bg-transparent'}}">
                     <i data-lucide="history" class="w-7 h-7"></i>
                     <span class="ml-5 border-white p-1 rounded-md">Riwayat Parkir</span>

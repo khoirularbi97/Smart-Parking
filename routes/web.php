@@ -21,6 +21,8 @@ use App\Models\ParkirMasuk;
 use App\Models\Transaksi;
 use App\Http\Controllers\TopupAdminController;
 use App\Http\Controllers\MidtransController;
+use App\Http\Controllers\ParkingSlot;
+use App\Http\Controllers\ParkingSlotController;
 use App\Http\Controllers\RiwayatParkirController;
 use App\Models\RiwayatParkir;
 
@@ -132,6 +134,9 @@ Route::middleware('auth','admin')->group(function () {
     //route Parkir Keluar
     Route::get('/parkir_keluar', [ParkirKeluarController::class, 'index'])->name('parkir.keluar');
     Route::delete('admin/parkir_keluar/{id}', [ParkirKeluarController::class, 'destroy'])->name('admin.parkir_keluar.destroy');
+    //route slot  parking
+    Route::get('/slot_parking', [ParkingSlotController::class, 'index'])->name('parkir.slot');
+    Route::delete('admin/parkir_slot/{id}', [ParkingSlotController::class, 'destroy'])->name('admin.parkir_slot.destroy');
 
     //route TopUp
     Route::get('/topup/admin', [TopupAdminController::class, 'index'])->name('topup.admin');
