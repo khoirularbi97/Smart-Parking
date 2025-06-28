@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class TransaksiController extends Controller
 {        public function index(Request $request) {
@@ -261,5 +262,39 @@ public function exportPDF2(Request $request)
 
     
     return $pdf->download('laporan_transaksi.pdf');
+}
+public function chartKeuntunganBulanan()
+{
+    $data = DB::table('transaksis')
+        ->select(
+            DB::raw('MONTH(created_at) as bulan'),
+            DB::raw('YEAR(created_at) as tahun'),
+            DB::raw("SUM(CASE WHEN jenis = 'kredit' THEN jumlah ELSE 0 END) as total_kredit"),
+            DB::raw("SUM(CASE WHEN jenis = 'debit' THEN jumlah ELSE 0 END) as total_debit")
+        )
+        ->groupBy('tahun', 'bulan')
+        ->orderBy('tahun')
+        ->orderBy('bulan')
+        ->get();
+
+    $labels = [];
+    $keuntungan = [];
+
+    foreach ($data as $item) {
+        $item->laba = $item->total_kredit - $item->total_debit;
+    }
+
+    return view('admin.laporan.chart_keuntungan', compact('data'));
+}
+public function export(Request $request)
+{
+    $chartBase64 = $request->chart; // data:image/png;base64,xxx
+  // Ambil data laporan dari request POST
+    $laporanDataEncoded = $request->laporan_data;
+    $data = json_decode(base64_decode($laporanDataEncoded), true); // decode menjadi array
+
+
+    $pdf = Pdf::loadView('admin.laporan.pdf', compact('chartBase64', 'data'))->setPaper('a4', 'portrait');
+    return $pdf->download('laporan_keuntungan.pdf');
 }
 }

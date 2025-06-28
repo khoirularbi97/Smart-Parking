@@ -14,7 +14,7 @@
     <div class="p-1 grid grid-cols-1 gap-4">
 
         
-        <div class="bg-white border-4 border-indigo-200 border-t-cyan-500 shadow rounded overflow-x-auto p-6">
+        <div class="bg-white border-4 border-indigo-200 border-t-cyan-500 shadow-xl rounded-xl overflow-x-auto p-6">
             <h1 class="text-2xl text-center font-bold mb-10">Riwayat Parkir</h1>
             <div class="flex justify-between overflow-x-auto">
                 <div class="justify-between items-center mb-6">

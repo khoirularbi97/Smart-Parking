@@ -118,6 +118,11 @@ Route::middleware('auth','admin')->group(function () {
     Route::post('store/transaksi', [TransaksiController::class, 'store'])->name('store.transaksi');
     Route::put('/admin/transaksi/{id}', [TransaksiController::class, 'update'])->name('admin.transaksi.update');
     Route::delete('/admin/transaksi/{id}', [TransaksiController::class, 'destroy'])->name('admin.transaksi.destroy');
+    Route::get('/admin/chart-keuntungan', [TransaksiController::class, 'chartKeuntunganBulanan'])->name('admin.chart.keuntungan');
+
+    Route::post('/laporan/export', [TransaksiController::class, 'export'])->name('laporan.export');
+
+
 
     //route riwayat parkir
     Route::get('/riwayat-parkir', [RiwayatParkirController::class, 'index'])->name('riwayat.parkir');

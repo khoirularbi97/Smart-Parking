@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\LogNotifikasiController;
 // use App\Http\Controllers\RiwayatParkirController;
 use App\Http\Controllers\MidtransController;
-// use App\Http\Controllers\TopupController;
+use App\Http\Controllers\TransaksiController;
 
 // Route::apiResource('kendaraan', KendaraanController::class);
 // Route::apiResource('parkir-masuk', ParkirMasukController::class);
@@ -39,4 +39,5 @@ use App\Http\Controllers\MidtransController;
 // });
 // routes/api.php
 Route::post('/midtrans/callbacks', [MidtransController::class, 'notificationHandler']);
+Route::post('/laporan/export', [TransaksiController::class, 'export'])->name('laporan.export');
 

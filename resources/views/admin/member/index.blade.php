@@ -11,7 +11,7 @@
     ]"/>
  
     <div class="p-1 grid grid-cols-1 gap-1">
-        <div class="bg-white border-4 border-indigo-200 border-t-green-500 shadow rounded  p-6">
+        <div class="bg-white border-4 border-indigo-200 border-t-green-500 shadow-xl rounded-xl  p-6">
         <h1 class="text-2xl text-center font-bold mb-10">Registrasi</h1>
         <div class="justify-between items-center mb-6">
             <form action="{{ route('admin.member') }}" method="GET" class="mb-4 flex gap-2">
