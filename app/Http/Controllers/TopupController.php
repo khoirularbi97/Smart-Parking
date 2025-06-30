@@ -132,8 +132,17 @@ class TopupController extends Controller
         return response()->json(['message' => 'Notification processed']);
     }
 
-    public function showInvoice($order_id)
-{
+    public function showInvoice($order_id, Request $request)
+
+{   
+
+     if ($request->status === 'success') {
+        session()->flash('success', 'Pembayaran berhasil.');
+    }elseif ($request->status === 'waiting'){
+        session()->flash('info', 'Menunggu pembayaran.');
+    }else{
+        session()->flash('error', 'Pembayaran gagal!');
+    }
     $invoice = Topup::where('order_id', $order_id)->firstOrFail();
     return view('user.topup.invoice', compact('invoice'));
 }

@@ -3,10 +3,11 @@
 @section('title', 'Topup')
 
 @section('content')
-<x-page-header-topup
+<x-page-header
     title=""
     :breadcrumbs="[
-        ['label' => 'Home', 'url' => '/topup/admin'],
+        ['label' => 'Home', 'url' => '/dashboard'],
+        ['label' => 'Top-up', 'url' => '/topup/admin'],
         ['label' => 'Edit Topup Member']
     ]"
 />

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+
 
 
 class MemberController extends Controller
@@ -38,8 +40,10 @@ public function store(Request $request)
         'name' => 'required|string|max:255',
         'email' => 'required|email|unique:users',
         'password' => 'required|string|min:6',
-        'uid' => 'required|string',
+        'uid' => 'nullable|string|max:255|unique:users,uid',
         'saldo' => 'required|numeric',
+        'telepon' => 'nullable|string|max:20',
+        'alamat' => 'nullable|string|max:255',
    ]);
 
     \App\Models\User::create([
@@ -48,6 +52,8 @@ public function store(Request $request)
         'password' => bcrypt($request->password),
         'uid' => $request->uid,
         'saldo' => $request->saldo,
+        'telepon' => $request->telepon,
+        'alamat' => $request->alamat,
         'CreatedBy' => $user ? $user->name : 'system',
         'CompanyCode' => 'MB01',
         'Status' => 0 , 
@@ -79,30 +85,50 @@ public function update(Request $request, $id)
     $request->validate([
         'name' => 'required|string|max:255',
         'email' => 'required|email',
-        'uid' => 'required|string|max:255',
+        'uid' => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('users', 'uid')->ignore($id),
+            ],
+        'telepon' => 'nullable|string|max:20',
+        'alamat' => 'nullable|string|max:255',
         'saldo' => 'required|numeric',
         'password' => 'nullable|string|min:6',
     ]);
-    $userUpdated = Auth::user();
+
     $user = User::findOrFail($id);
-    $user1 =$user->name;
+    $oldName = $user->name;
+
+    // Update fields
     $user->name = $request->name;
     $user->email = $request->email;
     $user->uid = $request->uid;
     $user->saldo = $request->saldo;
-    $user->LastUpdateBy = $userUpdated ? $userUpdated->name : 'system';
-    $user->status = 1 ;
-    $user->LastUpdateDate = now() ;
-    $user->saldo = $request->saldo;
+    $user->telepon = $request->telepon;
+    $user->alamat = $request->alamat;
+    $user->status = 1;
+    $user->LastUpdateDate = now();
 
+    // Last updated by (check if user is logged in)
+    if (Auth::check()) {
+        $user->LastUpdateBy = Auth::user()->name;
+    } else {
+        $user->LastUpdateBy = 'system';
+    }
+
+    // Update password only if filled
     if ($request->filled('password')) {
         $user->password = bcrypt($request->password);
     }
 
     $user->save();
 
-    return redirect()->route('admin.member')->with('success', 'Data user (' . $user1 . ' ) berhasil diperbarui!');
+    return redirect()
+        ->route('admin.member')
+        ->with('success', 'Data user (' . $oldName . ') berhasil diperbarui!');
 }
+
 
 
     /**

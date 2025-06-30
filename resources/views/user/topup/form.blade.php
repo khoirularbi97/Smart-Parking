@@ -110,13 +110,13 @@ document.getElementById('topup-form').addEventListener('submit', function (e) {
             onSuccess: function(result) {
                 
 
-                window.location.href = "{{ url('/invoice/user') }}/" + orderId;
+                window.location.href = "{{ url('/invoice/user') }}/" + orderId + "?status=success";
             },
             onPending: function(result) {
-                alert('Menunggu pembayaran...');
+                window.location.href = "{{ url('/invoice/user') }}/" + orderId + "?status=waiting";
             },
             onError: function(result) {
-                alert('Pembayaran gagal.');
+                 window.location.href = "{{ url('/invoice/user') }}/" + orderId + "?status=failed";
             }
         });
     } catch (e) {

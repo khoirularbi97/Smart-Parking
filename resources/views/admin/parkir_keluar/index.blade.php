@@ -3,10 +3,11 @@
 @section('title', 'Parkir_masuk')
 
 @section('content')
-<x-page-header2
-    title=""
+<x-page-header
+   title=""
     :breadcrumbs="[
-        ['label' => 'Home', 'url' => '/transaksi'],
+       ['label' => 'Home', 'url' => '/dashboard'],
+       ['label' => 'Parkir keluar']
         
     ]"
 />
@@ -44,14 +45,16 @@
                   <tr>
                       <td class="px-4 py-2 border">{{$parkir_keluar->firstItem() + $loop->index}}</td>
                       <td class="p-1 border ">
-                          <div class="flex justify-center-safe gap-1">
-                              <div class="center">
-      
-                                  <button onclick="" class="bg-gray-100 p-1 rounded hover:bg-cyan-300"><i data-lucide="square-pen" class="text-cyan-800"></i></button>
-                              </div>
+                          <div class="flex justify-center-safe gap-3">
+                              
                               <div class="center">
                                   
-                                      <button onclick="showConfirmModal({{ $keluar->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"><i data-lucide="trash-2" class="text-red-800"></i></button>
+                                      <button onclick="showConfirmModal({{ $keluar->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300" title="Hapus Parkir keluar"><i data-lucide="trash-2" class="text-red-800"></i></button>
+
+                                      <form  id="delete-form-{{ $keluar->id }}" action="{{ route('admin.parkir_keluar.destroy', $keluar->id) }}" class="hidden" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                </form>
                               
       
                               </div>

@@ -3,10 +3,11 @@
 @section('title', 'Transaksi')
 
 @section('content')
-<x-page-header2
+<x-page-header
     title=""
     :breadcrumbs="[
-        ['label' => 'Home ', 'url' => '/transaksi'],
+        ['label' => 'Home', 'url' => '/dashboard'],
+        ['label' => 'Transaksi ', 'url' => '/transaksi'],
         
     ]"
 />
@@ -97,7 +98,14 @@
                                     <button onclick="window.location.href='{{ route('admin.transaksi.edit', $transaksi->id) }}'" class="bg-gray-100 p-1 rounded hover:bg-cyan-300"><i data-lucide="square-pen" class="text-cyan-800"></i></button>
                                     </div>
                                     <div class="center">
-                                            <button onclick="showConfirmModal({{ $transaksi->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"><i data-lucide="trash-2" class="text-red-800"></i></button>
+                                            
+                                             <button onclick="showConfirmModal({{ $transaksi->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"   title="Hapus Transaksi"><i data-lucide="trash-2" class="text-red-800"></i></button>
+
+                                            <form  id="delete-form-{{ $transaksi->id }}" action="{{ route('admin.topup.delete', $transaksi->id) }}" class="hidden" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                </form>
+                                    
                                     
 
                                     </div>
@@ -155,7 +163,7 @@
         </form>
          <x-popup-delete></x-popup-delete>
 </div>
-@if(session('success'))
+@if(session(''))
 <x-pop-up></x-pop-up>
 
 <script>
@@ -185,16 +193,16 @@
     
     let deleteUserId = null;
 
-    function showConfirmModal(userId) {
+    function showConfirmModal1(userId) {
         deleteUserId = userId;
         document.getElementById('confirmModal').classList.remove('hidden');
     }
 
-    function hideConfirmModal() {
+    function hideConfirmModal1() {
         document.getElementById('confirmModal').classList.add('hidden');
     }
 
-    function submitDelete() {
+    function submitDelete1() {
     const form = document.getElementById('deleteForm');
     form.action = '{{ url("admin/transaksi") }}/' + deleteUserId;
     form.submit();

@@ -3,10 +3,11 @@
 @section('title', 'Parkir_masuk')
 
 @section('content')
-<x-page-header2
+<x-page-header
     title=""
     :breadcrumbs="[
-        ['label' => 'Home', 'url' => '/transaksi'],
+       ['label' => 'Home', 'url' => '/dashboard'],
+        ['label' => 'Parkir masuk']
         
     ]"
 />
@@ -41,15 +42,18 @@
                   @forelse ($parkir_masuk as $masuk)
                   <tr>
                       <td class="px-4 py-2 border">{{$parkir_masuk->firstItem() + $loop->index}}</td>
-                      <td class="p-1 border ">
-                          <div class="flex justify-center-safe gap-1">
-                              <div class="center">
-      
-                                  <button onclick="" class="bg-gray-100 p-1 rounded hover:bg-cyan-300"><i data-lucide="square-pen" class="text-cyan-800"></i></button>
-                              </div>
+                      <td class="p-1 border">
+                          <div class="flex justify-center-safe gap-3">
+                              
                               <div class="center">
                                   
-                                      <button onclick="showConfirmModal({{ $masuk->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"><i data-lucide="trash-2" class="text-red-800"></i></button>
+                                      <button onclick="showConfirmModal({{ $masuk->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"
+                                        title="Hapus Parkir masuk"><i data-lucide="trash-2" class="text-red-800"></i></button>
+
+                                       <form  id="delete-form-{{ $masuk->id }}" action="{{ route('admin.parkir_masuk.destroy', $masuk->id) }}" class="hidden" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                </form>
                               
       
                               </div>
@@ -57,7 +61,7 @@
                                     
                                     <button  onclick="showImageModal(this.src)" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="eye" class="text-yellow-800"></i></button>
                                     
-                                    </div>
+                                 </div>
       
       
                           </div>
@@ -98,13 +102,10 @@
           {{ $parkir_masuk->links() }}
         </div>
     </div>  
-        <form id="deleteForm"  class="hidden" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                          </form>
+       
     
 </div>
-<x-popup-delete></x-popup-delete>
+
 <!-- Image Modal -->
 
 <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
@@ -123,52 +124,11 @@
 </div>
 
     
-@if(session('success'))
-<x-pop-up></x-pop-up>
 
-<script>
-   
-    // Fungsi untuk menampilkan alert
-    function showAlert() {
-      const alert = document.getElementById('successAlert');
-      alert.classList.remove('hidden');
-  
-      // Otomatis hilang setelah 3 detik
-      setTimeout(() => {
-        alert.classList.add('hidden');
-      }, 3000);
-    }
-  
-    // Fungsi untuk menutup manual
-    function closeAlert() {
-      document.getElementById('successAlert').classList.add('hidden');
-    }
-  
-    // Contoh pemanggilan saat halaman dimuat (bisa ubah sesuai kebutuhan)
-    window.onload = function () {
-      showAlert(); // panggil hanya jika ada session success
-    };
-  </script>
-@endif
 <script>
 
     
-    let deleteUserId = null;
-
-    function showConfirmModal(userId) {
-        deleteUserId = userId;
-        document.getElementById('confirmModal').classList.remove('hidden');
-    }
-
-    function hideConfirmModal() {
-        document.getElementById('confirmModal').classList.add('hidden');
-    }
-
-    function submitDelete() {
-    const form = document.getElementById('deleteForm');
-    form.action = '{{ url("admin/parkir_masuk") }}/' + deleteUserId;
-    form.submit();
-}
+   
      function openModal() {
             const overlay = document.getElementById('modalOverlay');
             const modal = document.getElementById('modalBox');

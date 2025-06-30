@@ -111,6 +111,7 @@ Route::middleware('auth','admin')->group(function () {
     Route::get('/member', [MemberController::class, 'index'])->name('admin.member');
     Route::get('admin/member/create', [MemberController::class, 'create'])->name('admin/member/create');
     Route::delete('/admin/member/{id}', [MemberController::class, 'destroy'])->name('admin.member.destroy');
+    
     //route transaksi
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi');
     Route::get('admin/transaksi/create', [TransaksiController::class, 'create'])->name('admin/transaksi/create');

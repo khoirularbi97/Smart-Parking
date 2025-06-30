@@ -3,10 +3,11 @@
 @section('title', 'Topup')
 
 @section('content')
-<x-page-header-topup
+<x-page-header
     title=""
     :breadcrumbs="[
-        ['label' => 'Home', 'url' => '/topup/admin'],
+        ['label' => 'Home', 'url' => '/dashboard'],
+        ['label' => 'Top-up', 'url' => '/topup/admin'],
         ['label' => 'Create Topup Member']
     ]"
 />
@@ -32,7 +33,8 @@
                                     <option 
                                         value="{{ $user->users_id }}" 
                                         data-alamat="{{ $user->alamat }}" 
-                                        data-nama="{{ $user->name }}">
+                                        data-nama="{{ $user->name }}"
+                                        data-telepon="{{ $user->telepon }}">
                                         {{ $user->name }}
                                     </option>
                                 @endforeach
@@ -42,19 +44,24 @@
                     <!-- Alamat(readonly) -->
                     <div class="mb-4">
                         <x-input-label for="uid" :value="__('Alamat')" />
-                        <x-text-input id="alamat" class="block mt-1 w-full" type="text" name="alamat" readonly />
+                        <x-text-input id="alamat" class="block mt-1 w-full bg-gray-100" type="text" name="alamat" readonly />
                     </div>
 
                     <!-- Nama (readonly) -->
                     <div class="mb-4">
                         <x-input-label for="nama" :value="__('Nama')" />
-                        <x-text-input id="nama" class="block mt-1 w-full" type="text" name="nama" readonly />
+                        <x-text-input id="nama" class="block mt-1 w-full bg-gray-100" type="text" name="nama" readonly />
+                    </div>
+                     <!-- Telepon (readonly) -->
+                    <div class="mb-4">
+                        <x-input-label for="telepon" :value="__('Telepon')" />
+                        <x-text-input id="telepon" class="block mt-1 w-full bg-gray-100" type="text" name="telepon" readonly />
                     </div>
                     
                    
                     <!-- Jumlah -->
                     <div class="mb-4">
-                        <x-input-label for="amount" :value="__('Jumlah')" />
+                        <x-input-label for="amount" :value="__('Jumlah (Minimum 10.000)')" />
                         <x-text-input id="amount" class="block mt-1 w-full" type="text" name="amount"  required />
                         <x-input-error :messages="$errors->get('amount')" class="mt-2" />
                     </div>
@@ -72,6 +79,7 @@
                     let selected = this.options[this.selectedIndex];
                     document.getElementById('alamat').value = selected.dataset.alamat || '';
                     document.getElementById('nama').value = selected.dataset.nama || '';
+                    document.getElementById('telepon').value = selected.dataset.telepon || '';
                 });
                 
                 document.getElementById('topup-form').addEventListener('submit', function (e) {
@@ -98,14 +106,14 @@
                             onSuccess: function(result) {
                                
 
-                                 window.location.href = "{{ url('/invoice') }}/" + orderId;
+                                 window.location.href = "{{ url('/invoice') }}/" + orderId + "?status=success";
                             },
                             onPending: function(result) {
-                                alert('Menunggu pembayaran...');
+                                window.location.href = "{{ url('/invoice') }}/" + orderId + "?status=waiting";
                             },
                             onError: function(result) {
                                 alert('Pembayaran gagal.');
-                                window.location.href = "{{ url('/topup/admin') }}";
+                                window.location.href = "{{ url('/topup/admin') }}" + orderId + "?status=failed";
                             }
                         });
                     } catch (e) {

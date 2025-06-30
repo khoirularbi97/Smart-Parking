@@ -3,10 +3,11 @@
 @section('title', 'Riwayat Parkir')
 
 @section('content')
-<x-page-header2
+<x-page-header
     title=""
     :breadcrumbs="[
-        ['label' => 'Home', 'url' => '/Riwayat parkir'],
+       ['label' => 'Home', 'url' => '/dashboard'],
+        ['label' => 'Riwayat parkir']
         
     ]"
 />
@@ -190,32 +191,7 @@
 </div>
 
 </div>
-@if(session('success'))
-<x-pop-up></x-pop-up>
 
-<script>
-    // Fungsi untuk menampilkan alert
-    function showAlert() {
-      const alert = document.getElementById('successAlert');
-      alert.classList.remove('hidden');
-  
-      // Otomatis hilang setelah 3 detik
-      setTimeout(() => {
-        alert.classList.add('hidden');
-      }, 3000);
-    }
-  
-    // Fungsi untuk menutup manual
-    function closeAlert() {
-      document.getElementById('successAlert').classList.add('hidden');
-    }
-  
-    // Contoh pemanggilan saat halaman dimuat (bisa ubah sesuai kebutuhan)
-    window.onload = function () {
-      showAlert(); // panggil hanya jika ada session success
-    };
-  </script>
-@endif
 <script>
     
     let deleteUserId = null;

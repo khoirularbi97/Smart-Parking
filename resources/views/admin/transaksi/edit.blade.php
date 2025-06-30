@@ -5,9 +5,10 @@
 @section('content')
 
     <x-page-header 
-        title="Update Transaksi"
+        title=""
         :breadcrumbs="[
-            ['label' => 'Home', 'url' => '/transaksi'],
+            ['label' => 'Home', 'url' => '/dashboard'],
+            ['label' => 'Transaksi', 'url' => '/transaksi'],
             ['label' => 'Update Transaksi']
         ]"
     />
@@ -18,7 +19,7 @@
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <h1 class="text-2xl text-center font-bold mb-6"></h1>
+                <h1 class="text-2xl text-center font-bold mb-6">Update Transaksi</h1>
                <form method="POST" action="{{ route('admin.transaksi.update', $transaksi->id) }}">
                    @csrf
                     @method('PUT') <!-- Penting! -->

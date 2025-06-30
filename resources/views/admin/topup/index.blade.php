@@ -3,10 +3,11 @@
 @section('title', 'Top Up')
 
 @section('content')
-<x-page-header-topup
+<x-page-header
     title=""
     :breadcrumbs="[
-        ['label' => 'Home', 'url' => '/topup/admin'],
+        ['label' => 'Home', 'url' => '/dashboard'],
+        ['label' => 'Top-up']
         
     ]"
 />
@@ -93,13 +94,19 @@
                                     <button onclick="window.location.href='{{ route('edit.topup', $topups->id) }}'" class="bg-gray-100 p-1 rounded hover:bg-cyan-300"><i data-lucide="square-pen" class="text-cyan-800"></i></button>
                                     </div>
                                     <div class="center">
-                                            <button onclick="showConfirmModal({{ $topups->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"><i data-lucide="trash-2" class="text-red-800"></i></button>
+                                            <button onclick="showConfirmModal({{ $topups->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"   title="Hapus Topup"><i data-lucide="trash-2" class="text-red-800"></i></button>
+
+                                            <form  id="delete-form-{{ $topups->id }}" action="{{ route('admin.topup.delete', $topups->id) }}" class="hidden" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                </form>
                                     
 
                                     </div>
                                     <div class="center">
                                     
                                     <button  onclick="window.location.href='{{ route('invoice.show', $topups->order_id) }}'" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="eye" class="text-yellow-800"></i></button>
+                                    
                                     
                                     </div>
 
@@ -146,60 +153,13 @@
             </div>
         </div>
     </div>
-   
-                
-
-
-        <form  id="deleteForm"  class="hidden" method="POST">
-        @csrf
-        @method('DELETE')
-        </form>
-         <x-popup-delete></x-popup-delete>
+        
+      
 </div>
-@if(session('success'))
-<x-pop-up></x-pop-up>
-
 <script>
-    // Fungsi untuk menampilkan alert
-    function showAlert() {
-      const alert = document.getElementById('successAlert');
-      alert.classList.remove('hidden');
-  
-      // Otomatis hilang setelah 3 detik
-      setTimeout(() => {
-        alert.classList.add('hidden');
-      }, 3000);
-    }
-  
-    // Fungsi untuk menutup manual
-    function closeAlert() {
-      document.getElementById('successAlert').classList.add('hidden');
-    }
-  
-    // Contoh pemanggilan saat halaman dimuat (bisa ubah sesuai kebutuhan)
-    window.onload = function () {
-      showAlert(); // panggil hanya jika ada session success
-    };
-  </script>
-@endif
-<script>
+   
     
-    let deleteUserId = null;
-
-    function showConfirmModal(userId) {
-        deleteUserId = userId;
-        document.getElementById('confirmModal').classList.remove('hidden');
-    }
-
-    function hideConfirmModal() {
-        document.getElementById('confirmModal').classList.add('hidden');
-    }
-
-    function submitDelete() {
-    const form = document.getElementById('deleteForm');
-    form.action = '{{ url("topup/admin/delete") }}/' + deleteUserId;
-    form.submit();
-}
+   
 const ctx = document.getElementById('topupChart').getContext('2d');
 
     const transaksiChart = new Chart(ctx, {

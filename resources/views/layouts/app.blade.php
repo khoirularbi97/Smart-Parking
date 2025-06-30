@@ -25,6 +25,29 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
         <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+        <style>
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .invoice, .invoice * {
+        visibility: visible;
+    }
+    .invoice {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    /* Sembunyikan tombol cetak */
+    button, .no-print {
+        display: none !important;
+    }
+}
+</style>
+
 
        
 
@@ -50,11 +73,55 @@
                     @include('admin.footer')
                 </div>
             </div>
+            
             @stack('scripts')
-    </body>
+            <!-- SweetAlert2 -->
+
+           
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@foreach (['success', 'error', 'warning', 'info'] as $msg)
+    @if(session($msg))
+        <script>
+            Swal.fire({
+                icon: '{{ $msg }}',
+                title: '{{ session($msg) }}',
+                position: 'center',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                }
+            });
+        </script>
+    @endif
+@endforeach
+
+    
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+
+            function showConfirmModal(id) {
+            Swal.fire({
+                title: 'Yakin ingin menghapus? ',
+                text: "Data ini akan hilang secara permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e3342f',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
+            
 
     
     lucide.createIcons();
@@ -94,6 +161,7 @@
 
    
 </script>
+</body>
 
     
     

@@ -41,7 +41,23 @@ public function update(Request $request, $id)
     ]);
 
     return redirect()->back()->with('success', 'Slot parkir berhasil diperbarui.');
-}
+}   
+     public function destroy($id)
+     {
+    $slot = ParkingSlot::findOrFail($id);
+    $oldSlot = $slot->name;
+
+    if (!$oldSlot) {
+        return redirect()->route('parkir.slot')
+            ->with('error', 'Slot tidak ditemukan. Gagal menghapus transaksi.');
+    }
+
+    
+   
+    $slot->delete();
+
+        return redirect()->route('parkir.slot')->with('success', 'Slot (' . $oldSlot. ' ) berhasil dihapus.');
+    }
 
 
 }

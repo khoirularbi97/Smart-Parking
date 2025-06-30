@@ -3,17 +3,18 @@
 @section('title', 'Parkir_masuk')
 
 @section('content')
-<x-page-header2
+<x-page-header
     title=""
     :breadcrumbs="[
-        ['label' => '', 'url' => '/slot parkir'],
+       ['label' => 'Home', 'url' => '/dashboard'],
+        ['label' => 'Slot Parkir']
         
     ]"
 />
 {{-- Slot Parkir --}}
 <div class="container">
 <div class="bg-white border-4 border-indigo-200 border-t-sky-500 rounded-xl shadow-xl p-6 mt-6">
-    <h2 class="text-xl font-semibold mb-10 text-gray-700">Tampilan Slot Parkir</h2>
+    <h2 class="text-xl font-semibold mb-10 text-gray-700">Slot Parkir</h2>
     <div class="card shadow-sm mt-4">
     <div class="card-header bg-white">
         <div class="justify-between items-center">
@@ -42,6 +43,14 @@
         <button data-bs-toggle="modal" data-bs-target="#editSlotModal{{ $slot->id }}" class="btn bg-gray-100 p-1 rounded hover:bg-cyan-300">
             <i data-lucide="square-pen" class="text-cyan-800"></i>
         </button>
+        <button onclick="showConfirmModal({{ $slot->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"   title="Hapus Slot"><i data-lucide="trash-2" class="text-red-800"></i></button>
+
+        <form  id="delete-form-{{ $slot->id }}" action="{{ route('admin.parkir_slot.destroy', $slot->id) }}" class="hidden" method="POST">
+            @csrf
+            @method('DELETE')
+            </form>
+                                    
+
 
         @if($slot->is_available == 'terisi')
             <span class="text-xs text-gray-500 mt-1">

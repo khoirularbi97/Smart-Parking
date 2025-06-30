@@ -3,10 +3,11 @@
 @section('title', 'Transaksi')
 
 @section('content')
-<x-page-header2
+<x-page-header
     title=""
     :breadcrumbs="[
-        ['label' => 'Home', 'url' => '/transaksi'],
+        ['label' => 'Home', 'url' => '/dashboard'],
+        ['label' => 'Transaksi', 'url' => '/transaksi'],
         ['label' => 'Tambah Transaksi']
     ]"
 />

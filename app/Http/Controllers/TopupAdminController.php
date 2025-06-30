@@ -65,7 +65,7 @@ class TopupAdminController extends Controller
     }
      public function create()
     {
-         $users = User::where('role', 'user')->select('id as users_id', 'alamat', 'name')->get(); 
+         $users = User::where('role', 'user')->select('id as users_id', 'alamat', 'name', 'telepon')->get(); 
         return view('admin.topup.create-topup', compact('users'));
     }
     public function __construct()
@@ -88,6 +88,7 @@ class TopupAdminController extends Controller
             'users_id' => $user->id,
             'name'   => $user->name,
             'alamat'   => $user->alamat,
+            'telepon'   => $user->telepon,
             'method'   => 'waiting',
             'amount' => $amount,
             'status' => 'pending',
@@ -121,6 +122,7 @@ class TopupAdminController extends Controller
             'customer_details' => [
                 'first_name' => $user->name,
                 'email' => $user->email,
+                'phone' => $user->telepon,
                 
             ],
         ];
@@ -160,7 +162,10 @@ class TopupAdminController extends Controller
     $user->save();
     $topup->delete();
 
-        return redirect()->route('topup.admin')->with('success', 'topup (' . $user1 . ' ) berhasil dihapus.');
+        return redirect()
+    ->route('topup.admin')
+    ->with('success', "Topup ($user1) berhasil dihapus.");
+
     }
      public function exportPdf(Request $request)
 {
@@ -221,8 +226,16 @@ class TopupAdminController extends Controller
     
     return $pdf->download('laporan_topup.pdf');
 }
-    public function showInvoice($order_id)
+    public function showInvoice($order_id, Request $request)
 {
+     if ($request->status === 'success') {
+        session()->flash('success', 'Pembayaran berhasil.');
+    }elseif ($request->status === 'waiting'){
+        session()->flash('info', 'Menunggu pembayaran.');
+    }else{
+        session()->flash('error', 'Pembayaran gagal!');
+    }
+
     $invoice = Topup::where('order_id', $order_id)->firstOrFail();
     return view('admin.topup.invoice', compact('invoice'));
 }

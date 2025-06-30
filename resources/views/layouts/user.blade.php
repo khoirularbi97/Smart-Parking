@@ -20,6 +20,9 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://unpkg.com/lucide@latest"></script>
+        <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+    
     @livewireStyles
     </head>
     <body class="font-sans antialiased ">
@@ -72,6 +75,24 @@
         
                 
                 @stack('scripts')
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+                   @foreach (['success', 'error', 'warning', 'info'] as $msg)
+                    @if(session($msg))
+                    <script>
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: '{{ $msg }}',
+                            title: '{{ session($msg) }}',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                    </script>
+                    @endif
+                    @endforeach
+
+    
             
     </body>
     
