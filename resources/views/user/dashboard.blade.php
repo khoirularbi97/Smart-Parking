@@ -60,7 +60,7 @@
                 <p class="text-xs text-gray-500" id="keluar_{{ $history->id }}"></p>
                 @endif
 
-                <span class="px-2 py-1 rounded-full text-xs font-semibold {{ $status ? 'bg-gray-200 text-gray-700' : 'bg-green-100 text-green-800' }}">
+                <span class="px-2 py-1 rounded-full text-xs font-semibold {{ $status == 'Selesai' ? 'bg-gray-200 text-gray-700' : 'bg-green-100 text-green-800' }}">
                     {{ $status }}
                 </span>
             </div>
