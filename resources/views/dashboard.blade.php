@@ -160,20 +160,50 @@
     <div class="row p-4">
 
         <div class="bg-white shadow-md rounded-lg p-4">
-            <h3 class="text-lg font-semibold mb-4">Data Transaksi</h3>
-            <div class="flex items-center justify-center mt-7">
-                <div class="card " >
-    
-                </div>
-            </div>
-            <div class="w-45 h-64 mt-7">
-    
-                <canvas id="transaksiChart" ></canvas>
-    
-        
-            </div>
+            <h3 class="text-xl font-semibold  mb-4">Keuntungan Bulanan</h3>
+           
+        <h2 class="mb-6 text-2xl text-center font-bold mb-10"></h2>
+                    <div class="card shadow-sm mt-4">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Grafik Pendapatan & Pengeluaran Bulanan</h5>
+
+                        </div>
+                        <div class="card-body">
+                            <canvas id="labaChart" height="100"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="card shadow-sm border-left-primary">
+                                <div class="card-body">
+                                    <h6 class="text-primary">Total Pendapatan Parkir</h6>
+                                    <h4 class="font-weight-bold">Rp{{ number_format($data->sum(fn($d) => $d->total_kredit), 0, ',', '.') }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card shadow-sm border-left-danger">
+                                <div class="card-body">
+                                    <h6 class="text-danger">Total Top-up (Pengeluaran)</h6>
+                                    <h4 class="font-weight-bold">Rp{{ number_format($data->sum(fn($d) => $d->total_debit), 0, ',', '.') }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card shadow-sm border-left-success">
+                                <div class="card-body">
+                                    <h6 class="text-success">Keuntungan Bersih</h6>
+                                    <h4 class="font-weight-bold">Rp{{ number_format($data->sum(fn($d) => $d->laba), 0, ',', '.') }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                   
         </div>
     </div>
+</div>
+</div>
 </div>
 
 <div class="p-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -210,9 +240,51 @@
 
 @push('scripts')
 <script>
-            const ctx1 = document.getElementById('chartTransaksiHarian').getContext('2d');
+document.addEventListener('DOMContentLoaded', function () {
 
-            const chart1 = new Chart(ctx1, {
+const ctx2= document.getElementById('labaChart').getContext('2d');
+
+    const data2 = {
+        labels: {!! json_encode($data->map(fn($d) => $d->bulan . '-' . $d->tahun)) !!},
+        datasets: [
+            {
+                label: 'Kredit',
+                data: {!! json_encode($data->map(fn($d) => $d->total_kredit)) !!},
+                backgroundColor: 'rgba(54, 162, 235, 0.6)'
+            },
+            {
+                label: 'Debit',
+                data: {!! json_encode($data->map(fn($d) => $d->total_debit)) !!},
+                backgroundColor: 'rgba(255, 99, 132, 0.6)'
+            },
+            {
+                label: 'Laba',
+                data: {!! json_encode($data->map(fn($d) => $d->laba)) !!},
+                backgroundColor: 'rgba(75, 192, 192, 0.6)'
+            }
+        ]
+    };
+
+    const config = {
+        type: 'bar',
+        data: data2,
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    new Chart(ctx2, config);
+
+   
+
+     const ctx3 = document.getElementById('chartTransaksiHarian').getContext('2d');
+
+            const chart3 = new Chart(ctx3, {
                 type: 'bar',
                 data: {
                     labels: {!! json_encode($transaksiPerHari->pluck('tanggal')) !!},
@@ -254,25 +326,8 @@
                 }
             });
 
-    var debit = {{ $debitCount ?? 0 }};
-    var kredit = {{ $kreditCount ?? 0 }};
-   
-var ctx2 = document.getElementById('transaksiChart').getContext('2d');
-var transaksiChart = new Chart(ctx2, {
-type: 'doughnut',
-data: {
-labels: ['Transaksi Debit', 'Transaksi Kredit'],
-datasets: [{
-data: [{{ $debitCount }}, {{ $kreditCount }}],
-backgroundColor: ['#007bff', '#dc3'],
-}]
-},
-options: {
-responsive: true,
-maintainAspectRatio: false
-}
 
-});
+
 
 const ctx = document.getElementById('combinedChart').getContext('2d');
     const combinedChart = new Chart(ctx, {
@@ -338,6 +393,7 @@ const ctx = document.getElementById('combinedChart').getContext('2d');
             }
         }
     });
+});
 </script>
 @endpush
 @endsection

@@ -67,6 +67,26 @@ class DashboardController extends Controller
             // Jumlah kendaraan keluar hari ini
             $totalKeluarHariIni = RiwayatParkir::whereDate('waktu_keluar', $today)->count();
 
-        return view('dashboard', compact( 'totalTerparkir', 'totalMasukHariIni', 'totalKeluarHariIni', 'member', 'dates', 'totals','admin', 'total_kendaraan', 'transaksiPerHari', 'debitCount', 'kreditCount', 'histories'));
+
+        $data = DB::table('transaksis')
+        ->select(
+            DB::raw('MONTH(created_at) as bulan'),
+            DB::raw('YEAR(created_at) as tahun'),
+            DB::raw("SUM(CASE WHEN jenis = 'kredit' THEN jumlah ELSE 0 END) as total_kredit"),
+            DB::raw("SUM(CASE WHEN jenis = 'debit' THEN jumlah ELSE 0 END) as total_debit")
+        )
+        ->groupBy('tahun', 'bulan')
+        ->orderBy('tahun')
+        ->orderBy('bulan')
+        ->get();
+
+    $labels = [];
+    $keuntungan = [];
+
+    foreach ($data as $item) {
+        $item->laba = $item->total_kredit - $item->total_debit;
+    }
+
+        return view('dashboard', compact( 'data', 'totalTerparkir', 'totalMasukHariIni', 'totalKeluarHariIni', 'member', 'dates', 'totals', 'admin', 'total_kendaraan', 'transaksiPerHari', 'debitCount', 'kreditCount', 'histories'));
 }
 }
