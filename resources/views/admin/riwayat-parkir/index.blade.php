@@ -57,14 +57,9 @@
                     </form>
         </div>
         <div class="bg-white p-4 rounded shadow mb-6">
-            <h3 class="text-lg font-semibold mb-2">Grafik Biaya Parkir</h3>
+            <h3 class="text-lg font-semibold mb-2">Grafik Riwayat Parkir</h3>
              <canvas id="parkingChart" height="100"></canvas>
         </div>
-        <div class="bg-white p-4 rounded shadow mb-6">
-            <h3 class="text-lg font-semibold mb-2">Grafik Jumlah Kendaraan</h3>
-             <canvas id="kendaraanChart" height="100" class="mt-4"></canvas>
-        </div>
-
         <div class="table-responsive shadow">
             <table class="rounded ">
                 <thead>
@@ -232,22 +227,7 @@
 
 
 <script>
-    const labels = @json($dates);
-    const dataKendaraan = @json($total_kendaraan);
-
-    
-    const kendaraanChart = new Chart(document.getElementById('kendaraanChart'), {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Jumlah Kendaraan',
-                data: dataKendaraan,
-                backgroundColor: 'blue'
-            }]
-        }
-    });
-    
+   
     let deleteUserId = null;
 
     function showImageModal(image_masuk, image_keluar, name, uid, _Status, waktu_masuk, waktu_keluar,) {
@@ -297,44 +277,64 @@
 
    
     const ctx = document.getElementById('parkingChart').getContext('2d');
-
-    const transaksiChart = new Chart(ctx, {
-        type: 'line',
+    const combinedChart = new Chart(ctx, {
+        type: 'bar', // Tipe dasar: bar (untuk kendaraan)
         data: {
             labels: {!! json_encode($dates) !!},
-            datasets: [{
-                label: 'Total Transaksi (Rp)',
-                data: {!! json_encode($totals) !!},
-                borderColor: 'rgba(59, 130, 246, 1)', // Tailwind blue-500
-                backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                borderWidth: 2,
-                fill: true,
-                tension: 0.3,
-                pointRadius: 4
-            }]
+            datasets: [
+                {
+                    label: 'Jumlah Kendaraan',
+                    data: {!! json_encode($total_kendaraan) !!},
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Total Biaya (Rp)',
+                    data: {!! json_encode($totals) !!},
+                    type: 'line', // Tipe line untuk biaya
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2,
+                    yAxisID: 'y1',
+                    tension: 0.4
+                }
+            ]
         },
         options: {
             responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            stacked: false,
             plugins: {
-                legend: {
-                    position: 'top',
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            let value = context.raw;
-                            return 'Rp ' + new Intl.NumberFormat('id-ID').format(value);
-                        }
-                    }
+                title: {
+                    display: true,
+                    text: 'Grafik Jumlah Kendaraan dan Total Biaya Parkir per Hari'
                 }
             },
             scales: {
                 y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return 'Rp ' + new Intl.NumberFormat('id-ID').format(value);
-                        }
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    title: {
+                        display: true,
+                        text: 'Jumlah Kendaraan'
+                    }
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    title: {
+                        display: true,
+                        text: 'Total Biaya (Rp)'
+                    },
+                    grid: {
+                        drawOnChartArea: false
                     }
                 }
             }
