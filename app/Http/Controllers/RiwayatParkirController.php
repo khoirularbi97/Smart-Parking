@@ -112,14 +112,15 @@ class RiwayatParkirController extends Controller
      */
     public function destroy(string $id)
     {$riwayat_parkir = RiwayatParkir::findOrFail($id);
-    $user = $riwayat_parkir->name;
+    $oldUser = User::find($riwayat_parkir->users_id);
+    $oldName = $oldUser->name;
 
     
     $riwayat_parkir->delete();
 
         return redirect()
     ->route('riwayat.parkir')
-    ->with('success', "Riwayat ($user) berhasil dihapus.");
+    ->with('success', "Riwayat ($oldName) berhasil dihapus.");
 
     }
 }
