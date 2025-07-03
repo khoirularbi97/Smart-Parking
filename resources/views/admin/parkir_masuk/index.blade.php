@@ -60,11 +60,11 @@
                               <div class="center">
                                     
                                     <button   onclick="showImageModal(
-                                            '{{$masuk->image_base64 ?? '-'  }}',
-                                            '{{ $masuk->user->name ?? '-'  }}',
-                                            '{{ $masuk->uid ?? '-' }}',
-                                            '{{ $masuk->status ?? '-' }}',
-                                            '{{ \Carbon\Carbon::parse($masuk->waktu_masuk ?? '-' )->format('d M Y H:i') }}'
+                                            '{{$masuk->image_base64 }}',
+                                            '{{ $masuk->user->name }}',
+                                            '{{ $masuk->uid }}',
+                                            '{{ $masuk->status }}',
+                                            '{{ \Carbon\Carbon::parse($masuk->waktu_masuk )->format('d M Y H:i') }}'
                                         )" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="eye" class="text-yellow-800"></i></button>
                                     
                                  </div>

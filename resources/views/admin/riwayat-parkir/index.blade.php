@@ -113,8 +113,8 @@
                                             '{{ $riwayat->user->name ?? '-'  }}',
                                             '{{ $riwayat->uid ?? '-' }}',
                                             '{{ $riwayat->_Status ?? '-' }}',
-                                            '{{ \Carbon\Carbon::parse($riwayat->waktu_masuk ?? '-' )->format('d M Y H:i') }}',
-                                            '{{ \Carbon\Carbon::parse($riwayat->waktu_keluar  ?? '-' )->format('d M Y H:i') }}'
+                                            '{{ $riwayat->waktu_masuk ? \Carbon\Carbon::parse($riwayat->waktu_masuk)->format('d M Y H:i') : '-' }}',
+                                            '{{ $riwayat->waktu_keluar ? \Carbon\Carbon::parse($riwayat->waktu_keluar)->format('d M Y H:i') : '-' }}'
                                         )"
                                         class="bg-gray-100 px-4 py-2 rounded hover:bg-red-300"
                                         >
