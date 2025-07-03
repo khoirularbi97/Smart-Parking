@@ -42,7 +42,7 @@
     }
 
     /* Sembunyikan tombol cetak */
-    button, .no-print {
+    button, .no-print,  {
         display: none !important;
     }
 }

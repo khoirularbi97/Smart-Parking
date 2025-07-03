@@ -111,7 +111,7 @@ Route::middleware('auth','admin')->group(function () {
     Route::get('/member', [MemberController::class, 'index'])->name('admin.member');
     Route::get('admin/member/create', [MemberController::class, 'create'])->name('admin/member/create');
     Route::delete('/admin/member/{id}', [MemberController::class, 'destroy'])->name('admin.member.destroy');
-    
+
     //route transaksi
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi');
     Route::get('admin/transaksi/create', [TransaksiController::class, 'create'])->name('admin/transaksi/create');
@@ -145,6 +145,7 @@ Route::middleware('auth','admin')->group(function () {
     Route::delete('admin/parkir_slot/{id}', [ParkingSlotController::class, 'destroy'])->name('admin.parkir_slot.destroy');
     Route::post('/slot/store', [ParkingSlotController::class, 'store'])->name('slot.store');
     Route::put('/slot/update/{id}', [ParkingSlotController::class, 'update'])->name('slot.update');
+    Route::delete('slot/delete/{id}', [ParkingSlotController::class, 'destroy'])->name('admin.parkir_slot.destroy');
 
 
 
@@ -156,6 +157,7 @@ Route::middleware('auth','admin')->group(function () {
     Route::delete('/topup/admin/delete/{id}', [TopupAdminController::class, 'destroy'])->name('admin.topup.delete');
     Route::match(['get', 'post'], '/topup/admin/export-pdf', [TopupAdminController::class, 'exportPDF2'])->name('admin.topup.export-pdf');
     Route::get('/invoice/{order_id}', [TopupAdminController::class, 'showInvoice'])->name('invoice.show');
+    Route::get('/print/{order_id}', [TopupAdminController::class, 'printInvoice'])->name('print.show');
 
 
 

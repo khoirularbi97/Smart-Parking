@@ -37,8 +37,19 @@ class TransaksiController extends Controller
         DB::raw("DATE(created_at) as date"),
         DB::raw("SUM(jumlah) as total")
     )
-    ->when($request->filled('start_date') && $request->filled('end_date'), function ($q) use ($request) {
-        $q->whereBetween('created_at', [
+     ->when($request->filled('search'), function ($query) use ($request) {
+        $search = $request->search;
+        $query->where(function ($q) use ($search) {
+            $q->where('users_id', 'like', "%$search%")
+              ->orWhere('uid', 'like', "%$search%")
+              ->orWhere('nama', 'like', "%$search%")
+              ->orWhere('jenis', 'like', "%$search%")
+              ->orWhere('jumlah', 'like', "%$search%")
+              ->orWhere('keterangan', 'like', "%$search%");
+        });
+    })
+    ->when($request->filled('start_date') && $request->filled('end_date'), function ($query) use ($request) {
+        $query->whereBetween('created_at', [
             $request->start_date . ' 00:00:00',
             $request->end_date . ' 23:59:59'
         ]);

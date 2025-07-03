@@ -102,6 +102,7 @@ class TopupController extends Controller
         $notif = new Notification();
         $transaction = $notif->transaction_status;
         $orderId = $notif->order_id;
+        $method = $notif->payment_type;
         $fraud = $notif->fraud_status ?? null;
         $user = Auth::user();
         $topup = Topup::where('order_id', $orderId)->first();
@@ -113,6 +114,7 @@ class TopupController extends Controller
         if ($transaction == 'capture') {
             if ($fraud == 'challenge') {
                 $topup->status = 'challenge';
+                $topup->method = $method;
             } else {
                 $topup->status = 'success';
                 $topup->user->increment('balance', $topup->amount);
@@ -120,11 +122,14 @@ class TopupController extends Controller
             }
         } elseif ($transaction == 'settlement') {
             $topup->status = 'success';
+            $topup->method = $method;
             $topup->user->increment('balance', $topup->amount);
         } elseif ($transaction == 'pending') {
             $topup->status = 'pending';
+            $topup->method = $method;
         } elseif (in_array($transaction, ['deny', 'expire', 'cancel'])) {
             $topup->status = $transaction;
+            $topup->method = $method;
         }
 
         $topup->save();

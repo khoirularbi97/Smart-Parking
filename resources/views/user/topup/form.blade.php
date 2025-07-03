@@ -43,7 +43,7 @@
         <div class="flex items-center gap-2 justify-between">
             <p class="text-xs mt-2 text-black-500">Riwayat topup</p>
             
-            <button  onclick="window.location.href='{{ route('invoice.user.show', $history->order_id) }}'" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="printer" class="text-purple-800"></i></button>
+            <button  onclick="window.location.href='{{ route('invoice.user.show', ['order_id' => $history->order_id, 'status' => $history->status]) }}'" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="printer" class="text-purple-800"></i></button>
             <button class="btn-check-status bg-pink-400 hover:bg-purple-400 text-white p-2 rounded-lg transition duration-300 shadow-md" data-order-id="{{ $history->order_id }}">
                 Detail
                     </button>

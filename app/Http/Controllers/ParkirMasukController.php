@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ParkirMasuk;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ParkirMasukController extends Controller
@@ -73,9 +74,10 @@ class ParkirMasukController extends Controller
     public function destroy(string $id)
     {
         $masuk = ParkirMasuk::findOrFail($id);
-        $uid1 = $masuk->uid;
+        $oldUser = User::find($masuk->users_id);
+        $oldName = $oldUser->name;
         $masuk->delete();
 
-    return redirect()->route('parkir.masuk')->with('success', 'Data untuk UID : ' . $uid1 . '  berhasil dihapus.');
+    return redirect()->route('parkir.masuk')->with('success', 'Data untuk UID : ' . $oldName . '  berhasil dihapus.');
     }
 }

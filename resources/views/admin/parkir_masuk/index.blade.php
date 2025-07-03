@@ -59,7 +59,13 @@
                               </div>
                               <div class="center">
                                     
-                                    <button  onclick="showImageModal(this.src)" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="eye" class="text-yellow-800"></i></button>
+                                    <button   onclick="showImageModal(
+                                            '{{$masuk->image_base64 ?? '-'  }}',
+                                            '{{ $masuk->user->name ?? '-'  }}',
+                                            '{{ $masuk->uid ?? '-' }}',
+                                            '{{ $masuk->status ?? '-' }}',
+                                            '{{ \Carbon\Carbon::parse($masuk->waktu_masuk ?? '-' )->format('d M Y H:i') }}'
+                                        )" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="eye" class="text-yellow-800"></i></button>
                                     
                                  </div>
       
@@ -80,7 +86,7 @@
                           
                           <td class="px-4 py-2 border">
                            @if (Str::startsWith($masuk->image_base64, '/9j')) {{-- Cek awalan base64 (JPEG) --}}
-                              <img src="data:image/jpeg;base64,{{ $masuk->image_base64 }}" alt="Gambar" class="h-10 w-10 cursor-pointer rounded shadow" onclick="showImageModal(this.src)">
+                              <img src="data:image/jpeg;base64,{{ $masuk->image_base64 }}" alt="Gambar" class="h-10 w-10 rounded shadow" >
                           @else
                               <img src="{{ $masuk->image_path }}" alt="Gambar">
                           @endif
@@ -108,26 +114,71 @@
 
 <!-- Image Modal -->
 
-<div id="imageModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-     <!-- Modal box -->
-  <div id="modalBox" class="bg-white p-6 rounded-xl shadow-lg transform scale-95 opacity-0 transition duration-300 ease-out w-full max-w-md">
-    <h2 class="text-xl font-semibold mb-4">Detail Parkir Masuk</h2>
-    <img id="modalImage" src="" class="max-w-full max-h-[100vh] rounded-lg border-4 border-white">
-    <p><strong>UID:</strong> <span id="modalOrderId"></span></p>
-    <p><strong>Status:</strong> <span id="modalStatus"></span></p>
-    <p><strong>Waktu:</strong> <span id="modalTransactionTime">
-                          <td class="px-4 py-2 border"></span></p>
-    <button onclick="closeImageModal()" class="mt-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Tutup</button>
-  </div>
-    <span class="absolute top-4 right-6 text-white text-3xl cursor-pointer" onclick="closeImageModal()">&times;</span>
+<div id="modalBox" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden transition-all duration-300">
+  <div class="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-5xl transform transition-all duration-300 scale-95 opacity-0" id="modalContent">
     
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-4 border-b pb-2">
+      <h2 class="text-2xl font-bold text-gray-800">📸 Detail Parkir</h2>
+      <button onclick="closeImageModal()" class="text-red-500 hover:text-red-700 text-3xl font-bold">&times;</button>
+    </div>
+
+    <!-- Image Section -->
+    <div class="grid grid-cols-1 md:grid-cols-1">
+      <!-- Gambar Masuk -->
+      <div class="bg-gray-50 rounded-lg p-4 shadow-inner">
+        <p class="font-semibold text-center mb-2 text-gray-700">🚘 Gambar Masuk</p>
+        <img id="modalImageMasuk" class="max-h-70 mx-auto rounded-lg border hover:scale-105 transition-transform duration-300" src="" alt="Gambar Masuk">
+        <p class="text-center mt-2 text-sm text-gray-600"><strong>Waktu:</strong> <span id="modalWaktuIn"></span></p>
+      </div>
+    </div>
+
+    <!-- Info Section -->
+    <div class="mt-6 space-y-2 text-gray-700 text-sm">
+      <p><strong>UID:</strong> <span id="modalUid" class="text-blue-700 font-medium"></span></p>
+      <p><strong>Nama:</strong> <span id="modalName" class="text-blue-700 font-medium"></span></p>
+      <p><strong>Status:</strong> 
+        <span id="modalStatus" class="inline-block px-3 py-1 text-xs font-semibold rounded-full"></span>
+      </p>
+    </div>
+
+  </div>
 </div>
+
 
     
 
 <script>
 
-    
+
+    function showImageModal(image_base64, name, uid, status, waktu_masuk,) {
+            const modal = document.getElementById("modalBox");
+            const modalContent = document.getElementById("modalContent");
+            const statusSpan = document.getElementById("modalStatus"); 
+            rawBase64_masuk = 'data:image/jpeg;base64,' + image_base64;
+           
+
+
+            // Asumsikan base64 sudah dalam format "data:image/jpeg;base64,...."
+            document.getElementById("modalImageMasuk").src = rawBase64_masuk;
+            document.getElementById("modalUid").innerText = uid;
+            document.getElementById("modalName").innerText = name;
+            document.getElementById("modalWaktuIn").innerText = waktu_masuk;
+            
+                // Update status
+            statusSpan.className = "px-2 py-1 rounded text-xs font-semibold " +
+                (status === '1' ? 'bg-green-200 text-green-800' : 'bg-gray-200 text-gray-800');
+            statusSpan.innerText = status === '1' ? 'Aktif' : 'Selesai';
+
+
+            // Show modal
+        modal.classList.remove("hidden");
+        setTimeout(() => {
+            modalContent.classList.remove("scale-95", "opacity-0");
+            modalContent.classList.add("scale-100", "opacity-100");
+        }, 50);
+        
+  }
    
      function openModal() {
             const overlay = document.getElementById('modalOverlay');
@@ -159,23 +210,32 @@
                 overlay.classList.add('hidden');
             }, 300); // waktu sesuai dengan duration-300
             }
-    
-
-    function showImageModal(src) {
-        document.getElementById('modalImage').src = src;
-        document.getElementById('imageModal').classList.remove('hidden');
-        const modal = document.getElementById('modalBox');
-        modal.classList.add('scale-100', 'opacity-100');
-
-    }
-
     function closeImageModal() {
-        document.getElementById('imageModal').classList.add('hidden');
-        const modal = document.getElementById('modalBox');
+     const modal = document.getElementById("modalBox");
+        const modalContent = document.getElementById("modalContent");
 
-            modal.classList.remove('scale-100', 'opacity-100');
-            modal.classList.add('scale-95', 'opacity-0');
+        modalContent.classList.add("scale-95", "opacity-0");
+        modalContent.classList.remove("scale-100", "opacity-100");
+         setTimeout(() => {
+            modal.classList.add("hidden");
+        }, 300); // Sesuai durasi transition
     }
+
+    // function showImageModal(src) {
+    //     document.getElementById('modalImage').src = src;
+    //     document.getElementById('imageModal').classList.remove('hidden');
+    //     const modal = document.getElementById('modalBox');
+    //     modal.classList.add('scale-100', 'opacity-100');
+
+    // }
+
+    // function closeImageModal() {
+    //     document.getElementById('imageModal').classList.add('hidden');
+    //     const modal = document.getElementById('modalBox');
+
+    //         modal.classList.remove('scale-100', 'opacity-100');
+    //         modal.classList.add('scale-95', 'opacity-0');
+    // }
 
     // Tutup modal jika klik di luar gambar
     document.getElementById('imageModal').addEventListener('click', function (e) {

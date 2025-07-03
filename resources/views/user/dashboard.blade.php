@@ -26,7 +26,7 @@
         </div>
     </div>
     
-
+   
 
 
 
@@ -34,38 +34,43 @@
     <div class="space-y-5 mb-24">
 
         @foreach ($histories as $history)
+         @php
+            $waktuMasuk = \Carbon\Carbon::parse($history->waktu_masuk);
+            $waktuKeluar = $history->waktu_keluar;
+            $status =  $history->_Status == '1' ? 'Selesai' : 'Aktif' ;
+            $isAktif = $status;
+            $ratePerJam = 2000;
+            $createdAt = $history->created_at;
+        @endphp
         <div class="bg-white rounded-2xl shadow-lg p-5">
-            <div class="flex items-center justify-between mb-2">
-                <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-400"><i data-lucide="square parking" class="w-8 h-8 p-1"></i></div>
-                    <div>
-                        <p class="font-bold text-sm">{{ $history->parking_slot->name ?? 'Slot Tidak Diketahui' }}</p>
-                       <p class="text-xs text-gray-500">
-                    Masuk: {{ \Carbon\Carbon::parse($history->waktu_masuk)->format('d M Y H:i') }}
-                </p>
-            
-                @php
-                        $isAktif = $history->_Status == 'aktif' || $history->_Status == 1 ; // sesuaikan jika integer
-                    @endphp
-
-                    <span class="px-2 py-1 rounded-full text-xs font-semibold
-                        {{ $isAktif ? 'bg-gray-200 text-gray-700' : 'bg-green-100 text-green-800'}}">
-                        {{ $isAktif ? 'Selesai' : 'Aktif'  }}
-                    </span>
-                    </div>
-                </div>
-                <div class="text-right text-purple-700 font-semibold">
-                    Rp {{ number_format($history->biaya, 0, ',', '.') }}
-                </div>
+    <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-400">
+                <i data-lucide="square parking" class="w-8 h-8 p-1"></i>
             </div>
+            <div>
+                <p class="font-bold text-sm">{{ $history->parking_slot->name ?? 'Slot Tidak Diketahui' }}</p>
+                <p class="text-xs text-gray-500">Masuk: {{ $waktuMasuk->format('d M Y H:i') }}</p>
 
-           @php
-     $createdAt = $history->created_at;
-    $status = $history->_Status; // "aktif" atau "selesai"
-    $waktuKeluar = $history->waktu_keluar; // bisa null jika aktif
-@endphp
+                @if ($waktuKeluar)
+                <p class="text-xs text-gray-500" id="keluar_{{ $history->id }}">
+                    Keluar: {{ \Carbon\Carbon::parse($waktuKeluar)->format('d M Y H:i') }}
+                </p>
+                @else
+                <p class="text-xs text-gray-500" id="keluar_{{ $history->id }}"></p>
+                @endif
 
-@if ($createdAt)
+                <span class="px-2 py-1 rounded-full text-xs font-semibold {{ $status ? 'bg-gray-200 text-gray-700' : 'bg-green-100 text-green-800' }}">
+                    {{ $status }}
+                </span>
+            </div>
+        </div>
+        <div class="text-right text-purple-700 font-semibold" id="biaya_{{ $history->id }}">
+            Rp {{ number_format($history->biaya ?? 0, 0, ',', '.') }}
+        </div>
+    </div>
+    
+@if($createdAt)
     <div class="w-full h-2 bg-purple-100 rounded-full overflow-hidden">
         <div id="progressBar_{{ $history->id }}" class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all duration-500" style="width: 0%"></div>
     </div>
@@ -74,29 +79,48 @@
         Menghitung durasi parkir...
     </p>
 
+
     <script>
-         document.addEventListener('DOMContentLoaded', function () {
-            const createdAt = new Date("{{ $createdAt->format('Y-m-d H:i:s') }}");
+          document.addEventListener('DOMContentLoaded', function () {
+            const masuk = new Date("{{ $waktuMasuk->format('Y-m-d H:i:s') }}");
+            const keluarRaw = "{{ $waktuKeluar }}";
             const status = "{{ $status }}";
-           const waktuKeluar = "{{ $waktuKeluar ? \Carbon\Carbon::parse($waktuKeluar)->format('Y-m-d H:i:s') : '' }}";
+            const ratePerJam = {{ $ratePerJam }};
+            const id = "{{ $history->id }}";
 
+            const progressBar = document.getElementById("progressBar_" + id);
+            const progressText = document.getElementById("progressText_" + id);
+            const biayaElem = document.getElementById("biaya_" + id);
+            const keluarElem = document.getElementById("keluar_" + id);
 
-            const progressBar = document.getElementById("progressBar_{{ $history->id }}");
-            const progressText = document.getElementById("progressText_{{ $history->id }}");
+            function update() {
+                const now = new Date();
+                const keluar = keluarRaw ? new Date("{{ \Carbon\Carbon::parse($waktuKeluar)->format('Y-m-d H:i:s') }}") : now;
 
-            function updateProgress() {
-                const endTime = waktuKeluar ? new Date(waktuKeluar) : new Date();
-                const diffMs = endTime - createdAt;
-                const diffMinutes = Math.floor(diffMs / 60000); // ms to minutes
-                const percent = Math.min(100, (diffMinutes / 1440) * 100); // 1440 = 24 jam
+                const diffMs = keluar - masuk;
+                const diffMinutes = Math.floor(diffMs / 60000);
+                const percent = Math.min(100, (diffMinutes / 1440) * 100);
+
+                const jam = Math.floor(diffMinutes / 60);
+                const menit = diffMinutes % 60;
+
+                const biaya = Math.ceil(diffMinutes / 60) * ratePerJam;
 
                 progressBar.style.width = percent + "%";
-                progressText.innerText = `Parkir selama ${diffMinutes} menit (${percent.toFixed(1)}% dari 1 hari)`;
+                progressText.innerText = `Parkir selama ${jam} jam ${menit} menit (${percent.toFixed(1)}% dari 1 hari)`;
+
+                if (status === 'Aktif') {
+                    biayaElem.innerText = `Rp ${biaya.toLocaleString('id-ID')}`;
+                    keluarElem.innerText = `Keluar: -`;
+                } else {
+                    // final biaya tetap
+                    biayaElem.innerText = `Rp {{ number_format($history->biaya, 0, ',', '.') }}`;
+                }
             }
 
-            updateProgress(); // initial
-            if (status === null ) {
-                setInterval(updateProgress, 60000); // hanya update realtime jika aktif
+            update();
+            if (status === null) {
+                setInterval(update, 60000);
             }
         });
     </script>

@@ -43,8 +43,20 @@ class TopupAdminController extends Controller
         DB::raw("DATE(created_at) as date"),
         DB::raw("SUM(amount) as total")
     )
-    ->when($request->filled('start_date') && $request->filled('end_date'), function ($q) use ($request) {
-        $q->whereBetween('created_at', [
+     ->when($request->filled('search'), function ($query) use ($request) {
+        $search = $request->search;
+        $query->where(function ($q) use ($search) {
+             $q->where('users_id', 'like', "%$search%")
+              ->orWhere('name', 'like', "%$search%")
+              ->orWhere('order_id', 'like', "%$search%")
+              ->orWhere('method', 'like', "%$search%")
+              ->orWhere('amount', 'like', "%$search%")
+              ->orWhere('status', 'like', "%$search%")
+              ->orWhere('created_at', 'like', "%$search%");
+        });
+    })
+    ->when($request->filled('start_date') && $request->filled('end_date'), function ($query) use ($request) {
+        $query->whereBetween('created_at', [
             $request->start_date . ' 00:00:00',
             $request->end_date . ' 23:59:59'
         ]);
@@ -196,6 +208,9 @@ class TopupAdminController extends Controller
     public function exportPDF2(Request $request)
 {
     $base64Image = $request->input('chart_image');
+    //$data = $request->query(); // return array semua query parameter
+    //dd($data); 
+
 
     $query = Topup::query();
 
@@ -207,12 +222,13 @@ class TopupAdminController extends Controller
     }elseif ($request->filled('search')) {
         $search = $request->search;
         $query->where(function($q) use ($search) {
-            $q->where('users_id', 'like', "%$search%")
-              ->orWhere('order_id', 'like', "%$search%")
+             $q->where('users_id', 'like', "%$search%")
               ->orWhere('name', 'like', "%$search%")
+              ->orWhere('order_id', 'like', "%$search%")
               ->orWhere('method', 'like', "%$search%")
               ->orWhere('amount', 'like', "%$search%")
-              ->orWhere('keterangan', 'like', "%$search%");
+              ->orWhere('status', 'like', "%$search%")
+              ->orWhere('created_at', 'like', "%$search%");
         });
     }
 
@@ -238,5 +254,12 @@ class TopupAdminController extends Controller
 
     $invoice = Topup::where('order_id', $order_id)->firstOrFail();
     return view('admin.topup.invoice', compact('invoice'));
+}
+    public function printInvoice($order_id, Request $request)
+{
+    
+
+    $invoice = Topup::where('order_id', $order_id)->firstOrFail();
+    return view('admin.topup.print.invoice', compact('invoice'));
 }
 }

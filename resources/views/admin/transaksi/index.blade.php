@@ -28,14 +28,14 @@
                  {{-- <a href="{{ route('admin.transaksis.exportPdf', request()->query()) }}" target="_blank"
                         class="bg-red-500 text-white px-4 py-2 rounded">Export pdf</a> --}}
 
-                  <button onclick="exportPDF()" class="flex bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2 ">
+                  <button onclick="exportPDF()" id="pdfBtn" class="flex bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2 ">
                     <i data-lucide="file-down"></i>pdf
                     </button>
                 </div>
                
                 
 
-                    <form id="pdfForm" method="POST" action="{{ route('admin.transaksi.export-pdf') }}">
+                    <form id="pdfForm" method="POST" action="{{ route('admin.transaksi.export-pdf', request()->query()) }}">
                         @csrf
                         <input type="hidden" name="chart_image" id="chart_image">
                     </form>
@@ -101,7 +101,7 @@
                                             
                                              <button onclick="showConfirmModal({{ $transaksi->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300"   title="Hapus Transaksi"><i data-lucide="trash-2" class="text-red-800"></i></button>
 
-                                            <form  id="delete-form-{{ $transaksi->id }}" action="{{ route('admin.topup.delete', $transaksi->id) }}" class="hidden" method="POST">
+                                            <form  id="delete-form-{{ $transaksi->id }}" action="{{ route('admin.transaksi.destroy', $transaksi->id) }}" class="hidden" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 </form>
@@ -277,6 +277,10 @@ function downloadChartPDF() {
 }
 
 function exportPDF() {
+     const btn = document.getElementById('pdfBtn');
+        btn.disabled = true;
+        btn.innerHTML = 'Exporting...';
+
         const canvas = document.getElementById('transaksiChart');
         const image = canvas.toDataURL('image/png'); // Convert to Base64 PNG
         document.getElementById('chart_image').value = image;

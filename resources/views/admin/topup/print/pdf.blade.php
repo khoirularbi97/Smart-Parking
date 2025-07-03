@@ -107,14 +107,14 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($topup as $i => $item)
+            @foreach($topup as $item)
                 <tr>
-                    <td>{{ $i + 1 }}</td>
-                    <td>{{ $item->name }}</td>
-                    <td>{{ $item->order_id }}</td>
-                    <td>{{ $item->method }}</td>
-                    <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y H:i') }}</td>
-                    <td>Rp {{ number_format($item->amount, 0, ',', '.') }}</td>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $item['name'] }}</td>
+                    <td>{{ $item['order_id'] }}</td>
+                    <td>{{ $item['method'] }}</td>
+                    <td>{{ \Carbon\Carbon::parse($item['created_at'])->format('d M Y H:i') }}</td>
+                    <td>Rp {{ number_format($item['amount'], 0, ',', '.') }}</td>
                 </tr>
             @endforeach
         </tbody>

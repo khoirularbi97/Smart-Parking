@@ -18,36 +18,37 @@
             <h1 class="text-2xl text-center font-bold mb-10">Riwayat Top Up</h1>
             <div class="flex justify-between overflow-x-auto">
             <div class="justify-between items-center mb-6">
-            <form action="" method="GET" class="mb-4 flex gap-2">
+            <form action="" id="formSrc" method="GET" class="mb-4 flex gap-2">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari.." class="border p-2 rounded w-30">
                 <button class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">Cari</button>
             </form>
             
             <a href="{{ route('create.topup') }}" class="bg-sky-600 hover:bg-cyan-500 text-white px-4 py-2 rounded">+Top Up Member</a>
             
-                  <button onclick="exportPDF()" class="flex bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2 ">
+                  <button onclick="exportPDF()" id="pdfBtn" class="flex bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2 ">
                     <i data-lucide="file-down"></i>pdf
                     </button>
                
                 
                 </div>
 
-                    <form id="pdfForm" method="POST" action="{{ route('admin.topup.export-pdf') }}">
+                    <form id="pdfForm" method="POST" action="{{ route('admin.topup.export-pdf', request()->query()) }}">
                         @csrf
                         <input type="hidden" name="chart_image" id="chart_image">
+                        <input type="hidden" name="laporan_data" value="{{ base64_encode(json_encode($topup)) }}">
                     </form>
                
 
 
-                <form method="GET" action="" class="flex flex-wrap md:flex-nowrap gap-4 items-end mb-4">
+                <form method="GET" action="" id="formTgl" class="flex flex-wrap md:flex-nowrap gap-4 items-end mb-4">
                         <div>
                             <label for="start_date" class="block text-sm font-medium">Dari Tanggal</label>
-                            <input type="date" name="start_date" id="start_date" value=""
+                            <input type="date" name="start_date" id="start_date" value="{{ request('start_date') }}"
                                 class="border rounded px-2 py-1">
                         </div>
                         <div>
                             <label for="end_date" class="block text-sm font-medium">Sampai Tanggal</label>
-                            <input type="date" name="end_date" id="end_date" value=""
+                            <input type="date" name="end_date" id="end_date" value="{{ request('end_date') }}"
                                 class="border rounded px-2 py-1">
                         </div>
                         <div class="flex items-end">
@@ -105,7 +106,7 @@
                                     </div>
                                     <div class="center">
                                     
-                                    <button  onclick="window.location.href='{{ route('invoice.show', $topups->order_id) }}'" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="eye" class="text-yellow-800"></i></button>
+                                    <button  onclick="window.location.href='{{ route('print.show', $topups->order_id) }}'" class="bg-gray-100 p-1 rounded hover:bg-yellow-300"><i data-lucide="eye" class="text-yellow-800"></i></button>
                                     
                                     
                                     </div>
@@ -229,10 +230,16 @@ function downloadChartPDF() {
 }
 
 function exportPDF() {
+     const btn = document.getElementById('pdfBtn');
+        btn.disabled = true;
+        btn.innerHTML = 'Exporting...';
+
         const canvas = document.getElementById('topupChart');
         const image = canvas.toDataURL('image/png'); // Convert to Base64 PNG
         document.getElementById('chart_image').value = image;
         document.getElementById('pdfForm').submit();
+     
+        
     }
 
 </script>

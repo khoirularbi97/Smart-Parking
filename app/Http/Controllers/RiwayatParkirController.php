@@ -111,7 +111,15 @@ class RiwayatParkirController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
-        //
+    {$riwayat_parkir = RiwayatParkir::findOrFail($id);
+    $user = $riwayat_parkir->name;
+
+    
+    $riwayat_parkir->delete();
+
+        return redirect()
+    ->route('riwayat.parkir')
+    ->with('success', "Riwayat ($user) berhasil dihapus.");
+
     }
 }
