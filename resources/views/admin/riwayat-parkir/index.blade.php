@@ -24,7 +24,7 @@
                     <button class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">Cari</button>
                 </form>
 
-                <button onclick="exportPDF()" class="flex bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2 ">
+                <button onclick="exportPDF()" id="pdfBtn" type="button" class="flex bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2 ">
                     <i data-lucide="file-down"></i>pdf
                     </button>
                 </div>
@@ -32,9 +32,10 @@
          
                 
 
-                    <form id="pdfForm" method="POST" action="">
+                    <form id="pdfForm" method="POST" action="{{ route('admin.riwayat_parkir.export-pdf', request()->query()) }}">
                         @csrf
-                        <input type="hidden" name="chart_image" id="chart_image">
+                        <input type="hidden" name="chart_image_biaya" id="chart_image_biaya">
+                        <input type="hidden" name="chart_image_kendaraan" id="chart_image_kendaraan">
                     </form>
                
 
@@ -56,9 +57,13 @@
                     </form>
         </div>
         <div class="bg-white p-4 rounded shadow mb-6">
-    <h3 class="text-lg font-semibold mb-2">Grafik Transaksi</h3>
-        <canvas id="parkingChart" height="100"></canvas>
-    </div>
+            <h3 class="text-lg font-semibold mb-2">Grafik Biaya Parkir</h3>
+             <canvas id="parkingChart" height="100"></canvas>
+        </div>
+        <div class="bg-white p-4 rounded shadow mb-6">
+            <h3 class="text-lg font-semibold mb-2">Grafik Jumlah Kendaraan</h3>
+             <canvas id="kendaraanChart" height="100" class="mt-4"></canvas>
+        </div>
 
         <div class="table-responsive shadow">
             <table class="rounded ">
@@ -227,6 +232,21 @@
 
 
 <script>
+    const labels = @json($dates);
+    const dataKendaraan = @json($total_kendaraan);
+
+    
+    const kendaraanChart = new Chart(document.getElementById('kendaraanChart'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Jumlah Kendaraan',
+                data: dataKendaraan,
+                backgroundColor: 'blue'
+            }]
+        }
+    });
     
     let deleteUserId = null;
 
@@ -320,7 +340,7 @@
             }
         }
     });
-
+    
   
 function downloadChartPDF() {
     domtoimage.toPng(document.getElementById('parkingChart')).then(function (dataUrl) {
@@ -345,9 +365,23 @@ function downloadChartPDF() {
 }
 
 function exportPDF() {
-        const canvas = document.getElementById('parkingChart');
-        const image = canvas.toDataURL('image/png'); // Convert to Base64 PNG
-        document.getElementById('chart_image').value = image;
+        const btn = document.getElementById('pdfBtn');
+        btn.disabled = true;
+        btn.classList.remove('bg-blue-600');
+        btn.classList.add('bg-gray-400');
+
+        // Tambahkan spinner ke dalam button
+        btn.innerHTML = `
+            <span class="spinner"></span>
+            Exporting...
+        `;
+
+        const canvas1 = document.getElementById('parkingChart');
+        const image1 = canvas1.toDataURL('image/png'); // Convert to Base64 PNG
+        const canvas2 = document.getElementById('kendaraanChart');
+        const image2= canvas2.toDataURL('image/png'); // Convert to Base64 PNG
+        document.getElementById('chart_image_biaya').value = image1;
+        document.getElementById('chart_image_kendaraan').value = image2;
         document.getElementById('pdfForm').submit();
     }
 

@@ -28,24 +28,39 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
         <style>
-@media print {
-    body * {
-        visibility: hidden;
-    }
-    .invoice, .invoice * {
-        visibility: visible;
-    }
-    .invoice {
-        position: absolute;
-        left: 0;
-        top: 0;
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .invoice, .invoice * {
+                visibility: visible;
+            }
+            .invoice {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+
+        /* Sembunyikan tombol cetak */
+        button, .no-print,  {
+            display: none !important;
+        }
+        }
+        .spinner {
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid #fff;
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        animation: spin 1s linear infinite;
+        display: inline-block;
+        margin-right: 8px;
     }
 
-    /* Sembunyikan tombol cetak */
-    button, .no-print,  {
-        display: none !important;
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
-}
 </style>
 
 
@@ -146,18 +161,17 @@
         dropdown.classList.toggle("hidden");
     }
 
-    function toggleDropdown(id) {
-        const dropdown = document.getElementById(id);
-        const icon = document.getElementById(`icon-${id}`);
-        if (dropdown.classList.contains('hidden')) {
-            dropdown.classList.remove('hidden');
-            icon.classList.add('rotate-180');
-        } else {
-            dropdown.classList.add('hidden');
-            icon.classList.remove('rotate-180');
-        }
-    }
     
+    
+     function toggleDropdown(id) {
+        const dropdown = document.getElementById(id);
+        const icon = document.getElementById('icon-' + id);
+
+        dropdown.classList.toggle('hidden');
+        dropdown.classList.toggle('block');
+
+        icon.classList.toggle('rotate-180');
+    }
 
    
 </script>

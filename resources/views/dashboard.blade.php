@@ -59,10 +59,53 @@
 
 
  </div>
+
+ <!-- Stat Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 px-6">
+    <!-- Terparkir -->
+    <div class="bg-white border-4 border-indigo-200 border-l-purple-500 shadow-md rounded-lg p-6 flex items-center transition-transform duration-300 hover:scale-105">
+        <div class="bg-blue-100 p-3 rounded-full mr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18v18H3V3z" />
+            </svg>
+        </div>
+        <div>
+            <p class="text-sm text-gray-500">Terparkir Sekarang</p>
+            <p class="text-xl font-semibold">{{ $totalTerparkir ?? 0 }}</p>
+        </div>
+    </div>
+
+    <!-- Masuk Hari Ini -->
+    <div class="bg-white border-4 border-indigo-200 border-l-cyan-500 shadow-md rounded-lg p-6 flex items-center transition-transform duration-300 hover:scale-105">
+        <div class="bg-green-100 p-3 rounded-full mr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        </div>
+        <div>
+            <p class="text-sm text-gray-500">Masuk Hari Ini</p>
+            <p class="text-xl font-semibold">{{ $totalMasukHariIni ?? 0 }}</p>
+        </div>
+    </div>
+
+    <!-- Keluar Hari Ini -->
+    <div class="bg-white border-4 border-indigo-200 border-l-sky-500 shadow-md rounded-lg p-6 flex items-center transition-transform duration-300 hover:scale-105">
+        <div class="bg-red-100 p-3 rounded-full mr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 13l-4 4L5 7" />
+            </svg>
+        </div>
+        <div>
+            <p class="text-sm text-gray-500">Keluar Hari Ini</p>
+            <p class="text-xl font-semibold">{{ $totalKeluarHariIni ?? 0 }}</p>
+        </div>
+    </div>
+</div>
+
 <!-- Table & Chart -->
 <div class="p-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
 <!-- Table -->
-    <div class="transition-transform duration-300 hover:scale-105">
+    <div class="row p-4">
 
         <div class="bg-white shadow-md rounded-lg p-4">
                     <h3 class="text-lg font-semibold mb-4">Top Up Saldo</h3>
@@ -114,38 +157,55 @@
 
 
 <!-- Chart Placeholder -->
-    <div class="transition-transform duration-300 hover:scale-105">
+    <div class="row p-4">
 
         <div class="bg-white shadow-md rounded-lg p-4">
             <h3 class="text-lg font-semibold mb-4">Data Transaksi</h3>
-            <div class="flex items-center justify-center ">
-                <div class="card">
+            <div class="flex items-center justify-center mt-7">
+                <div class="card " >
     
                 </div>
             </div>
-            <div class="w-45 h-64">
+            <div class="w-45 h-64 mt-7">
     
-                <canvas id="transaksiChart"></canvas>
+                <canvas id="transaksiChart" ></canvas>
     
         
             </div>
         </div>
     </div>
 </div>
-    <div class=" mx-auto sm:px-6 lg:px-8 mt-6 transition-transform duration-300 hover:scale-105">
+
+<div class="p-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+    <div class="row p-4">
         <div class="bg-white shadow-md rounded-lg p-4">
-            <div class="my-6">
-                <h3 class="text-xl font-semibold  mb-4">Grafik Transaksi Harian</h3>
-                <div class="max-w-4xl h-[300px] mx-auto p-4 ">
-                    
-                    <canvas id="chartTransaksiHarian"></canvas>
+            <h3 class="text-xl font-semibold  mb-4">Grafik Transaksi Harian</h3>
+            <div class="max-w-4xl mx-auto p-4">
+                <div class="relative w-full h-[360px]">
+                    <canvas id="chartTransaksiHarian" class="!w-full !h-full"></canvas>
                 </div>
             </div>
         </div>
 
     </div>
 
-</div>
+
+    <div class=" row p-4">
+        <div class="bg-white shadow-md rounded-lg p-4">
+            <h3 class="text-xl font-semibold  mb-4">Grafik Parkir Harian</h3>
+            <div class="max-w-4xl mx-auto p-4">
+                <div class="relative w-full h-[360px]">
+                    <canvas id="combinedChart" class="!w-full !h-full"></canvas>
+                </div>
+        </div>
+
+        </div>
+
+    </div>
+ </div>
+ </div>
+
 
 
 @push('scripts')
@@ -213,6 +273,71 @@ maintainAspectRatio: false
 }
 
 });
+
+const ctx = document.getElementById('combinedChart').getContext('2d');
+    const combinedChart = new Chart(ctx, {
+        type: 'bar', // Tipe dasar: bar (untuk kendaraan)
+        data: {
+            labels: {!! json_encode($dates) !!},
+            datasets: [
+                {
+                    label: 'Jumlah Kendaraan',
+                    data: {!! json_encode($total_kendaraan) !!},
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Total Biaya (Rp)',
+                    data: {!! json_encode($totals) !!},
+                    type: 'line', // Tipe line untuk biaya
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2,
+                    yAxisID: 'y1',
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            stacked: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Grafik Jumlah Kendaraan dan Total Biaya Parkir per Hari'
+                }
+            },
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    title: {
+                        display: true,
+                        text: 'Jumlah Kendaraan'
+                    }
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    title: {
+                        display: true,
+                        text: 'Total Biaya (Rp)'
+                    },
+                    grid: {
+                        drawOnChartArea: false
+                    }
+                }
+            }
+        }
+    });
 </script>
 @endpush
 @endsection

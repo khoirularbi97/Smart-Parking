@@ -25,7 +25,7 @@
             
             <a href="{{ route('create.topup') }}" class="bg-sky-600 hover:bg-cyan-500 text-white px-4 py-2 rounded">+Top Up Member</a>
             
-                  <button onclick="exportPDF()" id="pdfBtn" class="flex bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2 ">
+                  <button onclick="exportPDF()" id="pdfBtn" type="button" class="flex bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2 ">
                     <i data-lucide="file-down"></i>pdf
                     </button>
                
@@ -230,9 +230,16 @@ function downloadChartPDF() {
 }
 
 function exportPDF() {
-     const btn = document.getElementById('pdfBtn');
+      const btn = document.getElementById('pdfBtn');
         btn.disabled = true;
-        btn.innerHTML = 'Exporting...';
+        btn.classList.remove('bg-blue-600');
+        btn.classList.add('bg-gray-400');
+
+        // Tambahkan spinner ke dalam button
+        btn.innerHTML = `
+            <span class="spinner"></span>
+            Exporting...
+        `;
 
         const canvas = document.getElementById('topupChart');
         const image = canvas.toDataURL('image/png'); // Convert to Base64 PNG

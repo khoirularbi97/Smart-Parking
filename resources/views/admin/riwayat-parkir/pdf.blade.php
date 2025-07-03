@@ -2,14 +2,20 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Laporan Topup</title>
+    <title>Laporan Transaksi</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
             margin: 40px;
             font-size: 14px;
         }
-        .bg-green-200{
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+         .bg-green-200{
             background-color: #1cdb2c;
             padding: 4px;
         }
@@ -20,13 +26,6 @@
         .bg-red-200 {
              background-color: #dd180a;
              padding: 4px;
-  
-        }
-        .header {
-            text-align: center;
-            border-bottom: 2px solid #000;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
         }
         .header h1 {
             margin: 0;
@@ -99,10 +98,14 @@
     <hr style="border-top: 2px solid #000; margin-bottom: 30px;">
     
     <!-- Judul Laporan -->
-    <div class="title" style="margin-bottom: 30px ">LAPORAN TOPUP</div>
+    <div class="title" style="margin-bottom: 30px ">LAPORAN RIWAYAT PARKIR</div>
     <!-- Chart -->
     <div class="chart " style="margin-bottom: 30px ">
-        <img src="{{ $chartBase64 }}" style="width: 100%;">
+        <img src="{{ $chartBase64Biaya }}" style="width: 100%;">
+
+    </div>
+    <div class="chart " style="margin-bottom: 30px ">
+        <img src="{{ $chartBase64Kendaraan }}" style="width: 100%;">
 
     </div>
 
@@ -113,32 +116,26 @@
             <tr>
                 <th>No</th>
                 <th>Nama</th>
-                <th>Order_id</th>
-                <th>Metode</th>
+                <th>UID</th>
+                <th>Durasi</th>
                 <th>Status</th>
-                <th>Tanggal</th>
+                <th>Waktu Masuk</th>
+                <th>Waktu Keluar</th>
                 <th>Nominal</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($topup as $item)
+            @foreach($riwayat_parkir as $i => $item)
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $item['name'] }}</td>
-                    <td>{{ $item['order_id'] }}</td>
-                    <td>{{ $item['method'] }}</td>
-                    <td><span class="px-2 py-1 rounded text-xs font-semibold 
-                                    @if($item->status == 'success') 
-                                        bg-green-200
-                                    @elseif($item->status == 'pending') 
-                                        bg-yellow-200
-                                    @else 
-                                        bg-red-200 
-                                    @endif">
-                                    {{ ucfirst($item->status) }}
-                                </span></td>
-                    <td>{{ \Carbon\Carbon::parse($item['created_at'])->format('d M Y H:i') }}</td>
-                    <td>Rp {{ number_format($item['amount'], 0, ',', '.') }}</td>
+                    <td>{{ $i + 1 }}</td>
+                    <td>{{ $item->user->name }}</td>
+                    <td>{{ $item->uid }}</td>
+                    <td>{{ $item->durasi }}</td>
+                    <td> <span class="px-2 py-1 rounded text-xs font-semibold 
+                                    {{ $item->_Status == '1' ? 'bg-green-200' : 'bg-yellow-200 text-yellow-800' }}">{{ $item->_Status == '1' ? 'Success' : 'Menunggu' }}</span></td>
+                    <td>{{ \Carbon\Carbon::parse($item->waktu_masuk)->format('d M Y H:i') }}</td>
+                    <td>{{ $item->waktu_keluar ? \Carbon\Carbon::parse($item->waktu_keluar)->format('d M Y H:i') : '0000-00-00 00:00:00' }}</td>
+                    <td>Rp {{ number_format($item->biaya, 0, ',', '.') }}</td>
                 </tr>
             @endforeach
         </tbody>

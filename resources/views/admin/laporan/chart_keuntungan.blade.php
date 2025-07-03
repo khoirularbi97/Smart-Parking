@@ -16,7 +16,7 @@
 
     <div class="bg-white border-4 border-indigo-200 border-t-sky-500 rounded-xl shadow-xl p-6 mt-6">
         <h2 class="mb-6 text-2xl text-center font-bold mb-10">Keuntungan Bulanan</h2>
-        <button onclick="exportPDF()" class="btn mt-3 bg-sky-500 hover:bg-gray-300"><i data-lucide="file-output"></i>PDF</button>
+        <button id="pdfBtn" type="button" onclick="exportPDF()" class="btn mt-3 bg-sky-500 hover:bg-gray-300"><i data-lucide="file-output"></i>PDF</button>
 <div class="card shadow-sm mt-4">
     <div class="card-header bg-white">
         <h5 class="mb-0">Grafik Pendapatan & Pengeluaran Bulanan</h5>
@@ -133,6 +133,17 @@
 }
 
 function exportPDF() {
+         const btn = document.getElementById('pdfBtn');
+        btn.disabled = true;
+        btn.classList.remove('bg-blue-600');
+        btn.classList.add('bg-gray-400');
+
+        // Tambahkan spinner ke dalam button
+        btn.innerHTML = `
+            <span class="spinner"></span>
+            Exporting...
+        `;
+
         const canvas = document.getElementById('labaChart');
         const image = canvas.toDataURL('image/png'); // Convert to Base64 PNG
         document.getElementById('chart_image').value = image;

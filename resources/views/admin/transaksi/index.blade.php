@@ -28,7 +28,7 @@
                  {{-- <a href="{{ route('admin.transaksis.exportPdf', request()->query()) }}" target="_blank"
                         class="bg-red-500 text-white px-4 py-2 rounded">Export pdf</a> --}}
 
-                  <button onclick="exportPDF()" id="pdfBtn" class="flex bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2 ">
+                  <button onclick="exportPDF()" id="pdfBtn" type="button" class="flex bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2 ">
                     <i data-lucide="file-down"></i>pdf
                     </button>
                 </div>
@@ -277,9 +277,16 @@ function downloadChartPDF() {
 }
 
 function exportPDF() {
-     const btn = document.getElementById('pdfBtn');
+      const btn = document.getElementById('pdfBtn');
         btn.disabled = true;
-        btn.innerHTML = 'Exporting...';
+        btn.classList.remove('bg-blue-600');
+        btn.classList.add('bg-gray-400');
+
+        // Tambahkan spinner ke dalam button
+        btn.innerHTML = `
+            <span class="spinner"></span>
+            Exporting...
+        `;
 
         const canvas = document.getElementById('transaksiChart');
         const image = canvas.toDataURL('image/png'); // Convert to Base64 PNG

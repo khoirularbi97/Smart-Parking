@@ -20,7 +20,7 @@
                 <button class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">Cari</button>
             </form>
         <a href="{{ route('admin/member/create') }}" class="bg-sky-600 hover:bg-cyan-500 text-white px-4 py-2 rounded">+Tambah Member Baru</a>
-        <button onclick="exportPDF()" class="flex bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2 ">
+        <button onclick="exportPDF()" id="pdfBtn" type="button" class="flex bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2 ">
                     <i data-lucide="file-down"></i>pdf
                     </button>
         </div>
@@ -107,7 +107,18 @@
  
 <script>
     
-   
+  function exportPDF() {
+        const btn = document.getElementById('pdfBtn');
+        btn.disabled = true;
+        btn.classList.remove('bg-blue-600');
+        btn.classList.add('bg-gray-400');
+
+        // Tambahkan spinner ke dalam button
+        btn.innerHTML = `
+            <span class="spinner"></span>
+            Exporting...
+        `;
+  } 
 </script>
 
 @endsection

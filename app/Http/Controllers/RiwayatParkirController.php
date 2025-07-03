@@ -23,12 +23,13 @@ class RiwayatParkirController extends Controller
     if ($request->filled('search')) {
         $search = $request->search;
         $query->where(function($q) use ($search) {
-            $q->where('users_id', 'like', "%$search%")
-              ->orWhere('uid', 'like', "%$search%")
-              ->orWhere('nama', 'like', "%$search%")
-              ->orWhere('jenis', 'like', "%$search%")
-              ->orWhere('jumlah', 'like', "%$search%")
-              ->orWhere('keterangan', 'like', "%$search%");
+            $q->where('uid', 'like', "%$search%")
+              ->orWhere('_Status', 'like', "%$search%")
+              ->orWhere('biaya', 'like', "%$search%")
+              ->orWhere('durasi', 'like', "%$search%")
+              ->orWhereHas('user', function($q2) use ($search) {
+                  $q2->where('name', 'like', "%$search%");
+              });
         });
     } elseif ($request->filled('start_date') && $request->filled('end_date')) {
         $query->whereBetween('created_at', [
@@ -36,34 +37,46 @@ class RiwayatParkirController extends Controller
             $request->end_date . ' 23:59:59'
         ]);
     }
+
     $riwayat_parkir = $query->latest()->paginate(10)->withQueryString();
 
-     // Ambil data untuk chart (7 hari terakhir)
-    $chartData = RiwayatParkir::select(
+    // CHART: TOTAL BIAYA & JUMLAH KENDARAAN PER HARI
+    $chartQuery = RiwayatParkir::select(
         DB::raw("DATE(created_at) as date"),
-        DB::raw("SUM(biaya) as total")
-    )
-    ->when($request->filled('start_date') && $request->filled('end_date'), function ($q) use ($request) {
-        $q->whereBetween('created_at', [
+        DB::raw("SUM(biaya) as total_biaya"),
+        DB::raw("COUNT(*) as total_kendaraan")
+    );
+      if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('uid', 'like', "%$search%")
+              ->orWhere('_Status', 'like', "%$search%")
+              ->orWhere('biaya', 'like', "%$search%")
+              ->orWhere('durasi', 'like', "%$search%")
+              ->orWhereHas('user', function($q2) use ($search) {
+                  $q2->where('name', 'like', "%$search%");
+              });
+        });
+    } elseif ($request->filled('start_date') && $request->filled('end_date')) {
+        $query->whereBetween('created_at', [
             $request->start_date . ' 00:00:00',
             $request->end_date . ' 23:59:59'
         ]);
-    })
-    ->groupBy('date')
-    ->orderBy('date')
-    ->get();
+    } else {
+        $chartQuery->whereDate('created_at', '>=', now()->subDays(7));
+    }
 
-    // Siapkan data untuk chart.js
+    $chartData = $chartQuery->groupBy('date')->orderBy('date')->get();
+
+    // SIAPKAN DATA UNTUK CHART.JS
     $dates = $chartData->pluck('date');
-    $totals = $chartData->pluck('total');
-
-
-
+    $totals = $chartData->pluck('total_biaya');
+    $total_kendaraan = $chartData->pluck('total_kendaraan');
    
 
    
 
-    return view('admin.riwayat-parkir.index', compact('riwayat_parkir', 'dates', 'totals'));
+     return view('admin.riwayat-parkir.index', compact('riwayat_parkir', 'dates', 'totals', 'total_kendaraan'));
 
 }
     
@@ -122,5 +135,42 @@ class RiwayatParkirController extends Controller
     ->route('riwayat.parkir')
     ->with('success', "Riwayat ($oldName) berhasil dihapus.");
 
+    }
+
+    public function exportPDF2(Request $request)
+{
+    $base64ImageBiaya = $request->input('chart_image_biaya');
+    $base64ImageKendaraan = $request->input('chart_image_kendaraan');
+
+   $query = RiwayatParkir::query();
+
+    if ($request->filled('start_date') && $request->filled('end_date')) {
+        $query->whereBetween('created_at', [
+            $request->start_date . ' 00:00:00',
+            $request->end_date . ' 23:59:59'
+        ]);
+    }elseif ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('uid', 'like', "%$search%")
+              ->orWhere('_Status', 'like', "%$search%")
+              ->orWhere('biaya', 'like', "%$search%")
+              ->orWhere('durasi', 'like', "%$search%")
+              ->orWhereHas('user', function($q2) use ($search) {
+                  $q2->where('name', 'like', "%$search%");
+              });
+        });
+    }
+
+    $riwayat_parkir = $query->latest()->orderBy('created_at')->get();
+   
+
+    $pdf = Pdf::loadView('admin.riwayat-parkir.pdf', [
+         'chartBase64Biaya' => $base64ImageBiaya, // Kirim ke Blade
+         'chartBase64Kendaraan' => $base64ImageKendaraan // Kirim ke Blade
+    ],compact('riwayat_parkir'));
+
+    
+    return $pdf->download('laporan_riwayat_parkir.pdf');
     }
 }

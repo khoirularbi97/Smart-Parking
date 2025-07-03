@@ -120,7 +120,7 @@ Route::middleware('auth','admin')->group(function () {
     Route::put('/admin/transaksi/{id}', [TransaksiController::class, 'update'])->name('admin.transaksi.update');
     Route::delete('/admin/transaksi/{id}', [TransaksiController::class, 'destroy'])->name('admin.transaksi.destroy');
     Route::get('/admin/chart-keuntungan', [TransaksiController::class, 'chartKeuntunganBulanan'])->name('admin.chart.keuntungan');
-
+    Route::post('/admin/transaksi/export-pdf', [TransaksiController::class, 'exportPDF2'])->name('admin.transaksi.export-pdf');
     Route::post('/laporan/export', [TransaksiController::class, 'export'])->name('laporan.export');
 
 
@@ -132,6 +132,7 @@ Route::middleware('auth','admin')->group(function () {
     Route::post('store/riwayat-parkir', [RiwayatParkirController::class, 'store'])->name('store.riwayat-parkir');
     Route::put('/admin/riwayat-parkir/{id}', [RiwayatParkirController::class, 'update'])->name('admin.riwayat-parkir.update');
     Route::delete('/admin/riwayat-parking/{id}', [RiwayatParkirController::class, 'destroy'])->name('admin.riwayat-parking.destroy');
+    Route::post('/admin/riwayat-parkir/export-pdf', [RiwayatParkirController::class, 'exportPDF2'])->name('admin.riwayat_parkir.export-pdf');
 
     //route Parkir masuk
     Route::get('/parkir_masuk', [ParkirMasukController::class, 'index'])->name('parkir.masuk');
@@ -167,7 +168,7 @@ Route::middleware('auth','admin')->group(function () {
     //Route::get('/admin/transaksis/export-pdf', [TransaksiController::class, 'exportPdf'])->name('admin.transaksis.exportPdf');
     //Route::get('/admin/transaksis/chart-preview', [TransaksiController::class, 'chartPreview'])->name('admin.transaksis.chartPreview');
 
-    Route::post('/admin/transaksi/export-pdf', [TransaksiController::class, 'exportPDF2'])->name('admin.transaksi.export-pdf');
+    
 
     //topup
     //Route::post('/topup', [TopupController::class, 'process'])->name('topup.process');
