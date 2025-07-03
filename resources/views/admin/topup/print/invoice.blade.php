@@ -1,6 +1,17 @@
 @extends('layouts.app') {{-- Sesuaikan dengan layout kamu --}}
-@section('title', 'Topup')
+
+@section('title', 'Invoice')
+
+
 @section('content')
+<x-page-header-topup
+    title=""
+    :breadcrumbs="[
+        ['label' => 'Home', 'url' => '/dashboard'],
+        ['label' => 'Top-up', 'url' => '/topup/admin'],
+        ['label' => 'Invoice']
+    ]"
+/>
 <div class="container mt-4">
     {{-- Flash Message --}}
     @if(session('success'))
