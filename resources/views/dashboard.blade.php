@@ -162,15 +162,16 @@
         <div class="bg-white shadow-md rounded-lg p-4">
             <h3 class="text-xl font-semibold  mb-4">Keuntungan Bulanan</h3>
            
-        <h2 class="mb-6 text-2xl text-center font-bold mb-10"></h2>
+
                     <div class="card shadow-sm mt-4">
                         <div class="card-header bg-white">
                             <h5 class="mb-0">Grafik Pendapatan & Pengeluaran Bulanan</h5>
 
                         </div>
-                        <div class="card-body">
-                            <canvas id="labaChart" height="100"></canvas>
+                        <div class="relative w-full h-[360px]">
+                            <canvas id="labaChart" class="!w-full !h-full"></canvas>
                         </div>
+                        
                     </div>
 
                     <div class="mt-3">
@@ -201,7 +202,8 @@
                         </div>
                    
         </div>
-    </div>
+        </div>
+      
 </div>
 </div>
 </div>
