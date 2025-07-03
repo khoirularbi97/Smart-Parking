@@ -34,8 +34,8 @@
 
                     <form id="pdfForm" method="POST" action="{{ route('admin.riwayat_parkir.export-pdf', request()->query()) }}">
                         @csrf
-                        <input type="hidden" name="chart_image_biaya" id="chart_image_biaya">
-                        <input type="hidden" name="chart_image_kendaraan" id="chart_image_kendaraan">
+                        <input type="hidden" name="chart_image" id="chart_image">
+                        
                     </form>
                
 
@@ -376,12 +376,9 @@ function exportPDF() {
             Exporting...
         `;
 
-        const canvas1 = document.getElementById('parkingChart');
-        const image1 = canvas1.toDataURL('image/png'); // Convert to Base64 PNG
-        const canvas2 = document.getElementById('kendaraanChart');
-        const image2= canvas2.toDataURL('image/png'); // Convert to Base64 PNG
-        document.getElementById('chart_image_biaya').value = image1;
-        document.getElementById('chart_image_kendaraan').value = image2;
+        const canvas = document.getElementById('parkingChart');
+        const image = canvas.toDataURL('image/png'); // Convert to Base64 PNG
+        document.getElementById('chart_image').value = image;
         document.getElementById('pdfForm').submit();
     }
 

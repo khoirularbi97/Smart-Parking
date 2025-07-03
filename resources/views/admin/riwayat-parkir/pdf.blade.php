@@ -101,13 +101,8 @@
     <div class="title" style="margin-bottom: 30px ">LAPORAN RIWAYAT PARKIR</div>
     <!-- Chart -->
     <div class="chart " style="margin-bottom: 30px ">
-        <img src="{{ $chartBase64Biaya }}" style="width: 100%;">
+        <img src="{{ $chartBase64 }}" style="width: 100%;">
 
-    </div>
-    <div class="chart " style="margin-bottom: 30px ">
-        <img src="{{ $chartBase64Kendaraan }}" style="width: 100%;">
-
-    </div>
 
 
     <!-- Tabel Transaksi -->

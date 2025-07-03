@@ -139,8 +139,8 @@ class RiwayatParkirController extends Controller
 
     public function exportPDF2(Request $request)
 {
-    $base64ImageBiaya = $request->input('chart_image_biaya');
-    $base64ImageKendaraan = $request->input('chart_image_kendaraan');
+    $base64Image = $request->input('chart_image');
+    
 
    $query = RiwayatParkir::query();
 
@@ -166,8 +166,7 @@ class RiwayatParkirController extends Controller
    
 
     $pdf = Pdf::loadView('admin.riwayat-parkir.pdf', [
-         'chartBase64Biaya' => $base64ImageBiaya, // Kirim ke Blade
-         'chartBase64Kendaraan' => $base64ImageKendaraan // Kirim ke Blade
+         'chartBase64' => $base64Image // Kirim ke Blade
     ],compact('riwayat_parkir'));
 
     
