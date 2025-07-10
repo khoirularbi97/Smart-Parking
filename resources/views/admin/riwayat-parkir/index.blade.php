@@ -43,12 +43,12 @@
                 <form method="GET" action="" class="flex flex-wrap md:flex-nowrap gap-4 items-end mb-4">
                         <div>
                             <label for="start_date" class="block text-sm font-medium">Dari Tanggal</label>
-                            <input type="date" name="start_date" id="start_date" value=""
+                            <input type="date" name="start_date" id="start_date" value="{{ request('start_date') }}"
                                 class="border rounded px-2 py-1">
                         </div>
                         <div>
                             <label for="end_date" class="block text-sm font-medium">Sampai Tanggal</label>
-                            <input type="date" name="end_date" id="end_date" value=""
+                            <input type="date" name="end_date" id="end_date" value="{{ request('end_date') }}"
                                 class="border rounded px-2 py-1">
                         </div>
                         <div class="flex items-end">
@@ -57,8 +57,13 @@
                     </form>
         </div>
         <div class="bg-white p-4 rounded shadow mb-6">
-            <h3 class="text-lg font-semibold mb-2">Grafik Riwayat Parkir</h3>
-             <canvas id="parkingChart" height="100"></canvas>
+            <div  class="flex justify-center">
+                <div style="max-width: 800px; width: 100%;">
+                <h3 class="text-lg font-semibold mb-2">Grafik Riwayat Parkir</h3>
+                <canvas id="parkingChart" height="100"></canvas>
+            </div>
+       
+        </div>
         </div>
         <div class="table-responsive shadow">
             <table class="rounded ">
@@ -138,13 +143,13 @@
                           @endif
                            
                           </td>
-                          <td class="px-4 py-2 border">{{ $riwayat->waktu_keluar ? \Carbon\Carbon::parse($riwayat->waktu_keluar)->format('d M Y H:i') : '0000-00-00 00:00:00' }}
+                          <td class="px-4 py-2 border">{{ $riwayat->waktu_keluar ? \Carbon\Carbon::parse($riwayat->waktu_keluar)->format('d M Y H:i') : 'Belum keluar' }}
                           </td>
                           <td class="px-4 py-2 border">
                          @if (Str::startsWith($riwayat->image_keluar, '/9j')) {{-- Cek awalan base64 (JPEG) --}}
                             <img src="data:image/jpeg;base64,{{ $riwayat->image_keluar }}" alt="Gambar" class="h-10 w-10 cursor-pointer rounded shadow" onclick="showImageModal(this.src)">
                         @else
-                            <img src="{{ $riwayat->image_path }}" alt="Gambar">
+                            <img src="{{ $riwayat->image_path }}" alt="Belum Keluar">
                         @endif
                          
                         </td>
@@ -158,7 +163,7 @@
                             <td class="px-4 py-2 border"> 
                                 <span class="px-2 py-1 rounded text-xs font-semibold 
                                     {{ $riwayat->_Status == '1' ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800' }}">
-                                    {{ $riwayat->_Status == '1' ? 'Success' : 'Menunggu' }}
+                                    {{ $riwayat->_Status == '1' ? 'Complete' : 'Uncomplete' }}
                                 </span>
                             <td class="px-4 py-2 border">{{ $riwayat->IsDeleted }}</td>
                             
@@ -174,7 +179,7 @@
                 </tbody>
             </table>
             <div class="p-4">
-                {{ $riwayat_parkir->links() }}
+               {{ $riwayat_parkir->appends(request()->query())->links() }}
             </div>
         </div>
     </div>

@@ -56,9 +56,9 @@
       <i data-lucide="wallet" class="w-5 h-5 mb-1 {{ request()->is('topup') ? 'text-purple-600' : 'bg-transparent'}}"></i>
       Topup
     </button>
-    <button onclick="window.location='{{ route('profile_user.edit') }}'" class="flex flex-col items-center text-sm text-gray-600 hover:text-purple-600 {{ request()->is('profile/user') ? 'text-purple-600' : 'bg-transparent'}}">
-      <i data-lucide="settings" class="w-5 h-5 mb-1 {{ request()->is('profile/user') ? 'text-purple-600' : 'bg-transparent'}}"></i>
-      Setting
+    <button onclick="window.location='{{ route('transaksi.user') }}'" class="flex flex-col items-center text-sm text-gray-600 hover:text-purple-600 {{ request()->is('transaksi/user') ? 'text-purple-600' : 'bg-transparent'}}">
+      <i data-lucide="credit-card" class="w-5 h-5 mb-1 {{ request()->is('transaksi/user') ? 'text-purple-600' : 'bg-transparent'}}"></i>
+      Transaksi
     </button>
   </nav>
                     {{-- <nav class="fixed bottom-0 inset-x-0 bg-white shadow-md flex justify-around items-center py-2">

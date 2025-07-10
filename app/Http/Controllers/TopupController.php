@@ -21,8 +21,9 @@ class TopupController extends Controller
     if (!$user) {
         return redirect()->route('login');
     }
-    $histories = $user->topup()->latest()->take(5)->get(); // Ambil 5 transaksi terbaru
+    $histories = $user->topup()->latest()->paginate(5); // Ambil 5 transaksi terbaru
     $slots = Topup::all();
+    
     return view('user.topup.form', compact('histories', 'slots'));
        
     

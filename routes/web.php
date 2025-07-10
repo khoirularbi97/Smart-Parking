@@ -16,6 +16,7 @@ use App\Http\Controllers\ProfileUserController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TopupController;
+use App\Http\Controllers\TransaksiUserController;
 use App\Models\Member;
 use App\Models\ParkirMasuk;
 use App\Models\Transaksi;
@@ -92,6 +93,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/api/midtrans/status/{orderId}', [MidtransController::class, 'checkStatus']);
     Route::get('/invoice/user/{order_id}', [TopupController::class, 'showInvoice'])->name('invoice.user.show');
+    Route::get('/transaksi/user', [TransaksiUserController::class, 'index'])->name('transaksi.user');
    
 
     

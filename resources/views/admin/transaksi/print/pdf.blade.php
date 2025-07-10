@@ -86,7 +86,7 @@
     <hr style="border-top: 2px solid #000; margin-bottom: 30px;">
     
     <!-- Judul Laporan -->
-    <div class="title" style="margin-bottom: 30px ">LAPORAN TRANSAKSI</div>
+    <div class="title" style="margin-bottom: 30px ">LAPORAN TOP-UP</div>
     <!-- Chart -->
     <div class="chart " style="margin-bottom: 30px ">
         <img src="{{ $chartBase64 }}" style="width: 100%;">
@@ -102,6 +102,7 @@
                 <th>Nama</th>
                 <th>UID</th>
                 <th>Metode</th>
+                <th>Status</th>
                 <th>Tanggal</th>
                 <th>Nominal</th>
             </tr>
@@ -112,6 +113,7 @@
                     <td>{{ $i + 1 }}</td>
                     <td>{{ $item->nama }}</td>
                     <td>{{ $item->uid }}</td>
+                    <td>{{ $item->jenis }}</td>
                     <td>{{ $item->jenis }}</td>
                     <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y H:i') }}</td>
                     <td>Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>

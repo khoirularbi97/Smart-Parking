@@ -46,7 +46,7 @@
                       <td class="px-4 py-2 border">{{$parkir_keluar->firstItem() + $loop->index}}</td>
                       <td class="p-1 border ">
                           <div class="flex justify-center-safe gap-3">
-                              
+                            
                               <div class="center">
                                   
                                       <button onclick="showConfirmModal({{ $keluar->id }})" class="bg-gray-100 p-1 rounded hover:bg-red-300" title="Hapus Parkir keluar"><i data-lucide="trash-2" class="text-red-800"></i></button>
@@ -133,7 +133,7 @@
     <div class="grid grid-cols-1 md:grid-cols-1">
       <!-- Gambar Masuk -->
       <div class="bg-gray-50 rounded-lg p-4 shadow-inner">
-        <p class="font-semibold text-center mb-2 text-gray-700">🚗 Gambar Masuk</p>
+        <p class="font-semibold text-center mb-2 text-gray-700">🚗 Gambar Keluar</p>
         <img id="modalImageKeluar" class="max-h-70 mx-auto rounded-lg border hover:scale-105 transition-transform duration-300" src="" alt="Gambar Masuk">
         <p class="text-center mt-2 text-sm text-gray-600"><strong>Waktu:</strong> <span id="modalWaktuOut"></span></p>
       </div>

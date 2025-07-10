@@ -62,7 +62,10 @@ class TransaksiController extends Controller
     $dates = $chartData->pluck('date');
     $totals = $chartData->pluck('total');
 
-    return view('admin.transaksi.index', compact('transaksis', 'dates', 'totals'));
+    $debitCount = Transaksi::where('jenis', 'debit')->count();
+    $kreditCount = Transaksi::where('jenis', 'kredit')->count();
+
+    return view('admin.transaksi.index', compact('transaksis', 'debitCount', 'kreditCount', 'dates', 'totals'));
 
 }
     public function edit($id)

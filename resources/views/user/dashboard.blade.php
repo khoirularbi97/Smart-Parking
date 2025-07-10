@@ -133,6 +133,9 @@
 
 </div>
 @endforeach
+<div class="mt-4">
+        {{ $histories->links() }}
+    </div>
         {{-- Slot Parkir --}}
     <h5 class="mb-1 text-white text-3xl font-bold py-6  mt-2">Slot Parkir</h5>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">

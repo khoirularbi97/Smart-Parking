@@ -109,6 +109,14 @@
 
         <div class="bg-white shadow-md rounded-lg p-4">
                     <h3 class="text-lg font-semibold mb-4">Top Up Saldo</h3>
+                    <form method="GET" class="mb-4 flex items-center gap-2">
+                        <label for="range_riwayat_topup" class="text-sm font-medium">Tampilkan:</label>
+                        <select name="range_riwayat_topup" id="range_riwayat_topup" onchange="this.form.submit()" class="border rounded px-2 py-1">
+                            <option value="">-- Semua --</option>
+                            <option value="7" {{ request('range_riwayat_topup') == '7' ? 'selected' : '' }}>7 Hari Terakhir</option>
+                            <option value="30" {{ request('range_riwayat_topup') == '30' ? 'selected' : '' }}>30 Hari Terakhir</option>
+                        </select>
+                    </form>
             <div class="table-responsive">
                     <table class="w-full border-collapse ">
                         <thead>
@@ -117,8 +125,8 @@
                                 <th class="border px-4 py-2">Nama</th>
                                 <th class="border px-4 py-2">Type</th>
                                 <th class="border px-4 py-2">Tanggal</th>
-                                <th class="border px-4 py-2">Status</th>
                                 <th class="border px-4 py-2">Nominal</th>
+                                <th class="border px-4 py-2">Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -153,14 +161,97 @@
             </div>
         </div>
     </div>
+
+    <div class=" row p-4">
+        <div class="bg-white shadow-md rounded-lg p-4">
+            <div  class="flex justify-center">
+                <div style="max-width: 300px; width: 100%;">
+                    <h3 class="text-lg text-center font-semibold mb-2">Metode Top Up</h3>
+                    <form method="GET" class="mb-4 flex items-center gap-2">
+                        <label for="range_topup" class="text-sm font-medium">Tampilkan:</label>
+                        <select name="range_topup" id="range_topup" onchange="this.form.submit()" class="border rounded px-2 py-1">
+                            <option value="">-- Semua --</option>
+                            <option value="7" {{ request('range_topup') == '7' ? 'selected' : '' }}>7 Hari Terakhir</option>
+                            <option value="30" {{ request('range_topup') == '30' ? 'selected' : '' }}>30 Hari Terakhir</option>
+                        </select>
+                    </form>
+
+                <canvas id="donutChart" width="300" height="300"></canvas>
+
+                </div>
+            </div>
+        </div>
+
+       
+
+    
+    </div>
     
 
 
-<!-- Chart Placeholder -->
+
+</div>
+
+<div class="p-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+    <div class="row p-4">
+        <div class="bg-white shadow-md rounded-lg p-4">
+            <h3 class="text-xl font-semibold  mb-4">Grafik Transaksi Harian</h3>
+            <form method="GET" action="" class="mb-4 flex items-center gap-2">
+                <label for="range_transaksi" class="text-sm font-medium">Tampilkan:</label>
+                <select name="range_transaksi" id="range_transaksi" onchange="this.form.submit()" class="border rounded px-2 py-1">
+                    <option value="">-- Semua --</option>
+                    <option value="7" {{ request('range_transaksi') == '7' ? 'selected' : '' }}>7 Hari Terakhir</option>
+                    <option value="30" {{ request('range_transaksi') == '30' ? 'selected' : '' }}>30 Hari Terakhir</option>
+                </select>
+            </form>
+
+            <div class="max-w-4xl mx-auto p-4">
+                <div class="relative w-full h-[360px]">
+                    <canvas id="chartTransaksiHarian" class="!w-full !h-full"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class=" row p-4">
+        <div class="bg-white shadow-md rounded-lg p-4">
+            <h3 class="text-xl font-semibold  mb-4">Grafik Parkir Harian</h3>
+            <form method="GET" class="mb-4 flex items-center gap-2">
+                <label for="range_parkir" class="text-sm font-medium">Tampilkan:</label>
+                <select name="range_parkir" id="range_parir" onchange="this.form.submit()" class="border rounded px-2 py-1">
+                    <option value="">-- Semua --</option>
+                    <option value="7" {{ request('range_parkir') == '7' ? 'selected' : '' }}>7 Hari Terakhir</option>
+                    <option value="30" {{ request('range_parkir') == '30' ? 'selected' : '' }}>30 Hari Terakhir</option>
+                </select>
+            </form>
+
+            <div class="max-w-4xl mx-auto p-4">
+                <div class="relative w-full h-[360px]">
+                    <canvas id="combinedChart" class="!w-full !h-full"></canvas>
+                </div>
+        </div>
+
+        </div>
+
+    </div>
+
+    <!-- Chart Placeholder -->
     <div class="row p-4">
 
         <div class="bg-white shadow-md rounded-lg p-4">
             <h3 class="text-xl font-semibold  mb-4">Keuntungan Bulanan</h3>
+            <form method="GET" class="mb-4 flex items-center gap-2">
+                <label for="range_laba" class="text-sm font-medium">Tampilkan:</label>
+                <select name="range_laba" id="range_laba" onchange="this.form.submit()" class="border rounded px-2 py-1">
+                    <option value="">-- Semua --</option>
+                    <option value="7" {{ request('range_laba') == '7' ? 'selected' : '' }}>7 Hari Terakhir</option>
+                    <option value="30" {{ request('range_laba') == '30' ? 'selected' : '' }}>30 Hari Terakhir</option>
+                </select>
+            </form>
+
            
 
                     <div class="card shadow-sm mt-4">
@@ -206,35 +297,7 @@
       
 </div>
 </div>
-</div>
-
-<div class="p-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
-
-    <div class="row p-4">
-        <div class="bg-white shadow-md rounded-lg p-4">
-            <h3 class="text-xl font-semibold  mb-4">Grafik Transaksi Harian</h3>
-            <div class="max-w-4xl mx-auto p-4">
-                <div class="relative w-full h-[360px]">
-                    <canvas id="chartTransaksiHarian" class="!w-full !h-full"></canvas>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-
-    <div class=" row p-4">
-        <div class="bg-white shadow-md rounded-lg p-4">
-            <h3 class="text-xl font-semibold  mb-4">Grafik Parkir Harian</h3>
-            <div class="max-w-4xl mx-auto p-4">
-                <div class="relative w-full h-[360px]">
-                    <canvas id="combinedChart" class="!w-full !h-full"></canvas>
-                </div>
-        </div>
-
-        </div>
-
-    </div>
+    
  </div>
  </div>
 
@@ -327,6 +390,43 @@ const ctx2= document.getElementById('labaChart').getContext('2d');
                     }
                 }
             });
+
+
+const donutCtx = document.getElementById('donutChart').getContext('2d');
+
+const donutChart = new Chart(donutCtx, {
+    type: 'doughnut',
+        data: {
+            labels: {!! json_encode($methodLabels) !!},
+            datasets: [{
+                data: {!! json_encode($methodCounts) !!},
+                backgroundColor: [
+                '#60a5fa', // blue-400
+                '#34d399', // green-400
+                '#fbbf24', // yellow-400
+                '#f87171', // red-400
+                '#a78bfa'  // purple-400
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.label + ': ' + context.raw + ' transaksi';
+                        }
+                    }
+                }
+            }
+        }
+    });
+
 
 
 

@@ -69,10 +69,15 @@ class TopupAdminController extends Controller
     $dates = $chartData->pluck('date');
     $totals = $chartData->pluck('total');
 
+    $methodData = \App\Models\Topup::selectRaw('method, COUNT(*) as total')
+        ->groupBy('method')
+        ->pluck('total', 'method');
 
+    $methodLabels = $methodData->keys();
+    $methodCounts = $methodData->values();
     
     
-    return view('admin.topup.index', compact('topup', 'dates', 'totals'));
+    return view('admin.topup.index', compact('topup', 'methodLabels', 'methodCounts', 'dates', 'totals'));
 
     }
      public function create()
@@ -244,14 +249,17 @@ class TopupAdminController extends Controller
 }
     public function showInvoice($order_id, Request $request)
 {
-     if ($request->status === 'success') {
-        session()->flash('success', 'Pembayaran berhasil.');
-    }elseif ($request->status === 'waiting'){
-        session()->flash('info', 'Menunggu pembayaran.');
-    }else{
-        session()->flash('error', 'Pembayaran gagal!');
+     if ($request->has('status')) {
+        if ($request->status === 'success') {
+            session()->flash('success', 'Pembayaran berhasil.');
+        } elseif ($request->status === 'waiting') {
+            session()->flash('info', 'Menunggu pembayaran.');
+        } else {
+            session()->flash('error', 'Pembayaran gagal!');
+        }
+    } else {
+        session()->flash('warning', 'Status pembayaran tidak diketahui.');
     }
-
     $invoice = Topup::where('order_id', $order_id)->firstOrFail();
     return view('admin.topup.invoice', compact('invoice'));
 }

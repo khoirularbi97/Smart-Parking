@@ -45,12 +45,12 @@
                 <form method="GET" action="" class="flex flex-wrap md:flex-nowrap gap-4 items-end mb-4">
                         <div>
                             <label for="start_date" class="block text-sm font-medium">Dari Tanggal</label>
-                            <input type="date" name="start_date" id="start_date" value=""
+                            <input type="date" name="start_date" id="start_date" value="{{ request('start_date') }}"
                                 class="border rounded px-2 py-1">
                         </div>
                         <div>
                             <label for="end_date" class="block text-sm font-medium">Sampai Tanggal</label>
-                            <input type="date" name="end_date" id="end_date" value=""
+                            <input type="date" name="end_date" id="end_date" value="{{ request('end_date') }}"
                                 class="border rounded px-2 py-1">
                         </div>
                         <div class="flex items-end">
@@ -62,13 +62,28 @@
                    
         </div>
         <div class="bg-white p-4 rounded shadow mb-6">
-    <h3 class="text-lg text-center font-semibold mb-2">Grafik Transaksi</h3>
-        <canvas id="transaksiChart" height="100"></canvas>
-    </div>
+                    <h3 class="text-lg text-center font-semibold mb-2">Grafik Transaksi</h3>
+                <canvas id="transaksiChart" height="100"></canvas>
+           
+        </div>
+        <div class="bg-white p-4 rounded shadow mb-6">
+             <div  class="flex justify-center">
+                <div style="max-width: 300px; width: 100%;">
+                    <h3 class="text-lg text-center font-semibold mb-2">Jenis Transaksi</h3>
+                    <canvas id="methodChart" width="300" height="300"></canvas>
+
+                </div>
+            </div>
+        </div>
+       
+            
+            
+
 
         <div class="table-responsive shadow">
             <table class="relative min-w-full rounded ">
-                <thead>
+                <thead class="sticky top-0 bg-white z-10">
+
                     <tr class=" bg-gray-100">
                         <th class="px-4 py-2 border">No.</th>
                         <th class="px-4 py-2 border">Aksi</th>
@@ -149,9 +164,11 @@
                 </tbody>
             </table>
             <div class="p-4">
-                {{ $transaksis->links() }}
+               {{ $transaksis->appends(request()->query())->links() }}
+
             </div>
         </div>
+       
     </div>
    
                 
@@ -163,6 +180,8 @@
         </form>
          <x-popup-delete></x-popup-delete>
 </div>
+
+
 @if(session(''))
 <x-pop-up></x-pop-up>
 
@@ -189,6 +208,10 @@
     };
   </script>
 @endif
+ @php
+    $labels = ['Debit', 'Kredit'];
+    $values = [$debitCount, $kreditCount];
+@endphp
 <script>
     
     let deleteUserId = null;
@@ -253,7 +276,24 @@
         }
     });
 
-  
+  const ctx2 = document.getElementById('methodChart').getContext('2d');
+const methodChart = new Chart(ctx2, {
+    type: 'pie',
+    data: {
+        labels: {!! json_encode($labels) !!},
+        datasets: [{
+            data: {!! json_encode($values) !!},
+            backgroundColor: ['#38bdf8', '#facc15'],
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'bottom' }
+        }
+    }
+});
+
 function downloadChartPDF() {
     domtoimage.toPng(document.getElementById('transaksiChart')).then(function (dataUrl) {
         const docDefinition = {

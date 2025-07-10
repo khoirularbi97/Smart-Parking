@@ -18,8 +18,8 @@ class UserController extends Controller
     if (!$user) {
         return redirect()->route('login');
     }
-    $histories = $user->parking()->latest()->take(5)->get(); // Ambil 5 transaksi terbaru
-    $isAktiv= $user->masuk()->latest()->take(5)->get(); // Ambil 5 transaksi terbaru
+    $histories = $user->parking()->latest()->paginate(5); // Ambil 5 transaksi terbaru
+    $isAktiv= $user->masuk()->latest()->paginate(5); // Ambil 5 transaksi terbaru
     $slots = ParkingSlot::all();
     return view('user.dashboard', compact('histories', 'slots', 'isAktiv'));
        

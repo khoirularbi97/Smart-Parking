@@ -60,9 +60,24 @@
                    
         </div>
         <div class="bg-white p-4 rounded shadow mb-6">
+            <div  class="flex justify-center">
+                <div style="max-width: 800px; width: 100%;">
             <h3 class="text-lg text-center font-semibold mb-2">Grafik Top Up</h3>
-        <canvas id="topupChart" height="100"></canvas>
-    </div>
+             
+            <canvas id="topupChart" height="100"></canvas>
+        </div>
+        </div>
+        </div>
+        
+        <div class="bg-white p-4 rounded shadow mb-6">
+             <div  class="flex justify-center">
+                <div style="max-width: 300px; width: 100%;">
+                    <h3 class="text-lg text-center font-semibold mb-2">Metode Top Up</h3>
+                <canvas id="methodChart" width="300" height="300"></canvas>
+
+                </div>
+            </div>
+        </div>
             
             <div class="table-responsive">
             <table class="relative min-w-full rounded-lg shadow">
@@ -150,7 +165,7 @@
                 </tbody>
             </table>
             <div class="p-4">
-                {{ $topup->links() }}
+                {{ $topup->appends(request()->query())->links() }}
             </div>
         </div>
     </div>
@@ -199,6 +214,36 @@ const ctx = document.getElementById('topupChart').getContext('2d');
                     ticks: {
                         callback: function(value) {
                             return 'Rp ' + new Intl.NumberFormat('id-ID').format(value);
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    const methodCtx = document.getElementById('methodChart').getContext('2d');
+    const methodChart = new Chart(methodCtx, {
+        type: 'doughnut',
+        data: {
+            labels: {!! json_encode($methodLabels) !!},
+            datasets: [{
+                data: {!! json_encode($methodCounts) !!},
+                backgroundColor: [
+                    '#4F46E5', '#22C55E', '#F59E0B', '#EF4444', '#06B6D4', '#8B5CF6', '#F97316'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.label + ': ' + context.raw + ' transaksi';
                         }
                     }
                 }

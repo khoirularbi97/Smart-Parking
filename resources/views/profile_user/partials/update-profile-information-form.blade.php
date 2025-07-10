@@ -22,7 +22,13 @@
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
-
+        <!-- UID -->
+        <div class="mb-4">
+            <x-input-label for="uid" :value="__('UID')" />
+            <span class="text-red-500">*</span>
+            <x-text-input id="uid" class="block mt-1 w-full bg-gray-100" type="text" name="uid" :value="old('uid', $user->uid)" readonly />
+            <x-input-error :messages="$errors->get('uid')" class="mt-2" />
+        </div>
         <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
@@ -61,4 +67,44 @@
             @endif
         </div>
     </form>
+     @push('scripts')
+                <script>
+                    // Script untuk toggle password 
+                    function togglePassword() {
+                        const input = document.getElementById('password');
+                        input.type = input.type === 'password' ? 'text' : 'password';
+                    }
+                 const ws = new WebSocket("wss://scurebot.cloud/ws/"); // ganti jika ws lokal: ws://localhost:5000
+
+                    ws.onopen = () => {
+                        console.log("✅ WebSocket frontend terhubung.");
+                    };
+
+                  ws.onmessage = (event) => {
+                    console.log("📨 Pesan masuk:", event.data);
+
+                    try {
+                        const data = JSON.parse(event.data);
+
+                        if (data.type === "uid_scanned" && data.uid) {
+                            const inputUID = document.getElementById("uid");
+                            if (inputUID) {
+                                inputUID.value = data.uid;
+                                console.log("✅ UID dimasukkan:", data.uid);
+                            } else {
+                                console.warn("⚠️ Input UID tidak ditemukan.");
+                            }
+                        } else {
+                            console.warn("⚠️ Format data tidak dikenali:", data);
+                        }
+                    } catch (e) {
+                        console.error("❌ Gagal parsing JSON:", e, event.data);
+                    }
+                };
+
+
+                    ws.onerror = (e) => console.error("❌ WebSocket error:", e);
+
+                </script>
+                @endpush
 </section>

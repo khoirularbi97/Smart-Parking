@@ -57,6 +57,10 @@
 
     </div>
     @endforeach
+    {{-- Pagination --}}
+    <div class="mt-4">
+        {{ $histories->links() }}
+    </div>
     </div>
 
  

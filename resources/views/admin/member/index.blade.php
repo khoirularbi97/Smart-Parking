@@ -99,7 +99,7 @@
         </table>
         </div>
         <div class="p-4">
-            {{ $users->links() }}
+            {{ $users->appends(request()->query())->links() }}
         </div>
         
     </div>

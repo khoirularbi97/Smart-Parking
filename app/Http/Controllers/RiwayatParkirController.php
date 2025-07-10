@@ -41,32 +41,38 @@ class RiwayatParkirController extends Controller
     $riwayat_parkir = $query->latest()->paginate(10)->withQueryString();
 
     // CHART: TOTAL BIAYA & JUMLAH KENDARAAN PER HARI
-    $chartQuery = RiwayatParkir::select(
+    $chartData = RiwayatParkir::select(
         DB::raw("DATE(created_at) as date"),
         DB::raw("SUM(biaya) as total_biaya"),
         DB::raw("COUNT(*) as total_kendaraan")
-    );
-      if ($request->filled('search')) {
+
+    ) 
+    ->when($request->filled('search'), function ($query) use ($request) {
         $search = $request->search;
-        $query->where(function($q) use ($search) {
-            $q->where('uid', 'like', "%$search%")
+        $query->where(function ($q) use ($search) {
+           $q->where('uid', 'like', "%$search%")
               ->orWhere('_Status', 'like', "%$search%")
               ->orWhere('biaya', 'like', "%$search%")
               ->orWhere('durasi', 'like', "%$search%")
               ->orWhereHas('user', function($q2) use ($search) {
                   $q2->where('name', 'like', "%$search%");
-              });
+              });      
         });
-    } elseif ($request->filled('start_date') && $request->filled('end_date')) {
+    })
+    ->when($request->filled('start_date') && $request->filled('end_date'), function ($query) use ($request) {
         $query->whereBetween('created_at', [
             $request->start_date . ' 00:00:00',
             $request->end_date . ' 23:59:59'
         ]);
-    } else {
-        $chartQuery->whereDate('created_at', '>=', now()->subDays(7));
-    }
+    })
+    ->groupBy('date')
+    ->orderBy('date')
+    ->get();
 
-    $chartData = $chartQuery->groupBy('date')->orderBy('date')->get();
+    
+    
+
+    
 
     // SIAPKAN DATA UNTUK CHART.JS
     $dates = $chartData->pluck('date');

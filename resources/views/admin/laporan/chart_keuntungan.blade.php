@@ -73,23 +73,44 @@
 <script>
     const ctx = document.getElementById('labaChart').getContext('2d');
 
+    const labels = {!! json_encode($data->map(fn($d) => $d->bulan . '-' . $d->tahun)) !!};
+    const kredit = {!! json_encode($data->map(fn($d) => $d->total_kredit)) !!};
+    const debit = {!! json_encode($data->map(fn($d) => $d->total_debit)) !!};
+    const laba = {!! json_encode($data->map(fn($d) => $d->laba)) !!};
+
     const data = {
-        labels: {!! json_encode($data->map(fn($d) => $d->bulan . '-' . $d->tahun)) !!},
+        labels: labels,
         datasets: [
             {
-                label: 'Kredit',
-                data: {!! json_encode($data->map(fn($d) => $d->total_kredit)) !!},
-                backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                label: 'Pendapatan (Kredit)',
+                data: kredit,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                yAxisID: 'y',
+                type: 'bar'
             },
             {
-                label: 'Debit',
-                data: {!! json_encode($data->map(fn($d) => $d->total_debit)) !!},
-                backgroundColor: 'rgba(255, 99, 132, 0.6)'
+                label: 'Pengeluaran (Debit)',
+                data: debit,
+                backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                yAxisID: 'y',
+                type: 'bar'
             },
             {
-                label: 'Laba',
-                data: {!! json_encode($data->map(fn($d) => $d->laba)) !!},
-                backgroundColor: 'rgba(75, 192, 192, 0.6)'
+                label: 'Laba Bersih',
+                data: laba,
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                yAxisID: 'y',
+                type: 'bar'
+            },
+            {
+                label: 'Tren Laba',
+                data: laba,
+                type: 'line',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 1)',
+                tension: 0.3,
+                fill: false,
+                yAxisID: 'y'
             }
         ]
     };
@@ -99,9 +120,27 @@
         data: data,
         options: {
             responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Grafik Kredit, Debit, dan Laba dengan Tren Laba'
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                }
+            },
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Jumlah (Rp)'
+                    }
                 }
             }
         }
