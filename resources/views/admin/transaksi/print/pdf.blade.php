@@ -86,12 +86,19 @@
     <hr style="border-top: 2px solid #000; margin-bottom: 30px;">
     
     <!-- Judul Laporan -->
-    <div class="title" style="margin-bottom: 30px ">LAPORAN TOP-UP</div>
+    <div class="title" style="margin-bottom: 30px ">LAPORAN TRANSAKSI</div>
     <!-- Chart -->
-    <div class="chart " style="margin-bottom: 30px ">
-        <img src="{{ $chartBase64 }}" style="width: 100%;">
-
+    <div class="" style="margin-bottom: 30px; display: flex; flex-direction: column; align-items: center;">
+        <img src="{{ $chartBase64 }}" style="width: 100%; max-width: 600px; margin-bottom: 20px;">
+        <!-- Grafik Donat (centered untuk DomPDF) -->
+        <div style="text-align: center; margin-top: 20px;">
+            <img src="{{ $chartBase64Donat }}" style="width: 200px; display: inline-block;" alt="Grafik Donat">
+        </div>
+       
     </div>
+   
+
+
 
 
     <!-- Tabel Transaksi -->
@@ -101,8 +108,8 @@
                 <th>No</th>
                 <th>Nama</th>
                 <th>UID</th>
-                <th>Metode</th>
-                <th>Status</th>
+                <th>Jenis</th>
+                <th>Keterangan</th>
                 <th>Tanggal</th>
                 <th>Nominal</th>
             </tr>
@@ -114,7 +121,7 @@
                     <td>{{ $item->nama }}</td>
                     <td>{{ $item->uid }}</td>
                     <td>{{ $item->jenis }}</td>
-                    <td>{{ $item->jenis }}</td>
+                    <td>{{ $item->keterangan }}</td>
                     <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y H:i') }}</td>
                     <td>Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
                 </tr>

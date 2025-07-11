@@ -4,44 +4,67 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ParkingSlot;
+use App\Models\User;
 use App\Models\RiwayatParkir;
 
 class ParkingSlotController extends Controller
 { public function index()
      {
-   $slots = ParkingSlot::all();
-    return view('admin.parking_slot.index', compact('slots'));
+      $slots = ParkingSlot::with('user')->get(); 
+      $users = User::all();
+    return view('admin.parking_slot.index', compact('slots', 'users'));
        
     }
     public function store(Request $request)
 {
-    $request->validate([
-        'kode_slot' => 'required|unique:parking_slots,id',
-        'status' => 'required|in:tersedia,terisi'
+    $validated = $request->validate([
+        'kode_slot' => 'required|string|max:10|unique:parking_slots,name',
+        'status' => 'required|in:tersedia,terisi',
+        'users_id' => 'nullable|exists:users,id',  ], [
+        'kode_slot.unique' => 'Kode slot sudah digunakan.',
     ]);
+    
+
+    // Kosongkan users_id jika status tersedia
+    if ($validated['status'] === 'tersedia') {
+        $validated['users_id'] = null;
+    }
 
     ParkingSlot::create([
-        'name' => $request->kode_slot,
-        'is_available' => $request->status,
+        'name' => $validated['kode_slot'],
+        'is_available' => $validated['status'],
+        'users_id' => $validated['users_id'],
     ]);
 
     return redirect()->back()->with('success', 'Slot parkir berhasil ditambahkan.');
 }
+
 public function update(Request $request, $id)
 {
-    $request->validate([
-        'kode_slot' => 'required',
-        'status' => 'required|in:tersedia,terisi',
-    ]);
-
     $slot = ParkingSlot::findOrFail($id);
+
+    $validated = $request->validate([
+        'kode_slot' => 'required|string|max:10|unique:parking_slots,name,' . $slot->id,
+        'status' => 'required|in:tersedia,terisi',
+        'users_id' => 'nullable|exists:users,id',
+          ], [
+        'kode_slot.unique' => 'Kode slot sudah digunakan.',
+    ]);
+   
+    // Kosongkan users_id jika status tersedia
+    if ($validated['status'] === 'tersedia') {
+        $validated['users_id'] = null;
+    }
+    
+
     $slot->update([
-        'name' => $request->kode_slot,
-        'is_available' => $request->status,
+        'name' => $validated['kode_slot'],
+        'is_available' => $validated['status'],
+        'users_id' => $validated['users_id'],
     ]);
 
     return redirect()->back()->with('success', 'Slot parkir berhasil diperbarui.');
-}   
+}
      public function destroy($id)
      {
     $slot = ParkingSlot::findOrFail($id);

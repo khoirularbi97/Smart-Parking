@@ -26,8 +26,8 @@
     @livewireStyles
     </head>
     <body class="font-sans antialiased ">
-        <div class="row justify-content-md-center">
-        <div class="col-md-6">
+    <div class="justify-content-md-center">
+        <div class="">
       
         <div class="min-h-screen bg-gray-100 ">
             @include('layouts.navigation_user')
@@ -38,29 +38,30 @@
                     @include('admin.header')
         
                     <!-- Main content -->
-                    <main class="flex-1  bg-gradient-to-br from-purple-200 to-indigo-200 p-6">
+                    <main class="flex-1 min-h-screen bg-gradient-to-br from-purple-200 to-indigo-200 p-6 h-full">
                         @yield('content')
                     </main>
                     </div>
-            </div>
-            </div>
+                </div>
             </div>
         </div>
+            <nav class="bg-white border-t border-gray-200 shadow-inner fixed bottom-0 w-full flex justify-around py-2 ">
+                <button onclick="window.location='{{ route('user.dashboard') }}'" class="flex flex-col items-center text-sm p-3 w-25 rounded-xl text-gray-600 hover:text-purple-600 shadow-md {{ request()->is('user/dashboard') ? 'bg-gradient-to-br from-purple-400 to-indigo-400 text-white' : 'bg-transparent'}}">
+                <i data-lucide="home" class="w-5 h-5 mb-1 {{ request()->is('user/dashboard') ? 'text-purple-600' : 'bg-transparent'}}"></i>
+                Home
+                </button>
+                <button onclick="window.location='{{ route('topup.form') }}'" class="flex flex-col items-center text-sm p-3 ml w-25 rounded-xl text-gray-600 hover:text-purple-600 shadow-md {{ request()->is('topup') ? 'bg-gradient-to-br from-purple-400 to-indigo-400 text-white' : 'bg-transparent'}}">
+                <i data-lucide="wallet" class="w-5 h-5 mb-1 {{ request()->is('topup') ? 'text-purple-600' : 'bg-transparent'}}"></i>
+                Topup
+                </button>
+                <button onclick="window.location='{{ route('transaksi.user') }}'" class="flex flex-col items-center text-sm p-3 ml w-25 rounded-xl text-gray-600 hover:text-purple-600 shadow-md {{ request()->is('transaksi/user') ? 'bg-gradient-to-br from-purple-400 to-indigo-400 text-white' : 'bg-transparent'}}">
+                <i data-lucide="file-clock" class="w-5 h-5 mb-1 {{ request()->is('transaksi/user') ? 'text-purple-600' : 'bg-transparent'}}"></i>
+                Transaksi
+                </button>
+                </nav>
+        </div>
                     
-  <nav class="bg-white border-t border-gray-200 shadow-inner fixed bottom-0 w-full flex justify-around py-2">
-    <button onclick="window.location='{{ route('user.dashboard') }}'" class="flex flex-col items-center text-sm text-gray-600 hover:text-purple-600 {{ request()->is('user/dashboard') ? 'text-purple-600' : 'bg-transparent'}}">
-      <i data-lucide="home" class="w-5 h-5 mb-1 {{ request()->is('user/dashboard') ? 'text-purple-600' : 'bg-transparent'}}"></i>
-      Home
-    </button>
-    <button onclick="window.location='{{ route('topup.form') }}'" class="flex flex-col items-center text-sm text-gray-600 hover:text-purple-600 {{ request()->is('topup') ? 'text-purple-600' : 'bg-transparent'}}">
-      <i data-lucide="wallet" class="w-5 h-5 mb-1 {{ request()->is('topup') ? 'text-purple-600' : 'bg-transparent'}}"></i>
-      Topup
-    </button>
-    <button onclick="window.location='{{ route('transaksi.user') }}'" class="flex flex-col items-center text-sm text-gray-600 hover:text-purple-600 {{ request()->is('transaksi/user') ? 'text-purple-600' : 'bg-transparent'}}">
-      <i data-lucide="credit-card" class="w-5 h-5 mb-1 {{ request()->is('transaksi/user') ? 'text-purple-600' : 'bg-transparent'}}"></i>
-      Transaksi
-    </button>
-  </nav>
+ 
                     {{-- <nav class="fixed bottom-0 inset-x-0 bg-white shadow-md flex justify-around items-center py-2">
                     <a href="{{ route('user.dashboard') }}" class="text-center">
                         <i class="fas fa-home text-xl {{ request()->is('user/dashboard') ? 'text-blue-500' : 'bg-transparent'}} "></i><br><span class="text-xs">Home</span>

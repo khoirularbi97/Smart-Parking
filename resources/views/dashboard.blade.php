@@ -46,13 +46,13 @@
     </div>
     <div class="transition-transform duration-300 hover:scale-105">
         <a href="{{ route('transaksi') }}">
-        <div class="bg-white border-4 border-indigo-200 border-l-red-500 shadow-md rounded-lg p-6 flex items-center">
-        <i data-lucide="banknote" class="w-10 h-10 text-red-500 mr-4"></i>
-            <div>
-                <h3 class="text-gray-500">Data Transaksi Debit</h3>
-                <p class="text-2xl font-bold">{{$debitCount}}</p>
+            <div class="bg-white border-4 border-indigo-200 border-l-red-500 shadow-md rounded-lg p-6 flex items-center">
+            <i data-lucide="banknote" class="w-10 h-10 text-red-500 mr-4"></i>
+                <div>
+                    <h3 class="text-gray-500">Data Transaksi Debit</h3>
+                    <p class="text-2xl font-bold">{{$debitCount}}</p>
+                </div>
             </div>
-        </div>
         </a>
     </div>
 
@@ -63,6 +63,7 @@
  <!-- Stat Cards -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 px-6">
     <!-- Terparkir -->
+    <a href="{{ route('parkir.slot') }}">
     <div class="bg-white border-4 border-indigo-200 border-l-purple-500 shadow-md rounded-lg p-6 flex items-center transition-transform duration-300 hover:scale-105">
         <div class="bg-blue-100 p-3 rounded-full mr-4">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -74,32 +75,39 @@
             <p class="text-xl font-semibold">{{ $totalTerparkir ?? 0 }}</p>
         </div>
     </div>
+    </a>
 
     <!-- Masuk Hari Ini -->
+    <a href="{{ route('parkir.masuk') }}">
     <div class="bg-white border-4 border-indigo-200 border-l-cyan-500 shadow-md rounded-lg p-6 flex items-center transition-transform duration-300 hover:scale-105">
-        <div class="bg-green-100 p-3 rounded-full mr-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-        </div>
-        <div>
-            <p class="text-sm text-gray-500">Masuk Hari Ini</p>
-            <p class="text-xl font-semibold">{{ $totalMasukHariIni ?? 0 }}</p>
-        </div>
-    </div>
+                <div class="bg-green-100 p-3 rounded-full mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Masuk Hari Ini</p>
+                    <p class="text-xl font-semibold">{{ $totalMasukHariIni ?? 0 }}</p>
+                </div>
+            </div>
+        </a>
 
     <!-- Keluar Hari Ini -->
-    <div class="bg-white border-4 border-indigo-200 border-l-sky-500 shadow-md rounded-lg p-6 flex items-center transition-transform duration-300 hover:scale-105">
-        <div class="bg-red-100 p-3 rounded-full mr-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 13l-4 4L5 7" />
-            </svg>
+    <a href="{{ route('parkir.keluar') }}">
+<div class="bg-white border-4 border-indigo-200 border-l-sky-500 shadow-md rounded-lg p-6 flex items-center transition-transform duration-300 hover:scale-105">
+            <div class="bg-red-100 p-3 rounded-full mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 13l-4 4L5 7" />
+                </svg>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">Keluar Hari Ini</p>
+                <p class="text-xl font-semibold">{{ $totalKeluarHariIni ?? 0 }}</p>
+            </div>
         </div>
-        <div>
-            <p class="text-sm text-gray-500">Keluar Hari Ini</p>
-            <p class="text-xl font-semibold">{{ $totalKeluarHariIni ?? 0 }}</p>
-        </div>
-    </div>
+    </a>
+    
+
 </div>
 
 <!-- Table & Chart -->

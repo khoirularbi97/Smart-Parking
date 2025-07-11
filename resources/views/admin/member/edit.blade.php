@@ -73,14 +73,14 @@
                      <!-- No Telp -->
                     <div class="mb-4">
                         <x-input-label for="telepon" :value="__('Telepon')" />
-                        <x-text-input id="telepon" class="block mt-1 w-full" type="text" name="telepon" value="{{ old('uid', $user->telepon) }}" />
+                        <x-text-input id="telepon" class="block mt-1 w-full" type="text" name="telepon" value="{{ old('alamat', $user->telepon) }}" />
                         <x-input-error :messages="$errors->get('telepon')" class="mt-2" />
                     </div>
 
                     <!-- Alamat -->
                     <div class="mb-4">
                         <x-input-label for="alamat" :value="__('Alamat')" />
-                        <x-text-input id="alamat" class="block mt-1 w-full" type="text" name="alamat" value="{{ old('uid', $user->alamat) }}"/>
+                        <x-text-input id="alamat" class="block mt-1 w-full" type="text" name="alamat" value="{{ old('alamat', $user->alamat) }}"/>
                         <x-input-error :messages="$errors->get('alamat')" class="mt-2" />
                     </div>
 

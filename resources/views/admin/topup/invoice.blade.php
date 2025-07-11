@@ -44,7 +44,7 @@
                 </div>
                 <div class="text-right">
                     <p class="text-xs text-gray-400 font-medium">DUE ON</p>
-                    <p class="font-semibold">{{ \Carbon\Carbon::parse($invoice->created_at)->format('M d, Y') }}</p>
+                    <p class="font-semibold">{{ \Carbon\Carbon::parse($invoice->created_at)->format('d M Y, H:i') }}</p>
                 </div>
             </div>
 

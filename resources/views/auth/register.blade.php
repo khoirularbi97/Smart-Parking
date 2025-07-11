@@ -11,14 +11,20 @@
         <!-- UID-->
         <div>
             <x-input-label for="uid" :value="__('UID')" />
-            <x-text-input id="uid" class="block mt-1 w-full" type="text" name="uid" :value="old('uid')" required autofocus autocomplete="uid" />
+            <x-text-input id="uid" class="block mt-1 w-full bg-gray-100" type="text" name="uid" :value="old('uid')" autofocus autocomplete="uid" readonly/>
             <x-input-error :messages="$errors->get('uid')" class="mt-2" />
         </div>
-        <!-- Saldo -->
+        <!-- TELEPON -->
         <div>
-            <x-input-label for="saldo" :value="__('Saldo')" />
-            <x-text-input id="saldo" class="block mt-1 w-full" type="text" name="saldo" :value="old('saldo')" required autofocus autocomplete="saldo" />
-            <x-input-error :messages="$errors->get('saldo')" class="mt-2" />
+            <x-input-label for="telepon" :value="__('Telepon')" />
+            <x-text-input id="telepon" class="block mt-1 w-full" type="text" name="telepon" :value="old('telepon')" autofocus autocomplete="telepon" />
+            <x-input-error :messages="$errors->get('telepon')" class="mt-2" />
+        </div>
+        <!-- Alamat -->
+        <div>
+            <x-input-label for="alamat" :value="__('Alamat')" />
+            <x-text-input id="alamat" class="block mt-1 w-full" type="text" name="alamat" :value="old('alamat')" autofocus autocomplete="alamat" />
+            <x-input-error :messages="$errors->get('alamat')" class="mt-2" />
         </div>
 
         <!-- Email Address -->

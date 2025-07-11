@@ -28,8 +28,8 @@
     <div class="bg-white border-4 border-purple-200 border-b-purple-500 w-[360px] rounded-xl shadow-lg overflow-hidden">
         <!-- Header -->
         <div class="bg-gradient-to-r from-pink-400 to-purple-500  text-white text-center py-4 relative">
-            <a href="{{ route('topup.form') }}" class="absolute left-4 top-4 text-white text-xl">&#8592;</a>
-            <p class="text-sm font-medium">#{{ $invoice->order_id }}</p>
+            <a href="{{ route('topup.form') }}" class="absolute left-4 top-4 h-5 text-white text-xl"><i data-lucide="arrow-left"></i></a>
+            <p class="text-sm font-medium">#INVOICE</p>
 
             <div class="mt-2">
                 <div class="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center shadow-md">
@@ -57,7 +57,7 @@
                 </div>
                 <div class="text-right">
                     <p class="text-xs text-gray-400 font-medium">DUE ON</p>
-                    <p class="font-semibold">{{ \Carbon\Carbon::parse($invoice->created_at)->format('M d, Y') }}</p>
+                    <p class="font-semibold">{{ \Carbon\Carbon::parse($invoice->created_at)->format('d M Y, H:i') }}</p>
                 </div>
             </div>
 

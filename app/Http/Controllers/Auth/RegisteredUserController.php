@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
@@ -31,17 +32,19 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'uid' => ['required', 'string', 'max:20'],
-            'saldo' => ['required', 'double'],
-
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'telepon' => [ 'max:255'],
+            'alamat' => [ 'max:255'],
+            'uid' => ['nullable', 'string', 'max:255', 'unique:users,uid'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-
+        // Jika UID kosong, generate otomatis
+        $uid = $request->uid ?? uniqid();
         $user = User::create([
             'name' => $request->name,
-            'uid' => $request->uid,
-            'saldo' => $request->saldo,
+            'telepon' => $request->telepon,
+            'alamat' => $request->alamat,
+            'uid' => $uid,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

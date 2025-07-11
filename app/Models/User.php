@@ -66,6 +66,12 @@ public function topup()
 {
     return $this->hasMany(Topup::class, 'users_id');
 }
+// App\Models\User.php
+public function parkingSlots()
+{
+    return $this->hasOne(ParkingSlot::class);
+}
+
 
     
     /**

@@ -5,7 +5,7 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __("Perbarui informasi profil akun dan alamat email Anda.") }}
         </p>
     </header>
 
@@ -13,7 +13,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile_user.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile_user.update') }}" class="mt-6 space-y-6 ">
         @csrf
         @method('patch')
 
@@ -22,10 +22,19 @@
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
+        <div>
+            <x-input-label for="telepon" :value="__('Telepon')" />
+            <x-text-input id="telepon" name="telepon" type="text" class="mt-1 block w-full" :value="old('telepon', $user->telepon)" required autofocus autocomplete="telepon" />
+            <x-input-error class="mt-2" :messages="$errors->get('telepon')" />
+        </div>
+        <div>
+            <x-input-label for="alamat" :value="__('Alamat')" />
+            <x-text-input id="alamat" name="alamat" type="text" class="mt-1 block w-full" :value="old('alamat', $user->alamat)" required autofocus autocomplete="alamat" />
+            <x-input-error class="mt-2" :messages="$errors->get('alamat')" />
+        </div>
         <!-- UID -->
         <div class="mb-4">
             <x-input-label for="uid" :value="__('UID')" />
-            <span class="text-red-500">*</span>
             <x-text-input id="uid" class="block mt-1 w-full bg-gray-100" type="text" name="uid" :value="old('uid', $user->uid)" readonly />
             <x-input-error :messages="$errors->get('uid')" class="mt-2" />
         </div>
@@ -46,7 +55,7 @@
 
                     @if (session('status') === 'verification-link-sent')
                         <p class="mt-2 font-medium text-sm text-green-600">
-                            {{ __('A new verification link has been sent to your email address.') }}
+                            {{ __('Tautan verifikasi baru telah dikirim ke alamat email Anda.') }}
                         </p>
                     @endif
                 </div>

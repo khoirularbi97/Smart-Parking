@@ -2,12 +2,12 @@
 
 @section('content')
 <!-- Header -->
-    <div class="flex items-center  bg-gradient-to-r from-pink-400 to-purple-500 rounded-2xl shadow-xl p-6 mb-6">
+    <div class="flex items-center  bg-gradient-to-r from-pink-400 to-purple-500 shadow-xl p-6 mb-10">
      
       <h1 class="text-white font-semibold text-lg">Topup Saldo</h1>
     </div>
   <!-- Content -->
-  <main class="bg-gradient-to-br from-purple-200 to-indigo-200 flex-1 flex  items-center justify-center px-4 mb-6">
+  <div class="bg-gradient-to-br from-purple-200 to-indigo-200 flex-1 flex  items-center justify-center px-4 mb-6">
     <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md">
       <h2 class="text-xl font-bold text-gray-800 mb-4">Isi Saldo</h2>
       <form id="topup-form">
@@ -18,9 +18,9 @@
       </form>
     </div>
     
-</main>
+</div>
 <div class="space-y-5 mb-24">
-    @foreach ($histories as $history)
+    @forelse ($histories as $history)
     <div class="bg-white rounded-2xl shadow-lg p-4">
         <div class="flex items-center justify-between mb-2">
             <div class="flex items-center gap-2">
@@ -56,7 +56,12 @@
                 </button> --}}
 
     </div>
-    @endforeach
+     @empty
+        <div class="text-center text-gray-500 mt-20">
+            <i data-lucide="file" class="mx-auto w-10 h-10 mb-2"></i>
+            <p>Tidak ada riwayat top ditemukan.</p>
+        </div>
+    @endforelse
     {{-- Pagination --}}
     <div class="mt-4">
         {{ $histories->links() }}

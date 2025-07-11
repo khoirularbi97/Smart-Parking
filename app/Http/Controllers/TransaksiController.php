@@ -62,8 +62,42 @@ class TransaksiController extends Controller
     $dates = $chartData->pluck('date');
     $totals = $chartData->pluck('total');
 
-    $debitCount = Transaksi::where('jenis', 'debit')->count();
-    $kreditCount = Transaksi::where('jenis', 'kredit')->count();
+    $debitCount = Transaksi::where('jenis', 'debit')
+     ->when($request->filled('search'), function ($query) use ($request) {
+        $search = $request->search;
+        $query->where(function ($q) use ($search) {
+            $q->where('users_id', 'like', "%$search%")
+              ->orWhere('uid', 'like', "%$search%")
+              ->orWhere('nama', 'like', "%$search%")
+              ->orWhere('jenis', 'like', "%$search%")
+              ->orWhere('jumlah', 'like', "%$search%")
+              ->orWhere('keterangan', 'like', "%$search%");
+        });
+    })
+    ->when($request->filled('start_date') && $request->filled('end_date'), function ($query) use ($request) {
+        $query->whereBetween('created_at', [
+            $request->start_date . ' 00:00:00',
+            $request->end_date . ' 23:59:59'
+        ]);
+    })->count();
+    $kreditCount = Transaksi::where('jenis', 'kredit')
+     ->when($request->filled('search'), function ($query) use ($request) {
+        $search = $request->search;
+        $query->where(function ($q) use ($search) {
+            $q->where('users_id', 'like', "%$search%")
+              ->orWhere('uid', 'like', "%$search%")
+              ->orWhere('nama', 'like', "%$search%")
+              ->orWhere('jenis', 'like', "%$search%")
+              ->orWhere('jumlah', 'like', "%$search%")
+              ->orWhere('keterangan', 'like', "%$search%");
+        });
+    })
+    ->when($request->filled('start_date') && $request->filled('end_date'), function ($query) use ($request) {
+        $query->whereBetween('created_at', [
+            $request->start_date . ' 00:00:00',
+            $request->end_date . ' 23:59:59'
+        ]);
+    })->count();
 
     return view('admin.transaksi.index', compact('transaksis', 'debitCount', 'kreditCount', 'dates', 'totals'));
 
@@ -247,6 +281,7 @@ class TransaksiController extends Controller
 public function exportPDF2(Request $request)
 {
     $base64Image = $request->input('chart_image');
+    $base64ImageDonat = $request->input('chart_image_donat');
 
    $query = Transaksi::query();
 
@@ -272,6 +307,7 @@ public function exportPDF2(Request $request)
 
     $pdf = Pdf::loadView('admin.transaksi.print.pdf', [
          'chartBase64' => $base64Image, // Kirim ke Blade
+         'chartBase64Donat' => $base64ImageDonat, // Kirim ke Blade
     ],compact('transaksis'));
 
     

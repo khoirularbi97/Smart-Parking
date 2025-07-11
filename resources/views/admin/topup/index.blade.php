@@ -35,6 +35,7 @@
                     <form id="pdfForm" method="POST" action="{{ route('admin.topup.export-pdf', request()->query()) }}">
                         @csrf
                         <input type="hidden" name="chart_image" id="chart_image">
+                        <input type="hidden" name="chart_image_donat" id="chart_image_donat">
                         <input type="hidden" name="laporan_data" value="{{ base64_encode(json_encode($topup)) }}">
                     </form>
                
@@ -287,8 +288,11 @@ function exportPDF() {
         `;
 
         const canvas = document.getElementById('topupChart');
+        const canvasDonat = document.getElementById('methodChart');
         const image = canvas.toDataURL('image/png'); // Convert to Base64 PNG
+        const imageDonat = canvasDonat.toDataURL('image/png'); // Convert to Base64 PNG
         document.getElementById('chart_image').value = image;
+        document.getElementById('chart_image_donat').value = imageDonat;
         document.getElementById('pdfForm').submit();
      
         

@@ -70,6 +70,24 @@ class TopupAdminController extends Controller
     $totals = $chartData->pluck('total');
 
     $methodData = \App\Models\Topup::selectRaw('method, COUNT(*) as total')
+    ->when($request->filled('search'), function ($query) use ($request) {
+        $search = $request->search;
+        $query->where(function ($q) use ($search) {
+             $q->where('users_id', 'like', "%$search%")
+              ->orWhere('name', 'like', "%$search%")
+              ->orWhere('order_id', 'like', "%$search%")
+              ->orWhere('method', 'like', "%$search%")
+              ->orWhere('amount', 'like', "%$search%")
+              ->orWhere('status', 'like', "%$search%")
+              ->orWhere('created_at', 'like', "%$search%");
+        });
+    })
+    ->when($request->filled('start_date') && $request->filled('end_date'), function ($query) use ($request) {
+        $query->whereBetween('created_at', [
+            $request->start_date . ' 00:00:00',
+            $request->end_date . ' 23:59:59'
+        ]);
+    })
         ->groupBy('method')
         ->pluck('total', 'method');
 
@@ -213,6 +231,7 @@ class TopupAdminController extends Controller
     public function exportPDF2(Request $request)
 {
     $base64Image = $request->input('chart_image');
+    $base64ImageDonat = $request->input('chart_image_donat');
     //$data = $request->query(); // return array semua query parameter
     //dd($data); 
 
@@ -242,6 +261,7 @@ class TopupAdminController extends Controller
 
     $pdf = Pdf::loadView('admin.topup.print.pdf', [
          'chartBase64' => $base64Image, // Kirim ke Blade
+         'chartBase64Donat' => $base64ImageDonat, // Kirim ke Blade
     ],compact('topup'));
 
     

@@ -38,6 +38,7 @@
                     <form id="pdfForm" method="POST" action="{{ route('admin.transaksi.export-pdf', request()->query()) }}">
                         @csrf
                         <input type="hidden" name="chart_image" id="chart_image">
+                        <input type="hidden" name="chart_image_donat" id="chart_image_donat">
                     </form>
                
 
@@ -275,14 +276,16 @@
             }
         }
     });
-
-  const ctx2 = document.getElementById('methodChart').getContext('2d');
+const labelsRaw = {!! json_encode($labels) !!};
+const valuesRaw = {!! json_encode($values) !!};
+const labelsWithCounts = labelsRaw.map((label, index) => `${label}: ${valuesRaw[index]}`);
+const ctx2 = document.getElementById('methodChart').getContext('2d');
 const methodChart = new Chart(ctx2, {
     type: 'pie',
     data: {
-        labels: {!! json_encode($labels) !!},
+        labels: labelsWithCounts,
         datasets: [{
-            data: {!! json_encode($values) !!},
+            data: valuesRaw,
             backgroundColor: ['#38bdf8', '#facc15'],
         }]
     },
@@ -329,8 +332,11 @@ function exportPDF() {
         `;
 
         const canvas = document.getElementById('transaksiChart');
+        const canvasDonat = document.getElementById('methodChart');
         const image = canvas.toDataURL('image/png'); // Convert to Base64 PNG
+        const imageDonat = canvasDonat.toDataURL('image/png'); // Convert to Base64 PNG
         document.getElementById('chart_image').value = image;
+        document.getElementById('chart_image_donat').value = imageDonat;
         document.getElementById('pdfForm').submit();
     }
 

@@ -103,6 +103,9 @@
     <!-- Chart -->
     <div class="chart " style="margin-bottom: 30px ">
         <img src="{{ $chartBase64 }}" style="width: 100%;">
+        <div style="text-align: center; margin-top: 20px;">
+            <img src="{{ $chartBase64Donat }}" style="width: 200px; display: inline-block;" alt="Grafik Donat">
+        </div>
 
     </div>
 
