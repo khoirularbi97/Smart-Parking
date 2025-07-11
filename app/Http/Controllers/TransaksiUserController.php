@@ -8,7 +8,7 @@ class TransaksiUserController extends Controller
 {
     public function index()
 {
-    $histories = auth()->user()->transaksis()->orderBy('created_at', 'desc')->paginate(10);
+    $histories = auth()->user()->transaksis()->orderBy('created_at', 'desc')->paginate(5);
     return view('user.transaksi.index', compact('histories'));
 }
 

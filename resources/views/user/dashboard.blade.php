@@ -12,7 +12,7 @@
     </div>
 </header>
 
-<div class="min-h-screen bg-gradient-to-br from-purple-200 to-indigo-200 p-4">
+<div class="p-4">
     
     {{-- Saldo Utama --}}
     <div class="transition-transform duration-300 hover:scale-105 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-3xl text-white p-6 text-center shadow-xl mb-6 ">
@@ -23,15 +23,13 @@
             <div class="text-4xl font-bold">Rp {{ number_format(auth()->user()->saldo, 00, ',', '.') }}</div>
             <div class="mt-2 text-sm">Saldo saat ini</div>
 
+            </div>
         </div>
     </div>
     
-   
-
-
 
     {{-- Kartu Info Parkir --}}
-    <div class="space-y-5 mb-24">
+    <div class="space-y-5 ">
 
         @foreach ($histories as $history)
          @php
@@ -151,9 +149,10 @@
 
     </div>
     
+    
 
     
 
-</div>
+
 
 @endsection
