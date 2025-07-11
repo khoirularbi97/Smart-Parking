@@ -46,15 +46,15 @@
             </div>
         </div>
             <nav class="bg-white border-t border-gray-200 shadow-inner fixed bottom-0 w-full flex justify-around py-2 ">
-                <button onclick="window.location='{{ route('user.dashboard') }}'" class="flex flex-col items-center text-sm p-2 w-25 rounded-xl text-gray-600 hover:text-purple-600 shadow-md {{ request()->is('user/dashboard') ? 'bg-gradient-to-br from-purple-400 to-indigo-400 text-white' : 'bg-transparent'}}">
+                <button onclick="window.location='{{ route('user.dashboard') }}'" class="flex flex-col items-center text-sm p-2 w-20 rounded-xl text-gray-600 hover:text-purple-600 shadow-md {{ request()->is('user/dashboard') ? 'bg-gradient-to-br from-purple-400 to-indigo-400 text-white' : 'bg-transparent'}}">
                 <i data-lucide="home" class="w-5 h-5 mb-1 {{ request()->is('user/dashboard') ? 'text-purple-600' : 'bg-transparent'}}"></i>
                 Home
                 </button>
-                <button onclick="window.location='{{ route('topup.form') }}'" class="flex flex-col items-center text-sm p-2 ml w-25 rounded-xl text-gray-600 hover:text-purple-600 shadow-md {{ request()->is('topup') ? 'bg-gradient-to-br from-purple-400 to-indigo-400 text-white' : 'bg-transparent'}}">
+                <button onclick="window.location='{{ route('topup.form') }}'" class="flex flex-col items-center text-sm p-2 ml w-20 rounded-xl text-gray-600 hover:text-purple-600 shadow-md {{ request()->is('topup') ? 'bg-gradient-to-br from-purple-400 to-indigo-400 text-white' : 'bg-transparent'}}">
                 <i data-lucide="wallet" class="w-5 h-5 mb-1 {{ request()->is('topup') ? 'text-purple-600' : 'bg-transparent'}}"></i>
                 Topup
                 </button>
-                <button onclick="window.location='{{ route('transaksi.user') }}'" class="flex flex-col items-center text-sm p-2 ml w-25 rounded-xl text-gray-600 hover:text-purple-600 shadow-md {{ request()->is('transaksi/user') ? 'bg-gradient-to-br from-purple-400 to-indigo-400 text-white' : 'bg-transparent'}}">
+                <button onclick="window.location='{{ route('transaksi.user') }}'" class="flex flex-col items-center text-sm p-2 ml w-20 rounded-xl text-gray-600 hover:text-purple-600 shadow-md {{ request()->is('transaksi/user') ? 'bg-gradient-to-br from-purple-400 to-indigo-400 text-white' : 'bg-transparent'}}">
                 <i data-lucide="file-clock" class="w-5 h-5 mb-1 {{ request()->is('transaksi/user') ? 'text-purple-600' : 'bg-transparent'}}"></i>
                 Transaksi
                 </button>
