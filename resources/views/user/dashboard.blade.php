@@ -30,6 +30,7 @@
 
     {{-- Kartu Info Parkir --}}
     <div class="space-y-5 ">
+        <h5 class="text-black font-semibold text-lg">Riwayat Transaksi</h5>
 
         @foreach ($histories as $history)
          @php
