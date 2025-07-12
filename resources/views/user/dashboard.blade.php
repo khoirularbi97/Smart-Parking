@@ -134,7 +134,7 @@
 @empty
         <div class="text-center text-gray-500 mt-20">
             <i data-lucide="file" class="mx-auto w-10 h-10 mb-2"></i>
-            <p>Tidak ada transaksi ditemukan.</p>
+            <p>Tidak ada riwayat parkir ditemukan.</p>
         </div>
  @endforelse
         <div class="mt-4 mb-4">
