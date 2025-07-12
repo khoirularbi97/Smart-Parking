@@ -34,6 +34,7 @@
                 {{ $slot }}
             </div>
         </div>
+         @stack('scripts')
     </body>
     <script>
         lucide.createIcons();
