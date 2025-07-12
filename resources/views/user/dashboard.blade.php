@@ -29,10 +29,10 @@
     
 
     {{-- Kartu Info Parkir --}}
-    <div class="space-y-5 ">
-        <h5 class="text-black font-semibold text-lg">Riwayat Transaksi</h5>
+<div class="space-y-5 mb-10 ">
+        <h5 class="text-black font-semibold text-lg">Riwayat Parkir</h5>
 
-        @foreach ($histories as $history)
+        @forelse ($histories as $history)
          @php
             $waktuMasuk = \Carbon\Carbon::parse($history->waktu_masuk);
             $waktuKeluar = $history->waktu_keluar;
@@ -41,8 +41,8 @@
             $ratePerJam = 2000;
             $createdAt = $history->created_at;
         @endphp
-        <div class="bg-white rounded-2xl shadow-lg p-5">
-    <div class="flex items-center justify-between mb-2">
+    <div class="bg-white rounded-2xl shadow-lg p-3">
+        <div class="flex items-center justify-between mb-2">
         <div class="flex items-center gap-2">
             <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-400">
                 <i data-lucide="square parking" class="w-8 h-8 p-1"></i>
@@ -131,29 +131,33 @@
 @endif
 
 </div>
-@endforeach
-<div class="mt-4">
-        {{ $histories->links() }}
-</div>
-        {{-- Slot Parkir --}}
-    <h5 class="mb-1 text-white text-3xl font-bold py-6  mt-2">Slot Parkir</h5>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-    @foreach ($slots as $slot)
-        <div class="p-4 rounded-lg shadow-md {{ $slot->is_available === 'tersedia' ? 'bg-green-100' : 'bg-red-100' }}">
-            <h6 class="font-semibold">Slot {{ $slot->name }}</h6>
-            <span class="inline-block px-2 py-1 mt-2 text-xs font-bold rounded-full 
-                {{ $slot->is_available === 'tersedia' ? 'bg-green-500 text-white' : 'bg-red-500 text-white' }}">
-                {{ ucfirst($slot->is_available) }}
-            </span>
+@empty
+        <div class="text-center text-gray-500 mt-20">
+            <i data-lucide="file" class="mx-auto w-10 h-10 mb-2"></i>
+            <p>Tidak ada transaksi ditemukan.</p>
         </div>
-    @endforeach
+ @endforelse
+        <div class="mt-4 mb-4">
+                {{ $histories->links() }}
+        </div>
+        
+        
+{{-- Slot Parkir --}}
 
+<div class="border mb-6 border-md rounded-3xl shadow-xl px-4 py-4 ">
+    
+       <h5 class="mb-1 text-white text-3xl font-bold py-6  ">Slot Parkir</h5>
+       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+       @foreach ($slots as $slot)
+           <div class="p-4 rounded-lg shadow-md {{ $slot->is_available === 'tersedia' ? 'bg-green-100' : 'bg-red-100' }}">
+               <h6 class="font-semibold">Slot {{ $slot->name }}</h6>
+               <span class="inline-block px-2 py-1 mt-2 text-xs font-bold rounded-full 
+                   {{ $slot->is_available === 'tersedia' ? 'bg-green-500 text-white' : 'bg-red-500 text-white' }}">
+                   {{ ucfirst($slot->is_available) }}
+               </span>
+           </div>
+       @endforeach
+    </div>    
     </div>
-    
-    
-
-    
-
-
 
 @endsection
